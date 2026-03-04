@@ -1,0 +1,47 @@
+{
+  "metadata": {
+    "file": "voice_config.yaml",
+    "description": "Text-to-speech and speech-to-text configuration",
+    "format": "YAML",
+    "nrs_version": "1.0"
+  },
+  "mappings": {
+    "tts": {
+      "code": "NRS-702",
+      "description": "Text-to-speech (TTS) synthesis configuration",
+      "children": {
+        "provider": "NRS-702 - TTS provider (elevenlabs, google, azure)",
+        "model": "NRS-702 - TTS model version to use",
+        "voice_style": "NRS-702 - Default voice style (jarvis, professional, friendly)",
+        "stability": "NRS-702 - Voice consistency (0.0-1.0)",
+        "similarity_boost": "NRS-702 - Voice similarity to training data (0.0-1.0)",
+        "voices": {
+          "code": "NRS-702",
+          "description": "Available voice options with IDs",
+          "jarvis": "NRS-702 - Deep, commanding voice",
+          "professional": "NRS-702 - Professional speaking voice",
+          "friendly": "NRS-702 - Friendly, approachable voice",
+          "assistant": "NRS-702 - General assistant voice"
+        }
+      }
+    },
+    "stt": {
+      "code": "NRS-604",
+      "description": "Speech-to-text transcription configuration",
+      "children": {
+        "provider": "NRS-604 - STT provider (openai, google, azure)",
+        "model": "NRS-604 - STT model version (whisper-1, etc)",
+        "language": "NRS-604 - Language code (en for English)",
+        "timeout": "NRS-604 - Maximum seconds to wait for transcription"
+      }
+    },
+    "streaming": {
+      "code": "NRS-810",
+      "description": "Real-time audio streaming configuration",
+      "children": {
+        "chunk_size": "NRS-810 - Audio chunk size for streaming",
+        "buffer_time": "NRS-810 - Buffer time in seconds for audio queue"
+      }
+    }
+  }
+}

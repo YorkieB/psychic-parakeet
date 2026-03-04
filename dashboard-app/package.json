@@ -1,0 +1,42 @@
+{
+  "name": "jarvis-health-dashboard",
+  "version": "1.0.0",
+  "description": "Jarvis Health Dashboard Desktop App",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "package": "electron-builder --win",
+    "build": "electron-builder"
+  },
+  "author": "Yorkie",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.0"
+  },
+  "build": {
+    "appId": "com.jarvis.health-dashboard",
+    "productName": "Jarvis Health Dashboard",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "main.js",
+      "icon.ico"
+    ],
+    "extraResources": [
+      {
+        "from": "../dashboard",
+        "to": "dashboard",
+        "filter": [
+          "**/*",
+          "!node_modules/**"
+        ]
+      }
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "icon.ico"
+    }
+  }
+}

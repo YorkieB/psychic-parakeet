@@ -1,0 +1,60 @@
+#!/bin/sh
+# Git pre-commit hook for code quality checks
+
+. "$(dirname "$0")/_/husky.sh"
+
+echo "🔍 Running pre-commit checks..."
+
+# 0. Code Protection Dome — block commits to protected files
+echo "🛡️  Checking Code Protection Dome..."
+if [ -f "protected-files.json" ]; then
+  STAGED=$(git diff --cached --name-only)
+  PROTECTED=$(node -e "
+    const fs = require('fs');
+    const data = JSON.parse(fs.readFileSync('protected-files.json', 'utf8'));
+    const staged = process.argv.slice(1);
+    const blocked = data.files
+      .filter(f => staged.some(s => s.replace(/\\\\/g,'/') === f.path.replace(/\\\\/g,'/')))
+      .filter(f => {
+        try {
+          const stat = fs.statSync(f.path);
+          return (stat.mode & 0o200) === 0; // read-only = still locked
+        } catch { return true; }
+      });
+    if (blocked.length > 0) {
+      console.log('BLOCKED');
+      blocked.forEach(f => console.error('  ⛔ ' + f.path + ' — ' + f.reason));
+    }
+  " $STAGED 2>&1)
+
+  if echo "$PROTECTED" | grep -q "BLOCKED"; then
+    echo ""
+    echo "🛡️  CODE PROTECTION DOME — COMMIT BLOCKED"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "$PROTECTED" | grep "⛔"
+    echo ""
+    echo "These files are protected. To modify them:"
+    echo "  1. Run: .\\scripts\\code-protect.ps1 unlock <file>"
+    echo "  2. Make your changes"
+    echo "  3. Run: .\\scripts\\code-protect.ps1 relock <file>"
+    echo ""
+    echo "Or use 'git commit --no-verify' to force (not recommended)"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    exit 1
+  fi
+  echo "✅ No protected files modified"
+fi
+
+# 1. Run linter on staged files
+echo "📋 Running ESLint on staged files..."
+npx lint-staged
+
+# 2. Run type check
+echo "🔍 Running TypeScript type check..."
+npm run typecheck
+
+# 3. Run quick tests
+echo "🧪 Running quick tests..."
+npm run test:quick
+
+echo "✅ Pre-commit checks passed!"

@@ -1,0 +1,30 @@
+{
+  "metadata": {
+    "file": "llm_config.yaml",
+    "description": "Large Language Model and conversation configuration",
+    "format": "YAML",
+    "nrs_version": "1.0"
+  },
+  "mappings": {
+    "llm": {
+      "code": "NRS-805",
+      "description": "Large Language Model configuration",
+      "children": {
+        "provider": "NRS-805 - LLM provider (openai, anthropic, etc)",
+        "model": "NRS-805 - Model name (gpt-4o, claude-3, etc)",
+        "temperature": "NRS-805 - Creativity level (0.0-2.0)",
+        "max_tokens": "NRS-805 - Maximum response length",
+        "top_p": "NRS-805 - Nucleus sampling (0.0-1.0)"
+      }
+    },
+    "conversation": {
+      "code": "NRS-804",
+      "description": "Conversation management configuration",
+      "children": {
+        "max_history": "NRS-804 - Maximum conversation turns to keep in history",
+        "context_window": "NRS-804 - Total context tokens available for conversation",
+        "system_prompt": "NRS-804 - System instruction for assistant behavior"
+      }
+    }
+  }
+}

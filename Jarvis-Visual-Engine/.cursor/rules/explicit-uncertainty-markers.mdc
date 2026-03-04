@@ -1,0 +1,15 @@
+---
+alwaysApply: true
+always_on: true
+trigger: always_on
+applyTo: "**"
+description: Explicit uncertainty markers
+---
+
+# Explicit uncertainty markers
+
+- Any statement that relies on assumptions or incomplete information must include [uncertain] at the end of the sentence or paragraph.
+
+- Do not hide uncertainty; it is better to mark [uncertain] and ask questions than to present a confident but incorrect answer.
+
+- When you later gain enough information to resolve uncertainty, clearly update your earlier statement and remove [uncertain] in your new answer.

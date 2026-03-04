@@ -1,0 +1,119 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
+  "files": {
+    "includes": ["**", "!**/node_modules", "!**/dist", "!**/.next", "!**/*.css"]
+  },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noUndeclaredVariables": "off",
+        "noUnusedVariables": "warn",
+        "noUnusedFunctionParameters": "off"
+      },
+      "style": {
+        "useConst": "warn",
+        "useTemplate": "off",
+        "noNonNullAssertion": "off"
+      },
+      "complexity": {
+        "useArrowFunction": "off",
+        "noStaticOnlyClass": "off",
+        "noImportantStyles": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "off",
+        "useIterableCallbackReturn": "off",
+        "noTemplateCurlyInString": "off",
+        "noRedundantUseStrict": "off"
+      },
+      "a11y": {
+        "useButtonType": "off",
+        "useKeyWithClickEvents": "off",
+        "noStaticElementInteractions": "off",
+        "noLabelWithoutControl": "off"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "trailingCommas": "all"
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["codeeditor/**"],
+      "formatter": { "indentStyle": "tab" },
+      "css": { "linter": { "enabled": false } },
+      "linter": {
+        "rules": {
+          "security": { "noDangerouslySetInnerHtml": "off" }
+        }
+      }
+    },
+    {
+      "includes": ["dashboard/**"],
+      "formatter": { "indentStyle": "tab" },
+      "css": {
+        "linter": { "enabled": false },
+        "parser": { "allowWrongLineComments": true }
+      },
+      "linter": {
+        "rules": {
+          "a11y": {
+            "useMediaCaption": "off",
+            "useSemanticElements": "off"
+          },
+          "correctness": { "useExhaustiveDependencies": "off" },
+          "security": { "noDangerouslySetInnerHtml": "off" }
+        }
+      }
+    },
+    {
+      "includes": ["jarvis-desktop/**"],
+      "formatter": { "indentStyle": "tab" },
+      "css": { "linter": { "enabled": false } },
+      "linter": {
+        "rules": {
+          "a11y": { "noAutofocus": "off", "useHtmlLang": "off" },
+          "suspicious": { "useIterableCallbackReturn": "off" },
+          "correctness": { "useExhaustiveDependencies": "off" },
+          "security": { "noDangerouslySetInnerHtml": "off" }
+        }
+      }
+    },
+    {
+      "includes": ["webx/lightbrowser/**"],
+      "formatter": { "indentStyle": "tab" },
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedFunctionParameters": "off"
+          },
+          "style": {
+            "useConst": "off"
+          },
+          "complexity": {
+            "useLiteralKeys": "off",
+            "noUselessEscapeInRegex": "off"
+          },
+          "suspicious": {
+            "noRedundantUseStrict": "off"
+          },
+          "a11y": { "noAutofocus": "off" }
+        }
+      }
+    }
+  ]
+}

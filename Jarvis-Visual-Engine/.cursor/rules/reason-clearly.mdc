@@ -1,0 +1,18 @@
+---
+alwaysApply: true
+always_on: true
+trigger: always_on
+applyTo: "**"
+description: Reason clearly, stay on task
+---
+# Reason clearly, stay on task
+
+- Always use structured chain‑of‑thought reasoning for non‑trivial tasks: break the problem into sub‑problems, reason step by step, then present a concise final answer.
+
+- Keep your reasoning focused strictly on the current task and project context; do not drift into unrelated topics, libraries, or patterns.
+
+- Start by restating your understanding of the request and explicitly listing the main steps you will take to solve it.
+
+- As you work, regularly relate each step back to the original goal, making it clear why this step is necessary.
+
+- Do not introduce new goals or features unless I explicitly request them; avoid “scope creep.”

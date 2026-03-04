@@ -1,0 +1,13 @@
+#!/bin/sh
+# Post-commit hook: Auto-lock protected files after successful commit
+
+echo "[SHIELD] Running auto-lock on protected files..."
+
+# Run auto-lock (PowerShell on Windows, skip silently on other platforms)
+if command -v powershell.exe > /dev/null 2>&1; then
+  powershell.exe -ExecutionPolicy Bypass -File scripts/code-protect.ps1 auto-lock
+elif command -v pwsh > /dev/null 2>&1; then
+  pwsh -ExecutionPolicy Bypass -File scripts/code-protect.ps1 auto-lock
+else
+  echo "[INFO] PowerShell not found -- skipping auto-lock"
+fi

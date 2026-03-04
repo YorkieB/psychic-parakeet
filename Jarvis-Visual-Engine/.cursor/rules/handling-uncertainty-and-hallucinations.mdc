@@ -1,0 +1,24 @@
+---
+alwaysApply: true
+always_on: true
+trigger: always_on
+applyTo: "**"
+description: uncertainty and hallucinations
+---
+# Handling uncertainty and hallucinations
+
+- If you are not sure about any fact, API, file, or behavior, you must not invent details, names, paths, or URLs.
+
+- When you lack sufficient information, you must explicitly say you do not know and mark it as [uncertain]. Example: I do not know which endpoint to call here [uncertain].
+
+- When you are uncertain, first search the existing project files, tests, and docs to reduce uncertainty before responding.
+
+- If, after investigation, uncertainty remains, ask me targeted clarification questions instead of guessing.
+
+# Never fabricate:
+
+- Non‑existent functions, classes, or modules.
+
+- Fake API endpoints, parameters, or response shapes.
+
+- Libraries or tools that are not already present in the project or clearly requested.

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Jarvis Voice Test</title>
+		<style>
+		body {
+			background: #000;
+			color: #ff0000;
+			font-family: "Courier New", monospace;
+			padding: 20px;
+		}
+		button {
+			background: #ff0000;
+			color: #fff;
+			border: none;
+			padding: 15px 30px;
+			margin: 10px;
+			cursor: pointer;
+			font-size: 16px;
+			border-radius: 5px;
+		}
+		button:hover {
+			background: #cc0000;
+		}
+		.log {
+			background: #1a1a1a;
+			padding: 20px;
+			margin-top: 20px;
+			border: 1px solid #ff0000;
+			max-height: 400px;
+			overflow-y: auto;
+		}
+		.success {
+			color: #00ff00;
+		}
+		.error {
+			color: #ff0000;
+		}
+		.info {
+			color: #ffaa00;
+		}
+		</style>
+	</head>
+	<body>
+		<h1>🚗 JARVIS Voice Test Tool</h1>
+		<p>Knight Industries AI Voice Diagnostic</p>
+
+		<div>
+			<button onclick="testBrowserTTS()">Test Browser TTS</button>
+			<button onclick="testCustomVoice()">Test Custom Voice</button>
+			<button onclick="testAudioFile()">Test Audio File</button>
+			<button onclick="listVoices()">List Voices</button>
+			<button onclick="checkVolume()">Check Volume</button>
+			<button onclick="clearLog()">Clear Log</button>
+		</div>
+
+		<div class="log" id="log">
+			<div class="info">Ready for audio diagnostics...</div>
+		</div>
+
+		<script>
+		function log(message, type = "info") {
+			const logDiv = document.getElementById("log");
+			const entry = document.createElement("div");
+			entry.className = type;
+			entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+			logDiv.appendChild(entry);
+			logDiv.scrollTop = logDiv.scrollHeight;
+		}
+
+		function _clearLog() {
+			document.getElementById("log").innerHTML = "";
+		}
+
+		function _testBrowserTTS() {
+			log("Testing browser Text-to-Speech...", "info");
+
+			if (!window.speechSynthesis) {
+				log("❌ ERROR: Speech Synthesis not available!", "error");
+				return;
+			}
+
+			const utterance = new SpeechSynthesisUtterance(
+				"Good morning, sir. I am Jarvis, your AI assistant.",
+			);
+			utterance.rate = 0.9;
+			utterance.pitch = 0.9;
+			utterance.volume = 1.0;
+
+			utterance.onstart = () => log("✅ Speech started successfully", "success");
+			utterance.onend = () => log("✅ Speech completed", "success");
+			utterance.onerror = (e) => log(`❌ Speech error: ${e.error}`, "error");
+
+			log(`Using voice: ${utterance.voice?.name || "default"}`, "info");
+			window.speechSynthesis.speak(utterance);
+		}
+
+		function _listVoices() {
+			log("Listing available voices...", "info");
+
+			const voices = window.speechSynthesis.getVoices();
+			if (voices.length === 0) {
+				log("⚠️ No voices loaded yet. Waiting...", "info");
+				window.speechSynthesis.addEventListener(
+					"voiceschanged",
+					() => {
+						const newVoices = window.speechSynthesis.getVoices();
+						log(`✅ Found ${newVoices.length} voices:`, "success");
+						newVoices.forEach((voice, i) => {
+							log(`  ${i + 1}. ${voice.name} (${voice.lang})`, "info");
+						});
+					},
+					{ once: true },
+				);
+			} else {
+				log(`✅ Found ${voices.length} voices:`, "success");
+				voices.forEach((voice, i) => {
+					log(`  ${i + 1}. ${voice.name} (${voice.lang})`, "info");
+				});
+			}
+		}
+
+		function _testCustomVoice() {
+			log("Testing custom voice playback...", "info");
+
+			// Test if Howler.js is available
+			if (typeof Howl === "undefined") {
+				log("⚠️ Howler.js not loaded. Trying basic Audio API...", "info");
+				testAudioFile();
+				return;
+			}
+
+			log("✅ Howler.js available", "success");
+			// Add your custom voice test here
+			log("ℹ️ Add custom voice file path to test", "info");
+		}
+
+		function testAudioFile() {
+			log("Testing audio file playback...", "info");
+
+			// Test with a simple tone
+			const audioContext = new AudioContext();
+			const oscillator = audioContext.createOscillator();
+			const gainNode = audioContext.createGain();
+
+			oscillator.connect(gainNode);
+			gainNode.connect(audioContext.destination);
+
+			oscillator.frequency.value = 440; // A4 note
+			gainNode.gain.value = 0.3;
+
+			oscillator.start();
+			log("✅ Playing test tone (440Hz)...", "success");
+
+			setTimeout(() => {
+				oscillator.stop();
+				log("✅ Test tone complete", "success");
+			}, 1000);
+		}
+
+		function checkVolume() {
+			log("Checking audio configuration...", "info");
+
+			// Check AudioContext
+			const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+			log(`AudioContext state: ${audioContext.state}`, "info");
+
+			if (audioContext.state === "suspended") {
+				log("⚠️ AudioContext is suspended. Attempting to resume...", "info");
+				audioContext.resume().then(() => {
+					log("✅ AudioContext resumed", "success");
+				});
+			} else {
+				log("✅ AudioContext is active", "success");
+			}
+
+			// Check Speech Synthesis
+			if (window.speechSynthesis) {
+				log(`✅ Speech Synthesis available`, "success");
+				log(`   Pending: ${window.speechSynthesis.pending}`, "info");
+				log(`   Speaking: ${window.speechSynthesis.speaking}`, "info");
+				log(`   Paused: ${window.speechSynthesis.paused}`, "info");
+			} else {
+				log("❌ Speech Synthesis NOT available", "error");
+			}
+
+			// Browser info
+			log(`Browser: ${navigator.userAgent}`, "info");
+		}
+
+		// Auto-check on load
+		window.addEventListener("load", () => {
+			log("🚗 JARVIS Voice Test Tool Initialized", "success");
+			log("Click buttons above to test audio systems", "info");
+			checkVolume();
+		});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,55 @@
+# Vision Engine Configuration
+# Copy this file to .env and fill in your values
+
+# Application
+ENVIRONMENT=development
+DEBUG=true
+
+# API Keys
+OPENAI_API_KEY=your_openai_api_key_here
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+API_KEY=your_api_key_for_authentication
+
+# Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=vision_engine
+DB_USER=vision
+DB_PASSWORD=your_database_password
+
+# Redis
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_DB=0
+
+# Camera
+CAMERA_TYPE=emeet  # Options: obsbot, onvif, emeet
+CAMERA_IP=192.168.1.100  # For network connection (leave empty for USB only)
+CAMERA_PORT=8080  # For obsbot/onvif, RTSP uses port 554
+CAMERA_USERNAME=admin  # For network connection
+CAMERA_PASSWORD=admin  # For network connection
+CAMERA_USB_INDEX=0  # USB device index (0, 1, 2, etc.) - leave empty to auto-detect
+CAMERA_CONNECTION_TYPE=usb  # Options: usb, network, auto (default: auto)
+
+# Vision APIs
+VISION_API_PRIMARY=gpt4o
+VISION_API_FALLBACK=claude
+VISION_DETAIL_LEVEL=high
+
+# Processing
+FRAME_RATE=30
+MOTION_THRESHOLD=5.0
+FACE_CONFIDENCE=0.6
+SMART_TRIGGERING=true
+
+# Privacy
+DATA_RETENTION_DAYS=30
+AUDIT_RETENTION_DAYS=365
+ENCRYPTION_ENABLED=true
+
+# Server
+SERVER_HOST=0.0.0.0
+SERVER_PORT=5000
+
+# CORS (comma-separated list of allowed origins)
+CORS_ORIGINS=http://localhost:3000,http://localhost:5000

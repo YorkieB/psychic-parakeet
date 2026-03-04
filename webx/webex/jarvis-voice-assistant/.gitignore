@@ -1,0 +1,32 @@
+# Environment
+.env
+.env.local
+*.pyc
+__pycache__/
+*.egg-info/
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs & Data
+data/logs/
+data/audio_cache/
+data/temp/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/

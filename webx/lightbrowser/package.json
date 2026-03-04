@@ -1,0 +1,56 @@
+{
+	"name": "light-browser",
+	"version": "0.1.0",
+	"description": "Lightweight web browser experiment built with Electron",
+	"main": "main.js",
+	"scripts": {
+		"start": "electron .",
+		"build": "electron-builder --win"
+	},
+	"author": "",
+	"license": "MIT",
+	"build": {
+		"appId": "com.lightbrowser.app",
+		"productName": "Light Browser",
+		"files": [
+			"main.js",
+			"preload.js",
+			"src/**/*",
+			"node_modules/**/*"
+		],
+		"win": {
+			"target": [
+				{
+					"target": "nsis",
+					"arch": [
+						"x64"
+					]
+				},
+				{
+					"target": "portable",
+					"arch": [
+						"x64"
+					]
+				}
+			]
+		},
+		"nsis": {
+			"oneClick": false,
+			"allowToChangeInstallationDirectory": true,
+			"createDesktopShortcut": true,
+			"createStartMenuShortcut": true,
+			"shortcutName": "Light Browser"
+		}
+	},
+	"devDependencies": {
+		"electron": "^29.4.6",
+		"electron-builder": "^24.13.3"
+	},
+	"dependencies": {
+		"@anthropic-ai/sdk": "^0.24.0",
+		"debug": "^4.3.4",
+		"dotenv": "^16.0.3",
+		"openai": "^6.16.0",
+		"winreg": "^1.2.5"
+	}
+}

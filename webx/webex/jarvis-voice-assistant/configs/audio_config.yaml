@@ -1,0 +1,17 @@
+audio:
+  sample_rate: 16000
+  channels: 1
+  chunk_size: 1024
+  format: float32
+  input_device: 30   # Requested mic index
+  output_device: 5   # Realtek headphones
+  
+vad:
+  threshold: 0.05
+  window_size: 5
+  enabled: true
+  sensitivity: low  # low, medium, high
+  
+playback:
+  buffer_size: 4096
+  stream_chunk_size: 1024

@@ -1,0 +1,60 @@
+﻿{
+    "description":  "Code Protection Dome â€” files listed here are locked and require a password to modify",
+    "version":  "1.0.0",
+    "files":  [
+                  {
+                      "path":  "dashboard/vite.config.ts",
+                      "reason":  "Proxy configuration â€” routes API calls to correct backend ports",
+                      "lockedAt":  "2026-02-27T16:56:27.5989512Z",
+                      "lockedBy":  "Yorkie"
+                  },
+                  {
+                      "path":  "src/self-healing/dashboard/health-api.ts",
+                      "reason":  "Health API endpoint â€” merges pool manager + registry agents for all 37 agents",
+                      "lockedAt":  "2026-02-27T16:56:36.0415609Z",
+                      "lockedBy":  "Yorkie"
+                  },
+                  {
+                      "path":  "dashboard/src/debug-dashboard.tsx",
+                      "reason":  "Main dashboard UI â€” safe defaults for agent data, feed entries, polling",
+                      "lockedAt":  "2026-02-27T16:56:43.8633615Z",
+                      "lockedBy":  "Yorkie"
+                  },
+                  {
+                      "path":  "src/spark-start.ts",
+                      "reason":  "Parallel agent startup â€” starts all 37 agents concurrently",
+                      "lockedAt":  "2026-02-27T17:11:54.9022274Z",
+                      "lockedBy":  "Yorkie"
+                  },
+                  {
+                      "path":  "src/config/ports.ts",
+                      "reason":  "Single source of truth for ALL port assignments -- frozen Object.freeze",
+                      "lockedAt":  "2026-02-27T17:04:23.9040783Z",
+                      "lockedBy":  "Yorkie"
+                  },
+                  {
+                      "path":  "src/api/server.ts",
+                      "reason":  "Main API server -- uses centralized PORTS config for all agent endpoints",
+                      "lockedAt":  "2026-02-27T17:04:32.1589735Z",
+                      "lockedBy":  "Yorkie"
+                  },
+                  {
+                      "path":  "src/config/port-utils.ts",
+                      "reason":  "Fireproof utilities -- port availability check, retry with backoff, sleep helper",
+                      "lockedAt":  "2026-02-27T17:12:02.9365480Z",
+                      "lockedBy":  "Yorkie"
+                  },
+                  {
+                      "path":  "src/api/ide-api.ts",
+                      "reason":  "IDE backend API -- AI chat, file ops, terminal -- uses PORTS.LLM for AI endpoint",
+                      "lockedAt":  "2026-02-27T18:48:39.4704271Z",
+                      "lockedBy":  "Yorkie"
+                  },
+                  {
+                      "path":  "src/agents/llm-agent.ts",
+                      "reason":  "LLM agent -- handles complete, chat, summarize, analyze actions for AI",
+                      "lockedAt":  "2026-02-27T18:13:39.6381997Z",
+                      "lockedBy":  "Yorkie"
+                  }
+              ]
+}

@@ -1,0 +1,21 @@
+---
+alwaysApply: true
+always_on: true
+trigger: always_on
+applyTo: "**"
+description: Coding standards and syntax
+---
+
+# Coding standards and syntax
+
+- Always follow the existing coding style and conventions of the project. Infer style from nearby code (naming, formatting, patterns) and match it.
+
+- Do not introduce new frameworks or major dependencies without explicit approval; prefer the tools and libraries already used in the project.
+
+- Never intentionally return code with syntax errors. Before finalizing any code snippet, check that it is syntactically valid in the target language.
+
+- If you are unsure about syntax or an API, say so and mark the relevant part as [uncertain] rather than guessing.
+
+- When you spot a potential syntax or type error in your own suggestion, correct it and briefly explain the fix.
+
+- For non‑trivial changes, suggest or run appropriate checks (for example: tests, type checker, linter, or build) and mention the commands.

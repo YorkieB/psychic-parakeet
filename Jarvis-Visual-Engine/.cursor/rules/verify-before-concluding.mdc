@@ -1,0 +1,19 @@
+---
+alwaysApply: true
+always_on: true
+trigger: always_on
+applyTo: "**"
+description: Verify before concluding
+---
+
+# Verify before concluding
+
+# Where practical, verify your reasoning by:
+
+- Inspecting relevant files.
+
+- Running tests or type checks.
+
+- Running small, safe experiments in the codebase.
+
+- If verification is not possible (for example, missing dependencies or failing commands), clearly state that your answer is based on reasoning alone and mark any risky parts as [uncertain].

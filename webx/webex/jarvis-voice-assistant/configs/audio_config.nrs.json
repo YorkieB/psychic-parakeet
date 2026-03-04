@@ -1,0 +1,40 @@
+{
+  "metadata": {
+    "file": "audio_config.yaml",
+    "description": "Audio hardware and pipeline configuration",
+    "format": "YAML",
+    "nrs_version": "1.0"
+  },
+  "mappings": {
+    "audio": {
+      "code": "NRS-602",
+      "description": "Audio stream configuration for input/output",
+      "children": {
+        "sample_rate": "NRS-602 - Sample rate in Hz (16000 = 16kHz)",
+        "channels": "NRS-602 - Mono (1) or Stereo (2)",
+        "chunk_size": "NRS-602 - Buffer size in samples per chunk",
+        "format": "NRS-602 - Audio format (float32 or int16)",
+        "input_device": "NRS-602 - Microphone device index",
+        "output_device": "NRS-602 - Speaker device index"
+      }
+    },
+    "vad": {
+      "code": "NRS-603",
+      "description": "Voice Activity Detection configuration",
+      "children": {
+        "threshold": "NRS-603 - Energy threshold (0.0-1.0) for detecting speech",
+        "window_size": "NRS-603 - Number of chunks to analyze for VAD decision",
+        "enabled": "NRS-603 - Enable/disable voice activity detection",
+        "sensitivity": "NRS-603 - VAD sensitivity level (low/medium/high)"
+      }
+    },
+    "playback": {
+      "code": "NRS-705",
+      "description": "Audio playback (output) configuration",
+      "children": {
+        "buffer_size": "NRS-705 - Playback buffer size in samples",
+        "stream_chunk_size": "NRS-705 - Chunk size for playback stream"
+      }
+    }
+  }
+}

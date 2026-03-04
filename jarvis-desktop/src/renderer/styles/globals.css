@@ -1,0 +1,207 @@
+/* @import must come before other rules */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	overflow: hidden;
+}
+
+.app {
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+}
+
+/* Glass Card (panels) */
+.glass-card {
+	background: rgba(255, 255, 255, 0.9);
+	backdrop-filter: blur(16px) saturate(160%);
+	border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dark .glass-card {
+	background: rgba(30, 41, 59, 0.9);
+	backdrop-filter: blur(16px) saturate(160%);
+	border: 1px solid rgba(100, 116, 139, 0.25);
+}
+
+/* Vibrant Glass Morphism */
+.glass-card-vibrant {
+	background: rgba(255, 255, 255, 0.85);
+	backdrop-filter: blur(20px) saturate(180%);
+	border: 1px solid rgba(255, 255, 255, 0.4);
+	box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15);
+}
+
+.dark .glass-card-vibrant {
+	background: rgba(30, 41, 59, 0.85);
+	backdrop-filter: blur(20px) saturate(180%);
+	border: 1px solid rgba(100, 116, 139, 0.3);
+	box-shadow: 0 8px 32px rgba(139, 92, 246, 0.2);
+}
+
+/* Remove all dashed borders */
+* {
+	border-style: solid !important;
+}
+
+/* Colorful card backgrounds */
+.card-blue {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card-green {
+	background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.card-purple {
+	background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+}
+
+.card-orange {
+	background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+}
+
+.card-pink {
+	background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: linear-gradient(180deg, #764ba2 0%, #667eea 100%);
+}
+
+/* Animated gradient backgrounds */
+@keyframes gradient-shift {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.animated-gradient {
+	background: linear-gradient(270deg, #667eea, #764ba2, #f093fb, #4facfe);
+	background-size: 400% 400%;
+	animation: gradient-shift 10s ease infinite;
+}
+
+/* Vibrant button styles */
+.btn-primary {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: white;
+	border: none;
+	box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+	transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+	box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+	transform: translateY(-2px);
+}
+
+/* Colorful borders */
+.border-gradient {
+	border-width: 2px;
+	border-style: solid;
+	border-image: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%) 1;
+}
+
+/* Vibrant focus states */
+input:focus,
+textarea:focus,
+select:focus {
+	outline: none;
+	border-color: #667eea;
+	box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+/* No dashed borders anywhere */
+.border-dashed {
+	border-style: solid !important;
+}
+
+/* Smooth transitions for everything */
+* {
+	transition-property: background-color, border-color, color, fill, stroke, box-shadow, transform;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 200ms;
+}
+
+/* Custom Range Slider */
+.slider::-webkit-slider-thumb {
+	appearance: none;
+	width: 16px;
+	height: 16px;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+	width: 16px;
+	height: 16px;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	border-radius: 50%;
+	cursor: pointer;
+	border: none;
+}
+
+/* Animations */
+@keyframes pulse {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.5;
+	}
+}
+
+.animate-pulse {
+	animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes bounce {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-25%);
+	}
+}
+
+.animate-bounce {
+	animation: bounce 1s infinite;
+}

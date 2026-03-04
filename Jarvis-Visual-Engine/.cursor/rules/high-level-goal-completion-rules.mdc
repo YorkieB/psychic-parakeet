@@ -1,0 +1,15 @@
+---
+alwaysApply: true
+always_on: true
+trigger: always_on
+applyTo: "**"
+description: High‑level goal‑completion rules (concept)
+---
+
+# High‑level goal‑completion rules (concept)
+
+- Always read and follow all provided research / spec files before planning or implementing a solution.
+
+- Never contradict requirements stated in research files; if there is a conflict, ask for clarification.
+
+- For each goal, work in a loop: understand → plan → execute → verify → summarize, and do not stop mid‑way without explaining what blocked you.

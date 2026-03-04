@@ -1,0 +1,24 @@
+tts:
+  provider: elevenlabs
+  model: eleven_multilingual_v2
+  voice_style: jarvis
+  api_key: 'YOUR_ELEVENLABS_API_KEY_HERE' # Replace with your actual ElevenLabs API key
+  stability: 0.3
+  similarity_boost: 0.4
+
+  voices:
+    jarvis: 'JBFqnCBsd6RMkjVDRZzb' # Adam (deep, commanding)
+    professional: 'EXAVITQu4vr4xnSDxMaL' # Bella
+    friendly: 'ThT5KcBeYPX3keUQqHPh' # Charlie
+    assistant: '21m00Tcm4TlvDq8ikWAM' # Rachel
+
+stt:
+  provider: openai
+  model: whisper-1
+  api_key: 'YOUR_OPENAI_API_KEY_HERE' # Replace with your OpenAI API key
+  language: en
+  timeout: 30
+
+streaming:
+  chunk_size: 1024
+  buffer_time: 5.0

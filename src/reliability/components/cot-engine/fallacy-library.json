@@ -1,0 +1,559 @@
+{
+  "version": "3.0.0",
+  "lastUpdated": "2026-01-24T00:00:00.000Z",
+  "description": "Research-enhanced fallacy detection patterns based on Professor of Logic analysis of top 20 fallacies in modern misinformation",
+  "source": "Academic research on fallacy detection in misinformation, psychological studies of cognitive bias, and logical reasoning pedagogy",
+  "severityMethodology": "Severity scores (1-10) reflect combined assessment of epistemic damage (distortion of truth) and psychological persuasiveness (resistance to rational counter-argument)",
+  "fallacies": [
+    {
+      "type": "gish_gallop",
+      "name": "Gish Gallop",
+      "description": "A rhetorical technique that overwhelms an opponent by presenting an excessive number of arguments without regard for their accuracy or strength, delivered so rapidly that comprehensive rebuttal becomes impossible within available time constraints.",
+      "patterns": [
+        "\\b(?:dozens?|many|multiple|numerous)\\s+(?:reasons?|arguments?|points?)\\s+(?:why|that|showing)\\b",
+        "\\bstudies\\s+show\\b(?!\\s+(?:that|how|specifically))",
+        "\\bexperts?\\s+(?:say|agree|believe)\\b(?!\\s+(?:that|how))",
+        "\\b(?:first|second|third|fourth|fifth|next)\\s*[,:;]\\s*(?:also|furthermore|moreover|additionally)",
+        "\\b(?:there\\s+are\\s+)?(?:many|several|countless|numerous)\\s+(?:issues|problems|concerns|reasons)\\b"
+      ],
+      "contextPatterns": [
+        "\\b(?:overwhelming|undeniable|massive)\\s+(?:evidence|proof)\\b",
+        "\\bno\\s+pause\\b.*\\bbetween\\s+(?:claims?|arguments?)\\b",
+        "\\b(?:dozens|scores|hundreds)\\s+of\\s+(?:studies|experts|examples)\\b"
+      ],
+      "severity": "critical",
+      "severityScore": 9,
+      "confidenceWeight": 0.8,
+      "examples": [
+        "I have dozens of reasons why this is wrong: studies show X, experts say Y, data proves Z...",
+        "There are countless problems with this policy, multiple studies demonstrate...",
+        "First, the evidence shows A, second, research proves B, third, experts agree C..."
+      ]
+    },
+    {
+      "type": "motivated_reasoning",
+      "name": "Motivated Reasoning",
+      "description": "A cognitive bias wherein individuals process information in a directional manner to reach preferred conclusions. Evidence supporting pre-existing beliefs is readily accepted with minimal scrutiny, while contradictory evidence is subjected to intense critical analysis or dismissed entirely.",
+      "patterns": [
+        "\\bdismiss(?:es?|ing)?\\s+(?:as|because)\\s+(?:biased|agenda[- ]driven|corrupt)\\b",
+        "\\bi\\s+knew\\s+it\\b|\\bfinally[,!\\s]+proof\\b|\\bobviously\\s+(?:true|false)\\b",
+        "\\bthat\\s+can't\\s+be\\s+(?:right|true|accurate)\\b",
+        "\\bof\\s+course\\s+(?:they'd|you'd)\\s+say\\s+that\\b",
+        "\\b(?:clearly|obviously)\\s+(?:agenda|bias|motive)\\b"
+      ],
+      "contextPatterns": [
+        "\\bemotional\\s+(?:language|reaction)\\b",
+        "\\bimmediately?\\s+(?:accept|reject)\\b",
+        "\\b(?:stricter|different)\\s+(?:standards?|criteria)\\b"
+      ],
+      "severity": "high",
+      "severityScore": 8,
+      "confidenceWeight": 0.7,
+      "examples": [
+        "I dismiss this as biased research with an obvious agenda",
+        "I knew it! Finally proof that confirms what I always believed",
+        "That can't be right - they're just trying to push their narrative"
+      ]
+    },
+    {
+      "type": "false_dichotomy",
+      "name": "False Dichotomy / Either-Or Fallacy",
+      "description": "A logical fallacy that presents a limited set of options (typically two) as if they were the only possibilities, when in fact a spectrum of alternatives exists.",
+      "patterns": [
+        "\\byou're\\s+either\\s+.+\\s+or\\s+.+",
+        "\\bthere\\s+are\\s+only\\s+two\\s+(?:options?|choices?)\\b",
+        "\\bit's\\s+(?:either\\s+)?\\w+\\s+or\\s+\\w+(?:[,—]\\s*(?:there's\\s+)?no\\s+(?:middle\\s+ground|other\\s+choice))?",
+        "\\bwill\\s+you\\s+(?:support|choose)\\s+\\w+\\s+or\\s+(?:oppose|reject)\\b",
+        "\\byou\\s+(?:must|have\\s+to)\\s+(?:choose|pick)\\s+(?:between|one\\s+or\\s+the\\s+other)\\b"
+      ],
+      "contextPatterns": [
+        "\\bno\\s+middle\\s+ground\\b",
+        "\\bwith\\s+us\\s+or\\s+against\\s+us\\b",
+        "\\ball\\s+or\\s+nothing\\b",
+        "\\bblack\\s+(?:and|or)\\s+white\\b"
+      ],
+      "severity": "high",
+      "severityScore": 8,
+      "confidenceWeight": 0.6,
+      "examples": [
+        "You're either with us or against us - there's no middle ground",
+        "It's capitalism or socialism - you have to choose one",
+        "Will you support progress or oppose all change?"
+      ]
+    },
+    {
+      "type": "cherry_picking",
+      "name": "Cherry Picking (Selective Evidence Presentation)",
+      "description": "The practice of selectively citing data or examples that support a predetermined conclusion while systematically ignoring or suppressing contradictory evidence.",
+      "patterns": [
+        "\\ba\\s+study\\s+shows\\b(?!.*(?:meta[- ]analysis|systematic\\s+review|consensus))",
+        "\\bsome\\s+(?:experts?|researchers?)\\s+(?:believe|think|say)\\b",
+        "\\b(?:recent|new)\\s+(?:data|research|study)\\s+(?:shows?|proves?)\\b",
+        "\\baccording\\s+to\\s+(?:one|this)\\s+(?:study|expert|source)\\b",
+        "\\b(?:convenient|selective)\\s+(?:data|evidence|examples?)\\b"
+      ],
+      "contextPatterns": [
+        "\\bignor(?:es?|ing)\\s+(?:other|contradictory)\\s+(?:studies?|evidence|data)\\b",
+        "\\boutlier\\s+(?:data|results?)\\b.*\\brepresentative\\b",
+        "\\bfavorable\\s+(?:time\\s+periods?|data\\s+points?)\\b"
+      ],
+      "severity": "high",
+      "severityScore": 8,
+      "confidenceWeight": 0.6,
+      "examples": [
+        "A study shows vaccines are dangerous (ignoring hundreds of safety studies)",
+        "Some experts believe climate change is natural (ignoring 97% consensus)",
+        "Recent data shows crime is rising (cherry-picking short time period)"
+      ]
+    },
+    {
+      "type": "post_hoc",
+      "name": "Post Hoc Ergo Propter Hoc (False Causation)",
+      "description": "A causal fallacy that mistakes temporal succession for causal connection. The reasoning pattern assumes that because event B occurred after event A, event A must have caused event B.",
+      "patterns": [
+        "\\bever\\s+since\\s+\\w+\\s+(?:happened|started)[,\\s]+\\w+\\s+(?:has\\s+been|started)\\b",
+        "\\bright\\s+after\\s+\\w+[,\\s]+\\w+\\s+(?:started|began|occurred)\\b",
+        "\\b(?:this|that)\\s+(?:can't\\s+be|isn't)\\s+(?:a\\s+)?coincidence\\b",
+        "\\b(?:clearly|obviously)\\s+\\w+\\s+caused\\s+\\w+\\b",
+        "\\bimmediately\\s+(?:after|following)\\s+.+[,\\s]+.+\\s+(?:happened|occurred)\\b"
+      ],
+      "contextPatterns": [
+        "\\btemporal\\s+(?:correlation|sequence)\\b",
+        "\\b(?:timing|sequence)\\s+(?:proves?|shows?)\\b",
+        "\\bsimultaneous(?:ly)?\\b.*\\bcausal\\b"
+      ],
+      "severity": "high",
+      "severityScore": 8,
+      "confidenceWeight": 0.5,
+      "examples": [
+        "Ever since 5G towers went up, COVID cases increased - clearly 5G causes COVID",
+        "Right after the vaccine, my child developed autism",
+        "This can't be a coincidence - the timing proves causation"
+      ]
+    },
+    {
+      "type": "appeal_to_emotion",
+      "name": "Appeal to Emotion (Argumentum ad Passiones)",
+      "description": "A fallacy that substitutes emotional manipulation for logical argumentation by evoking strong feelings to bypass rational evaluation.",
+      "patterns": [
+        "\\bthink\\s+(?:of|about)\\s+the\\s+(?:children|victims|families)\\b",
+        "\\b(?:catastrophic|devastating|destroyed?|nightmare\\s+scenario)\\b",
+        "\\bhow\\s+can\\s+you\\s+(?:sleep|live\\s+with\\s+yourself)\\b",
+        "\\bimagine\\s+if\\s+(?:this|that)\\s+(?:were|was)\\s+your\\b",
+        "\\b(?:innocent\\s+)?victims?\\b.*\\b(?:suffer|pain|tragedy)\\b"
+      ],
+      "contextPatterns": [
+        "\\b(?:fear[- ]inducing|pity\\s+appeals?)\\b",
+        "\\b(?:anger|outrage)\\s+(?:incitement|inducing)\\b",
+        "\\b(?:patriotic|emotional)\\s+(?:symbols?|language|appeals?)\\b",
+        "\\b(?:personal\\s+stories?)\\s+(?:emphasized|instead)\\b"
+      ],
+      "severity": "high",
+      "severityScore": 8,
+      "confidenceWeight": 0.6,
+      "examples": [
+        "Think of the children who will suffer if we don't act now!",
+        "This policy will be devastating - families will be destroyed!",
+        "How can you sleep at night knowing innocent victims are in pain?"
+      ]
+    },
+    {
+      "type": "confirmation_bias",
+      "name": "Confirmation Bias",
+      "description": "A pervasive cognitive bias involving the unconscious tendency to notice, seek out, interpret, and recall information in ways that confirm pre-existing beliefs while overlooking contradictory evidence.",
+      "patterns": [
+        "\\b(?:selective|biased)\\s+(?:attention|focus)\\s+to\\s+(?:news|sources?)\\b",
+        "\\bthat\\s+can't\\s+be\\s+(?:right|true|correct)\\b",
+        "\\b(?:better|easier)\\s+recall\\s+of\\s+(?:evidence|information)\\b",
+        "\\binterpreting\\s+.+\\s+as\\s+(?:supporting|confirming)\\b",
+        "\\bseeking\\s+(?:out|for)\\s+(?:confirming|supporting)\\s+evidence\\b"
+      ],
+      "contextPatterns": [
+        "\\bfilter\\s+bubble\\b",
+        "\\becho\\s+chamber\\b",
+        "\\bpre[- ]existing\\s+(?:beliefs?|views?)\\b",
+        "\\b(?:unconscious|automatic)\\s+(?:bias|tendency)\\b"
+      ],
+      "severity": "high",
+      "severityScore": 8,
+      "confidenceWeight": 0.7,
+      "examples": [
+        "I only read news sources that align with my existing views",
+        "That contradictory study can't be right - it must be flawed",
+        "I'm seeking evidence that confirms what I already believe"
+      ]
+    },
+    {
+      "type": "straw_man",
+      "name": "Straw Man Fallacy",
+      "description": "A fallacy of misrepresentation in which an arguer distorts, exaggerates, or fabricates an opponent's position to create a weaker, more easily refutable version.",
+      "patterns": [
+        "\\bso\\s+what\\s+you're\\s+(?:really\\s+)?(?:saying|claiming|arguing)\\s+is\\b",
+        "\\bmy\\s+opponent\\s+(?:wants|believes)\\s+(?:to|that)\\b",
+        "\\blet\\s+me\\s+get\\s+this\\s+straight[—:]\\s*you\\s+(?:believe|think)\\b",
+        "\\boh[,\\s]+so\\s+you\\s+think\\b",
+        "\\byour\\s+(?:position|argument)\\s+(?:means|implies)\\s+that\\b"
+      ],
+      "contextPatterns": [
+        "\\b(?:distort|exaggerat|fabricat)\\b.*\\bposition\\b",
+        "\\btaking\\s+quotes\\s+out\\s+of\\s+context\\b",
+        "\\babsurd\\s+interpretation\\b",
+        "\\bmischaracteriz\\b"
+      ],
+      "severity": "medium",
+      "severityScore": 7,
+      "confidenceWeight": 0.5,
+      "examples": [
+        "So what you're saying is we should have no laws at all",
+        "My opponent wants to destroy the economy completely",
+        "Let me get this straight - you believe everyone should get free money?"
+      ]
+    },
+    {
+      "type": "circular_reasoning",
+      "name": "Circular Reasoning / Begging the Question",
+      "description": "A logical fallacy in which the conclusion to be proven is assumed within one or more of the premises, creating a closed logical loop that provides no independent evidence.",
+      "patterns": [
+        "\\bbecause\\s+(?:it|that|this)(?:'s|\\s+is)\\s+(?:the\\s+way\\s+it\\s+is|true|correct|right)\\b",
+        "\\b(?:it|this|that)(?:'s|\\s+is)\\s+right\\s+because\\s+(?:it|this|that)(?:'s|\\s+is)\\s+(?:right|correct)\\b",
+        "\\bby\\s+definition\\b(?!\\s+\\w+\\s+(?:means|refers))",
+        "\\bobviously\\s+(?:true|correct|right|false)\\b(?!.*because)",
+        "\\bit\\s+just\\s+is\\b|\\bthat's\\s+just\\s+how\\s+it\\s+works\\b"
+      ],
+      "contextPatterns": [
+        "\\btautological\\s+statements?\\b",
+        "\\bclosed\\s+logical\\s+loop\\b",
+        "\\bself[- ]evident\\b(?!.*that)"
+      ],
+      "severity": "medium",
+      "severityScore": 7,
+      "confidenceWeight": 0.5,
+      "examples": [
+        "It's true because that's the way it is",
+        "This policy is right because it's obviously correct",
+        "It just is - that's how it works"
+      ]
+    },
+    {
+      "type": "slippery_slope",
+      "name": "Slippery Slope Fallacy",
+      "description": "An argument asserting that a relatively minor initial action will inevitably trigger a chain reaction of increasingly severe consequences, ultimately leading to a catastrophic endpoint.",
+      "patterns": [
+        "\\bif\\s+we\\s+(?:allow|permit|let)\\s+.+[,\\s]+(?:then|there's\\s+nothing\\s+to\\s+stop)\\b",
+        "\\bwhich\\s+will\\s+lead\\s+to\\s+.+\\s+which\\s+will\\s+lead\\s+to\\b",
+        "\\bthis\\s+is\\s+the\\s+first\\s+step\\s+toward\\b",
+        "\\bonce\\s+we\\s+start\\s+(?:down\\s+this\\s+road|this)\\b",
+        "\\bnext\\s+thing\\s+you\\s+know\\b"
+      ],
+      "contextPatterns": [
+        "\\b(?:inevitably|eventually|ultimately)\\b",
+        "\\b(?:catastrophic|apocalyptic)\\s+(?:outcome|endpoint)\\b",
+        "\\b(?:complete|total)\\s+(?:collapse|loss|disaster)\\b",
+        "\\b(?:chain\\s+reaction|domino\\s+effect)\\b"
+      ],
+      "severity": "medium",
+      "severityScore": 7,
+      "confidenceWeight": 0.4,
+      "examples": [
+        "If we allow this regulation, next thing you know we'll have total government control",
+        "This is the first step toward complete loss of freedom",
+        "Once we start down this road, there's no stopping the downward spiral"
+      ]
+    },
+    {
+      "type": "hasty_generalization",
+      "name": "Hasty Generalization",
+      "description": "An inductive fallacy that involves drawing a broad conclusion about an entire population based on insufficient or unrepresentative evidence.",
+      "patterns": [
+        "\\ball\\s+\\w+\\s+(?:are|do|have|will)\\b",
+        "\\bevery(?:one|body|thing)\\s+(?:in|from|who|that)\\b",
+        "\\bnever\\s+trust\\s+(?:a|any)\\b",
+        "\\balways\\s+(?:does|is|are|will)\\b",
+        "\\b(?:people|men|women)\\s+from\\s+\\w+\\s+are\\b"
+      ],
+      "contextPatterns": [
+        "\\b(?:stereotype|prejudice)\\b",
+        "\\b(?:limited|small)\\s+(?:sample|experience)\\b",
+        "\\b(?:anecdotal|personal)\\s+evidence\\b",
+        "\\b(?:exceptional|outlier)\\s+cases?\\b"
+      ],
+      "severity": "medium",
+      "severityScore": 7,
+      "confidenceWeight": 0.4,
+      "examples": [
+        "All politicians are corrupt",
+        "Everyone from that country is lazy",
+        "Every time I've seen this, it failed - therefore it always fails"
+      ]
+    },
+    {
+      "type": "red_herring",
+      "name": "Red Herring (Irrelevant Diversion)",
+      "description": "A fallacy of relevance in which an arguer introduces information that is logically unrelated to the discussion to divert attention from the original topic.",
+      "patterns": [
+        "\\bbut\\s+what\\s+about\\s+(?:\\w+\\s+)?(?:issue|problem|concern)\\b",
+        "\\bbefore\\s+we\\s+discuss\\s+(?:that|this)[,\\s]+let's\\s+talk\\s+about\\b",
+        "\\b(?:speaking|talking)\\s+of\\s+(?:which|that)\\b",
+        "\\bthe\\s+real\\s+(?:issue|problem)\\s+(?:here\\s+)?is\\b",
+        "\\bwe\\s+should\\s+be\\s+(?:talking|focusing)\\s+(?:about|on)\\b"
+      ],
+      "contextPatterns": [
+        "\\b(?:sudden|abrupt)\\s+(?:topic|subject)\\s+(?:shift|change)\\b",
+        "\\b(?:divert|deflect)\\s+attention\\b",
+        "\\b(?:irrelevant|unrelated)\\s+(?:information|topic)\\b",
+        "\\bavoid\\s+(?:accountability|responsibility)\\b"
+      ],
+      "severity": "medium",
+      "severityScore": 7,
+      "confidenceWeight": 0.3,
+      "examples": [
+        "But what about the real issue of government spending?",
+        "Before we discuss my mistakes, let's talk about yours",
+        "The real problem here is something completely different"
+      ]
+    },
+    {
+      "type": "anecdotal_evidence",
+      "name": "Anecdotal Evidence Fallacy",
+      "description": "Relying on personal experiences, individual testimonials, or isolated examples as if they constituted sufficient evidence for general claims.",
+      "patterns": [
+        "\\bi\\s+know\\s+someone\\s+who\\b",
+        "\\bthis\\s+happened\\s+to\\s+me[,\\s]+(?:therefore|so)\\b",
+        "\\bmy\\s+(?:uncle|friend|neighbor|cousin)\\s+.+\\s+(?:therefore|so)\\b",
+        "\\bin\\s+my\\s+experience\\b",
+        "\\bi(?:'ve|\\s+have)\\s+seen\\s+(?:this|that)\\s+(?:happen|work|fail)\\b"
+      ],
+      "contextPatterns": [
+        "\\b(?:personal|individual)\\s+(?:stories?|testimonials?)\\b",
+        "\\bisolated\\s+examples?\\b",
+        "\\b(?:single|one)\\s+(?:case|instance|example)\\b",
+        "\\buncontrolled\\s+observations?\\b"
+      ],
+      "severity": "medium",
+      "severityScore": 7,
+      "confidenceWeight": 0.4,
+      "examples": [
+        "I know someone who smoked for 60 years and lived to 90, so smoking isn't dangerous",
+        "This happened to me, therefore it's common",
+        "My uncle tried this treatment and it worked, so it must be effective"
+      ]
+    },
+    {
+      "type": "false_equivalence",
+      "name": "False Equivalence / False Balance",
+      "description": "A logical fallacy that draws a purported equivalence between two subjects based on superficial similarities while ignoring fundamental differences.",
+      "patterns": [
+        "\\bboth\\s+sides\\s+(?:are\\s+)?(?:equally\\s+)?(?:guilty|bad|wrong)\\b",
+        "\\b\\w+\\s+is\\s+just\\s+as\\s+(?:bad|good|wrong|right)\\s+as\\s+\\w+\\b",
+        "\\b(?:politicians|parties)\\s+are\\s+all\\s+the\\s+same\\b",
+        "\\bboth\\s+\\w+\\s+and\\s+\\w+\\s+(?:do|are|have)\\b",
+        "\\bequal\\s+(?:time|attention|representation)\\b.*\\b(?:regardless|despite)\\b"
+      ],
+      "contextPatterns": [
+        "\\b(?:superficial|false)\\s+similarities?\\b",
+        "\\b(?:fundamental|important)\\s+differences?\\b",
+        "\\b(?:asymmetric|unequal)\\s+evidence\\b",
+        "\\bmagnitude\\s+differences?\\b"
+      ],
+      "severity": "medium",
+      "severityScore": 7,
+      "confidenceWeight": 0.5,
+      "examples": [
+        "Both sides are equally guilty of corruption",
+        "Climate scientists and climate deniers should get equal time",
+        "Politicians are all the same - they're equally bad"
+      ]
+    },
+    {
+      "type": "no_true_scotsman",
+      "name": "No True Scotsman Fallacy",
+      "description": "A rhetorical maneuver that defends a universal generalization against counterexamples by arbitrarily redefining the category to exclude those counterexamples.",
+      "patterns": [
+        "\\bno\\s+(?:true|real)\\s+\\w+\\s+(?:would|could)\\b",
+        "\\bthat\\s+person\\s+isn't\\s+a\\s+(?:real|true)\\s+\\w+\\b",
+        "\\bthose\\s+examples\\s+don't\\s+count\\s+because\\b",
+        "\\banyone\\s+who\\s+.+\\s+isn't\\s+(?:really|truly)\\s+a\\s+\\w+\\b",
+        "\\b(?:moving|shifting)\\s+(?:goalposts|criteria)\\b"
+      ],
+      "contextPatterns": [
+        "\\b(?:ad\\s+hoc|arbitrary)\\s+(?:exclusion|redefinition)\\b",
+        "\\b(?:circular|self[- ]serving)\\s+definition\\b",
+        "\\b(?:protect|defend)\\s+(?:against|from)\\s+(?:falsification|counterexamples?)\\b",
+        "\\bunfalsifiable\\b.*\\bdefinition\\b"
+      ],
+      "severity": "medium",
+      "severityScore": 7,
+      "confidenceWeight": 0.5,
+      "examples": [
+        "No true Christian would support that policy",
+        "That person isn't a real feminist because they disagree with me",
+        "Those examples don't count because they're not authentic instances"
+      ]
+    },
+    {
+      "type": "loaded_question",
+      "name": "Loaded Question / Complex Question",
+      "description": "A question formulated to contain an implicit, unproven, or controversial presupposition such that any direct answer would entail accepting that presupposition.",
+      "patterns": [
+        "\\bhave\\s+you\\s+stopped\\s+.+\\?",
+        "\\bwhy\\s+did\\s+you\\s+(?:decide|choose)\\s+to\\b",
+        "\\bhow\\s+many\\s+times\\s+(?:have\\s+you|did\\s+you)\\b",
+        "\\bwhen\\s+will\\s+you\\s+finally\\b",
+        "\\bwhat\\s+caused\\s+you\\s+to\\b"
+      ],
+      "contextPatterns": [
+        "\\b(?:implicit|hidden|unproven)\\s+(?:assumption|presupposition)\\b",
+        "\\b(?:controversial|disputed)\\s+(?:premise|assumption)\\b",
+        "\\b(?:trap|loaded)\\s+question\\b",
+        "\\bembedded\\s+assumption\\b"
+      ],
+      "severity": "medium",
+      "severityScore": 7,
+      "confidenceWeight": 0.5,
+      "examples": [
+        "Have you stopped beating your wife?",
+        "Why did you decide to cheat on the test?",
+        "When will you finally admit you were wrong?"
+      ]
+    },
+    {
+      "type": "ad_hominem",
+      "name": "Ad Hominem Attack",
+      "description": "A fallacy that attempts to refute an argument by attacking the character, motive, or circumstance of the person making it, rather than addressing the substance of the argument.",
+      "patterns": [
+        "\\byou're\\s+wrong\\s+because\\s+you're\\s+(?:\\w+\\s+)?(?:biased|stupid|corrupt|dishonest)\\b",
+        "\\bof\\s+course\\s+(?:they'd|you'd)\\s+say\\s+that[—,]\\s*look\\s+who\\s+(?:they\\s+are|you\\s+are)\\b",
+        "\\bdon't\\s+listen\\s+to\\s+(?:them|him|her)[,\\s]+(?:they're|he's|she's)\\s+(?:biased|corrupt|stupid)\\b",
+        "\\byou\\s+did\\s+\\w+\\s+wrong[,\\s]+so\\s+your\\s+argument\\s+about\\s+\\w+\\s+is\\s+invalid\\b",
+        "\\byour\\s+motives\\s+are\\s+(?:suspect|questionable)[,\\s]+therefore\\b"
+      ],
+      "contextPatterns": [
+        "\\b(?:character|personal)\\s+(?:attack|assassination)\\b",
+        "\\b(?:irrelevant|unrelated)\\s+(?:past\\s+actions?|characteristics?)\\b",
+        "\\bavoid\\s+(?:engaging|addressing)\\s+(?:actual|real)\\s+arguments?\\b",
+        "\\b(?:credibility|reputation)\\s+(?:attack|damage)\\b"
+      ],
+      "severity": "low",
+      "severityScore": 6,
+      "confidenceWeight": 0.6,
+      "examples": [
+        "You're wrong because you're biased and corrupt",
+        "Of course they'd say that - look who they are!",
+        "Don't listen to them, they're clearly pushing an agenda"
+      ]
+    },
+    {
+      "type": "appeal_to_authority",
+      "name": "Appeal to Authority (Argumentum ad Verecundiam)",
+      "description": "A fallacy that cites an authority figure as evidence for a claim when that authority lacks relevant expertise, has conflicts of interest, or when the question requires empirical verification.",
+      "patterns": [
+        "\\b(?:expert|dr\\.?|celebrity|famous)\\s+\\w+\\s+says\\s+\\w+\\b",
+        "\\bas\\s+a\\s+(?:successful|wealthy)\\s+\\w+[,\\s]+i\\s+know\\s+\\w+\\s+is\\b",
+        "\\bscientists?\\s+agree\\b(?!\\s+(?:that|based\\s+on|according\\s+to))",
+        "\\b(?:ancient|traditional)\\s+wisdom\\s+(?:says|tells\\s+us)\\b",
+        "\\bthe\\s+(?:authority|expert|specialist)\\s+(?:says|believes|thinks)\\b"
+      ],
+      "contextPatterns": [
+        "\\b(?:irrelevant|unrelated)\\s+(?:expertise|credentials)\\b",
+        "\\b(?:conflicts?\\s+of\\s+interest|bias(?:ed)?)\\b",
+        "\\b(?:genuine|relevant)\\s+(?:expertise|authority)\\b",
+        "\\bpeer\\s+disagreement\\b"
+      ],
+      "severity": "low",
+      "severityScore": 6,
+      "confidenceWeight": 0.4,
+      "examples": [
+        "Celebrity X says this product is great, so it must be",
+        "As a successful businessman, I know economics better than economists",
+        "Ancient wisdom tells us this is the right way"
+      ]
+    },
+    {
+      "type": "bandwagon",
+      "name": "Bandwagon Appeal / Appeal to Popularity (Argumentum ad Populum)",
+      "description": "A fallacy asserting that a claim must be true because it is widely believed, appealing to social conformity rather than providing logical reasons.",
+      "patterns": [
+        "\\b(?:millions|thousands)\\s+of\\s+people\\s+(?:believe|think)\\s+\\w+[,\\s]+so\\s+\\w+\\s+must\\s+be\\s+(?:true|right)\\b",
+        "\\beveryone(?:'s|\\s+is)\\s+doing\\s+it\\b",
+        "\\bthe\\s+majority\\s+can't\\s+be\\s+wrong\\b",
+        "\\b(?:most\\s+popular|#1|bestselling)\\b.*\\b(?:therefore|so|that's\\s+why)\\b",
+        "\\bdon't\\s+be\\s+left\\s+behind\\b|\\bjoin\\s+the\\s+(?:movement|majority)\\b"
+      ],
+      "contextPatterns": [
+        "\\b(?:popularity|consensus)\\s+as\\s+(?:proof|evidence)\\b",
+        "\\b(?:social|peer)\\s+(?:conformity|pressure)\\b",
+        "\\b(?:majority|popular)\\s+(?:belief|opinion)\\b",
+        "\\b(?:historical|past)\\s+(?:errors|mistakes)\\b"
+      ],
+      "severity": "low",
+      "severityScore": 6,
+      "confidenceWeight": 0.4,
+      "examples": [
+        "Millions of people believe this, so it must be true",
+        "Everyone's doing it, so it must be right",
+        "The majority can't be wrong about this"
+      ]
+    },
+    {
+      "type": "tu_quoque",
+      "name": "Tu Quoque / Whataboutism",
+      "description": "A fallacy that deflects criticism by pointing out that the critic is guilty of the same or similar fault, responding with 'You do it too!' to divert attention.",
+      "patterns": [
+        "\\bbut\\s+you\\s+did\\s+the\\s+same\\s+thing\\b",
+        "\\bwhat\\s+about\\s+when\\s+(?:you|they|\\w+)\\s+did\\s+\\w+\\b",
+        "\\bbefore\\s+we\\s+discuss\\s+my\\s+(?:actions|behavior)[,\\s]+let's\\s+talk\\s+about\\s+yours\\b",
+        "\\bthat's\\s+rich\\s+coming\\s+from\\s+you\\b",
+        "\\bboth\\s+sides\\s+do\\s+it[,\\s]+so\\b"
+      ],
+      "contextPatterns": [
+        "\\b(?:deflect|divert)\\s+(?:attention|criticism)\\b",
+        "\\b(?:hypocrisy|double\\s+standard)\\s+(?:accusation|charge)\\b",
+        "\\b(?:change|shift)\\s+the\\s+(?:subject|topic)\\b",
+        "\\bavoid\\s+(?:addressing|discussing)\\s+(?:substance|merit)\\b"
+      ],
+      "severity": "low",
+      "severityScore": 6,
+      "confidenceWeight": 0.4,
+      "examples": [
+        "But you did the same thing when you were in office!",
+        "What about when your party supported that policy?",
+        "That's rich coming from you - look at your record!"
+      ]
+    }
+  ],
+  "metadata": {
+    "totalFallacies": 20,
+    "averagePatternsPerFallacy": 6,
+    "severityDistribution": {
+      "critical": 1,
+      "high": 7,
+      "medium": 9,
+      "low": 3
+    },
+    "detectionMethods": [
+      "regex_patterns",
+      "context_analysis",
+      "confidence_scoring",
+      "severity_weighting",
+      "linguistic_red_flags"
+    ],
+    "researchBased": true,
+    "updateHistory": [
+      {
+        "version": "1.0.0",
+        "date": "2026-01-20",
+        "changes": "Initial fallacy library with basic patterns"
+      },
+      {
+        "version": "2.0.0",
+        "date": "2026-01-24",
+        "changes": "Expanded patterns, added context analysis, severity classification"
+      },
+      {
+        "version": "3.0.0",
+        "date": "2026-01-24",
+        "changes": "Research-enhanced with Professor of Logic analysis: 20 fallacies, sophisticated patterns, severity scores 1-10"
+      }
+    ]
+  }
+}

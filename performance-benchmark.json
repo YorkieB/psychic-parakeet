@@ -1,0 +1,87 @@
+{
+  "timestamp": "2026-02-01T19:24:15.688Z",
+  "config": {
+    "iterations": 100,
+    "concurrent": 10
+  },
+  "results": [
+    {
+      "endpoint": "Health Check",
+      "method": "GET",
+      "iterations": 100,
+      "avgResponseTime": null,
+      "minResponseTime": null,
+      "maxResponseTime": null,
+      "p50": 0,
+      "p95": 0,
+      "p99": 0,
+      "successRate": 0,
+      "requestsPerSecond": 1298.7012987012988
+    },
+    {
+      "endpoint": "Readiness Check",
+      "method": "GET",
+      "iterations": 100,
+      "avgResponseTime": null,
+      "minResponseTime": null,
+      "maxResponseTime": null,
+      "p50": 0,
+      "p95": 0,
+      "p99": 0,
+      "successRate": 0,
+      "requestsPerSecond": 2272.727272727273
+    },
+    {
+      "endpoint": "List Agents",
+      "method": "GET",
+      "iterations": 100,
+      "avgResponseTime": null,
+      "minResponseTime": null,
+      "maxResponseTime": null,
+      "p50": 0,
+      "p95": 0,
+      "p99": 0,
+      "successRate": 0,
+      "requestsPerSecond": 2439.0243902439024
+    },
+    {
+      "endpoint": "Get Agent",
+      "method": "GET",
+      "iterations": 100,
+      "avgResponseTime": null,
+      "minResponseTime": null,
+      "maxResponseTime": null,
+      "p50": 0,
+      "p95": 0,
+      "p99": 0,
+      "successRate": 0,
+      "requestsPerSecond": 2173.913043478261
+    },
+    {
+      "endpoint": "System Info",
+      "method": "GET",
+      "iterations": 100,
+      "avgResponseTime": null,
+      "minResponseTime": null,
+      "maxResponseTime": null,
+      "p50": 0,
+      "p95": 0,
+      "p99": 0,
+      "successRate": 0,
+      "requestsPerSecond": 2272.727272727273
+    },
+    {
+      "endpoint": "System Stats",
+      "method": "GET",
+      "iterations": 100,
+      "avgResponseTime": null,
+      "minResponseTime": null,
+      "maxResponseTime": null,
+      "p50": 0,
+      "p95": 0,
+      "p99": 0,
+      "successRate": 0,
+      "requestsPerSecond": 2325.5813953488373
+    }
+  ]
+}

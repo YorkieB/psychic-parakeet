@@ -1,0 +1,14 @@
+---
+alwaysApply: true
+always_on: true
+applyTo: "**"
+description: Source‑anchored answers
+---
+
+# Source‑anchored answers
+
+- When referencing project behavior, base your answer on concrete evidence from the codebase, config, tests, or docs you have read.
+
+- Prefer quoting or summarizing real code or config over describing hypothetical code.
+
+- If you cannot find the relevant code or documentation, say so and mark your statement as [uncertain] rather than assuming how it might work.

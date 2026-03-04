@@ -1,0 +1,375 @@
+﻿<!DOCTYPE html>
+# [NRS-1301] <html lang="en"><!-- [NRS-1301] -->
+	<head><!-- [NRS-1301] -->
+		<meta charset="UTF-8"><!-- [NRS-1301] -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"><!-- [NRS-1301] -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- [NRS-1301] -->
+		<title>Light Browser</title><!-- [NRS-1301] -->
+		<link rel="stylesheet" href="style.css"><!-- [NRS-1301] -->
+	</head><!-- [NRS-1301] -->
+	<body class="sidebar-hidden"><!-- [NRS-1301] -->
+		<div id="menu-bar"><!-- [NRS-1301] -->
+			<div class="menu-item"><!-- [NRS-1301] -->
+				<button class="menu-label">File</button><!-- [NRS-1301] -->
+				<div class="menu-dropdown"><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="new-tab">New Tab</div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="new-window">New Window</div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="new-incognito">
+						New Incognito Tab
+					</div><!-- [NRS-1301] -->
+					<div class="menu-separator"></div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="close-tab">Close Tab</div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="close-window">Close Window</div><!-- [NRS-1301] -->
+					<div class="menu-separator"></div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="exit-app">Exit</div><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+			</div><!-- [NRS-1301] -->
+			<div class="menu-item"><!-- [NRS-1301] -->
+				<button class="menu-label">Edit</button><!-- [NRS-1301] -->
+				<div class="menu-dropdown"><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="undo">Undo</div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="redo">Redo</div><!-- [NRS-1301] -->
+					<div class="menu-separator"></div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="cut">Cut</div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="copy">Copy</div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="paste">Paste</div><!-- [NRS-1301] -->
+					<div class="menu-separator"></div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="find">Find in Page</div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="settings">Settings</div><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+			</div><!-- [NRS-1301] -->
+			<div class="menu-item"><!-- [NRS-1301] -->
+				<button class="menu-label">View</button><!-- [NRS-1301] -->
+				<div class="menu-dropdown"><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="reload">Reload</div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="full-screen">Full Screen</div><!-- [NRS-1301] -->
+					<div class="menu-separator"></div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="zoom-in">Zoom In</div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="zoom-out">Zoom Out</div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="zoom-reset">Reset Zoom</div><!-- [NRS-1301] -->
+					<div class="menu-separator"></div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="toggle-sidebar">
+						Toggle Sidebar
+					</div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="devtools">Developer Tools</div><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+			</div><!-- [NRS-1301] -->
+			<div class="menu-item"><!-- [NRS-1301] -->
+				<button class="menu-label">History</button><!-- [NRS-1301] -->
+				<div class="menu-dropdown"><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="go-back">Back</div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="go-forward">Forward</div><!-- [NRS-1301] -->
+					<div class="menu-separator"></div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="clear-history">
+						Clear History
+					</div><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+			</div><!-- [NRS-1301] -->
+			<div class="menu-item"><!-- [NRS-1301] -->
+				<button class="menu-label">Bookmarks</button><!-- [NRS-1301] -->
+				<div class="menu-dropdown"><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="bookmark-page">
+						Bookmark This Page
+					</div><!-- [NRS-1301] -->
+					<div class="menu-separator"></div><!-- [NRS-1301] -->
+					<div id="bookmarks-menu-list"></div><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+			</div><!-- [NRS-1301] -->
+			<div class="menu-item"><!-- [NRS-1301] -->
+				<button class="menu-label">Help</button><!-- [NRS-1301] -->
+				<div class="menu-dropdown"><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="about">About Light Browser</div><!-- [NRS-1301] -->
+					<div class="menu-option" data-action="report-issue">Report Issue</div><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+			</div><!-- [NRS-1301] -->
+		</div><!-- [NRS-1301] -->
+		<div id="toolbar"><!-- [NRS-1301] -->
+			<div class="left"><!-- [NRS-1301] -->
+				<button id="btn-back" title="Back">⟵</button><!-- [NRS-1301] -->
+				<button id="btn-forward" title="Forward">⟶</button><!-- [NRS-1301] -->
+				<button id="btn-reload" title="Reload">⟳</button><!-- [NRS-1301] -->
+				<button id="btn-new-window" title="New Window">🗔</button><!-- [NRS-1301] -->
+				<button id="btn-new-incognito" title="New Incognito Tab">🕶</button><!-- [NRS-1301] -->
+			</div><!-- [NRS-1301] -->
+			<div class="omnibox-container"><!-- [NRS-1301] -->
+				<select id="search-engine-selector" class="search-engine-selector"><!-- [NRS-1301] -->
+					<option value="bing">Bing</option><!-- [NRS-1301] -->
+					<option value="google">Google</option><!-- [NRS-1301] -->
+					<option value="duckduckgo">DuckDuckGo</option><!-- [NRS-1301] -->
+				</select><!-- [NRS-1301] -->
+				<span id="lock-icon" class="lock-icon" aria-hidden="true">🔒</span><!-- [NRS-1301] -->
+				<input id="omnibox" type="text" placeholder="Search or enter address"><!-- [NRS-1301] -->
+				<button id="btn-bookmark" class="bookmark" title="Bookmark">★</button><!-- [NRS-1301] -->
+				<div id="omnibox-suggestions" class="omnibox-suggestions"></div><!-- [NRS-1301] -->
+			</div><!-- [NRS-1301] -->
+			<div class="right"><!-- [NRS-1301] -->
+				<button id="btn-tab-group-a" title="Add to Group A">A</button><!-- [NRS-1301] -->
+				<button id="btn-tab-group-b" title="Add to Group B">B</button><!-- [NRS-1301] -->
+				<button id="btn-split-view" title="Toggle Split View">⇆</button><!-- [NRS-1301] -->
+				<button id="btn-toggle-sidebar" title="Toggle Sidebar">☰</button><!-- [NRS-1301] -->
+				<button id="btn-devtools" title="Toggle DevTools">🛠</button><!-- [NRS-1301] -->
+				<button id="btn-devtools-auto" title="Toggle auto-open DevTools">
+					Auto DT
+				</button><!-- [NRS-1301] -->
+				<button id="btn-jarvis" title="Toggle Jarvis Assistant">🤖</button><!-- [NRS-1301] -->
+				<button id="btn-voice" title="Voice Control - Click to speak">🎤</button><!-- [NRS-1301] -->
+				<button id="btn-settings" title="Settings">⚙</button><!-- [NRS-1301] -->
+				<button id="btn-new-tab" title="New Tab">＋</button><!-- [NRS-1301] -->
+			</div><!-- [NRS-1301] -->
+		</div><!-- [NRS-1301] -->
+		<!-- Addon Bar (Extensions Icon) -->
+		<!-- [NRS-1301] -->
+		<div id="addon-bar"><!-- [NRS-1301] -->
+			<div class="addon-left"><!-- [NRS-1301] -->
+				<button id="btn-extensions-bar" title="Extensions">🧩 Extensions</button><!-- [NRS-1301] -->
+				<button id="btn-pin-addon" title="Pin/Unpin add-on bar">📌</button><!-- [NRS-1301] -->
+				<span id="extensions-count" class="extensions-count" title="Enabled extensions"
+					>0 enabled</span
+				><!-- [NRS-1301] -->
+			</div><!-- [NRS-1301] -->
+			<div class="addon-right"></div><!-- [NRS-1301] -->
+		</div><!-- [NRS-1301] -->
+		<div id="tabs"></div><!-- [NRS-1301] -->
+		<!-- Loading Progress Bar -->
+		<!-- [NRS-1301] -->
+		<div id="loading-progress" class="loading-progress"></div><!-- [NRS-1301] -->
+		<!-- Status Bar -->
+		<!-- [NRS-1301] -->
+		<div id="status-bar" class="status-bar"><!-- [NRS-1301] -->
+			<span id="status-text" class="status-text"></span><!-- [NRS-1301] -->
+			<span id="status-secure" class="status-secure"></span><!-- [NRS-1301] -->
+			<span id="status-loading" class="status-loading"></span><!-- [NRS-1301] -->
+		</div><!-- [NRS-1301] -->
+		<div id="tab-context-menu" class="context-menu"><!-- [NRS-1301] -->
+			<div class="context-option" data-action="reload-tab">Reload Tab</div><!-- [NRS-1301] -->
+			<div class="context-option" data-action="duplicate-tab">Duplicate Tab</div><!-- [NRS-1301] -->
+			<div class="context-separator"></div><!-- [NRS-1301] -->
+			<div class="context-option" data-action="pin-tab">📌 Pin Tab</div><!-- [NRS-1301] -->
+			<div class="context-option" data-action="mute-tab">🔇 Mute Tab</div><!-- [NRS-1301] -->
+			<div class="context-separator"></div><!-- [NRS-1301] -->
+			<div class="context-option" data-action="close-tab-context">Close Tab</div><!-- [NRS-1301] -->
+			<div class="context-option" data-action="close-other-tabs">
+				Close Other Tabs
+			</div><!-- [NRS-1301] -->
+		</div><!-- [NRS-1301] -->
+		<div id="webview-context-menu" class="context-menu"><!-- [NRS-1301] -->
+			<div class="context-option" data-action="go-back-page">Back</div><!-- [NRS-1301] -->
+			<div class="context-option" data-action="go-forward-page">Forward</div><!-- [NRS-1301] -->
+			<div class="context-option" data-action="reload-page">Reload</div><!-- [NRS-1301] -->
+			<div class="context-separator"></div><!-- [NRS-1301] -->
+			<div class="context-option" data-action="view-source">
+				View Page Source
+			</div><!-- [NRS-1301] -->
+			<div class="context-option" data-action="open-devtools-page">
+				Inspect Element
+			</div><!-- [NRS-1301] -->
+			<div class="context-separator"></div><!-- [NRS-1301] -->
+			<div class="context-option" data-action="save-page">Save Page As</div><!-- [NRS-1301] -->
+			<div class="context-option" data-action="print-page">Print</div><!-- [NRS-1301] -->
+		</div><!-- [NRS-1301] -->
+		<div id="find-bar" class="find-bar"><!-- [NRS-1301] -->
+			<input
+				id="find-input"
+				type="text"
+				placeholder="Find in page..."
+				tabindex="0"
+			><!-- [NRS-1301] -->
+			<span id="find-counter" class="find-counter">0 of 0</span><!-- [NRS-1301] -->
+			<button id="find-prev" class="find-nav" title="Previous match">↑</button><!-- [NRS-1301] -->
+			<button id="find-next" class="find-nav" title="Next match">↓</button><!-- [NRS-1301] -->
+			<button id="find-close" class="find-close" title="Close find bar (Esc)">
+				✕
+			</button><!-- [NRS-1301] -->
+		</div><!-- [NRS-1301] -->
+		<div id="main"><!-- [NRS-1301] -->
+			<div id="content"></div><!-- [NRS-1301] -->
+			<div id="sidebar"><!-- [NRS-1301] -->
+				<div class="section"><!-- [NRS-1301] -->
+					<h3>Bookmarks</h3><!-- [NRS-1301] -->
+					<ul id="bookmark-list"></ul><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+				<div class="section"><!-- [NRS-1301] -->
+					<h3>History</h3><!-- [NRS-1301] -->
+					<button id="btn-clear-history">Clear</button><!-- [NRS-1301] -->
+					<ul id="history-list"></ul><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+			</div><!-- [NRS-1301] -->
+			<div id="jarvis-bar" class="jarvis-bar"><!-- [NRS-1301] -->
+				<div class="jarvis-header"><!-- [NRS-1301] -->
+					<span class="jarvis-title">🤖 Jarvis Assistant</span><!-- [NRS-1301] -->
+					<button id="btn-close-jarvis" class="jarvis-close" title="Close">
+						✕
+					</button><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+				<div class="jarvis-content"><!-- [NRS-1301] -->
+					<div id="jarvis-messages" class="jarvis-messages"></div><!-- [NRS-1301] -->
+					<div class="jarvis-input-container"><!-- [NRS-1301] -->
+						<input
+							id="jarvis-input"
+							type="text"
+							placeholder="Ask Jarvis anything..."
+							autocomplete="off"
+							tabindex="0"
+						><!-- [NRS-1301] -->
+						<button id="btn-send-jarvis" class="jarvis-send" title="Send" tabindex="0">
+							➤
+						</button><!-- [NRS-1301] -->
+					</div><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+			</div><!-- [NRS-1301] -->
+		</div><!-- [NRS-1301] -->
+		<div id="jarvis-swirl-overlay" class="jarvis-swirl-overlay"><!-- [NRS-1301] -->
+			<div class="jarvis-swirl"></div><!-- [NRS-1301] -->
+		</div><!-- [NRS-1301] -->
+		<div id="settings-modal" class="modal"><!-- [NRS-1301] -->
+			<div class="modal-content"><!-- [NRS-1301] -->
+				<h2>Settings</h2><!-- [NRS-1301] -->
+				<button id="btn-set-default-browser" class="setting-btn">
+					Set as Default Browser
+				</button><!-- [NRS-1301] -->
+				<p id="default-browser-status"></p><!-- [NRS-1301] -->
+				<div class="settings-section"><!-- [NRS-1301] -->
+					<h3>Privacy &amp; Site Controls</h3><!-- [NRS-1301] -->
+					<div class="settings-row">
+						<span id="privacy-site-label">Site: —</span>
+					</div><!-- [NRS-1301] -->
+					<label class="settings-row toggle-row"> <!-- [NRS-1301] -->
+						<input type="checkbox" id="toggle-site-notifications"><!-- [NRS-1301] -->
+						<span>Allow notifications on this site</span><!-- [NRS-1301] -->
+					</label><!-- [NRS-1301] -->
+					<div class="settings-row gap"><!-- [NRS-1301] -->
+						<button id="btn-clear-site-data" class="setting-btn">
+							Clear this site&apos;s data
+						</button><!-- [NRS-1301] -->
+						<button id="btn-clear-all-data" class="setting-btn">
+							Clear all browsing data
+						</button><!-- [NRS-1301] -->
+					</div><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+				<div class="settings-section"><!-- [NRS-1301] -->
+					<h3>Advanced Privacy</h3><!-- [NRS-1301] -->
+					<label class="settings-row toggle-row"> <!-- [NRS-1301] -->
+						<input type="checkbox" id="toggle-auto-clear"><!-- [NRS-1301] -->
+						<span>Auto-clear browsing data on close</span><!-- [NRS-1301] -->
+					</label><!-- [NRS-1301] -->
+					<label class="settings-row toggle-row"> <!-- [NRS-1301] -->
+						<input type="checkbox" id="toggle-block-third-party-cookies"><!-- [NRS-1301] -->
+						<span>Block third-party cookies</span><!-- [NRS-1301] -->
+					</label><!-- [NRS-1301] -->
+					<label class="settings-row toggle-row"> <!-- [NRS-1301] -->
+						<input type="checkbox" id="toggle-do-not-track"><!-- [NRS-1301] -->
+						<span>Send "Do Not Track" request</span><!-- [NRS-1301] -->
+					</label><!-- [NRS-1301] -->
+					<label class="settings-row toggle-row"> <!-- [NRS-1301] -->
+						<input type="checkbox" id="toggle-tracking-protection"><!-- [NRS-1301] -->
+						<span>Enable tracking protection</span><!-- [NRS-1301] -->
+					</label><!-- [NRS-1301] -->
+					<div class="settings-row"><!-- [NRS-1301] -->
+						<button id="btn-view-cookies" class="setting-btn">
+							View &amp; Manage Cookies
+						</button><!-- [NRS-1301] -->
+					</div><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+				<div class="settings-section"><!-- [NRS-1301] -->
+					<h3>Extensions</h3><!-- [NRS-1301] -->
+					<div class="settings-row gap"><!-- [NRS-1301] -->
+						<button id="btn-open-extensions" class="setting-btn">
+							Manage Extensions
+						</button><!-- [NRS-1301] -->
+						<button id="btn-install-sample-ext" class="setting-btn">
+							Install Sample Extensions
+						</button><!-- [NRS-1301] -->
+					</div><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+				<button id="btn-close-settings" class="modal-close">Close</button><!-- [NRS-1301] -->
+			</div><!-- [NRS-1301] -->
+		</div><!-- [NRS-1301] -->
+		<!-- Cookie Manager Modal -->
+		<!-- [NRS-1301] -->
+		<div id="cookie-modal" class="modal"><!-- [NRS-1301] -->
+			<div class="modal-content"><!-- [NRS-1301] -->
+				<h2>Cookie Manager</h2><!-- [NRS-1301] -->
+				<div id="cookie-list" class="cookie-list"></div><!-- [NRS-1301] -->
+				<div class="modal-actions"><!-- [NRS-1301] -->
+					<button id="btn-delete-selected-cookies" class="setting-btn">
+						Delete Selected
+					</button><!-- [NRS-1301] -->
+					<button id="btn-delete-all-cookies" class="setting-btn">
+						Delete All Cookies
+					</button><!-- [NRS-1301] -->
+					<button id="btn-close-cookies" class="modal-close">Close</button><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+			</div><!-- [NRS-1301] -->
+		</div><!-- [NRS-1301] -->
+		<!-- Extensions Manager Modal -->
+		<!-- [NRS-1301] -->
+		<div id="extensions-modal" class="modal"><!-- [NRS-1301] -->
+			<div class="modal-content"><!-- [NRS-1301] -->
+				<h2>Extensions</h2><!-- [NRS-1301] -->
+				<div id="extensions-list" class="extensions-list"></div><!-- [NRS-1301] -->
+				<div class="modal-actions"><!-- [NRS-1301] -->
+					<button id="btn-create-extension" class="setting-btn">
+						Create Extension
+					</button><!-- [NRS-1301] -->
+					<button id="btn-load-unpacked" class="setting-btn">
+						Load Unpacked
+					</button><!-- [NRS-1301] -->
+					<button id="btn-import-packed" class="setting-btn">
+						Import Packed
+					</button><!-- [NRS-1301] -->
+					<button id="btn-export-packed" class="setting-btn">Export All</button><!-- [NRS-1301] -->
+					<button id="btn-close-extensions" class="modal-close">Close</button><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+			</div><!-- [NRS-1301] -->
+		</div><!-- [NRS-1301] -->
+		<!-- Hidden file inputs for import --> <!-- [NRS-1301] -->
+		<input
+			id="input-unpacked"
+			type="file"
+			webkitdirectory
+			multiple
+			style="display:none"
+		><!-- [NRS-1301] -->
+		<input id="input-packed" type="file" accept=".json" style="display:none"><!-- [NRS-1301] -->
+		<!-- Create/Edit Extension Modal -->
+		<!-- [NRS-1301] -->
+		<div id="extension-editor-modal" class="modal"><!-- [NRS-1301] -->
+			<div class="modal-content"><!-- [NRS-1301] -->
+				<h2 id="extension-editor-title">Create Extension</h2><!-- [NRS-1301] -->
+				<div class="editor-row"><!-- [NRS-1301] -->
+					<label for="ext-name">Name</label><!-- [NRS-1301] -->
+					<input id="ext-name" type="text" placeholder="My Extension"><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+				<div class="editor-row"><!-- [NRS-1301] -->
+					<label for="ext-matches">Match Patterns</label><!-- [NRS-1301] -->
+					<input
+						id="ext-matches"
+						type="text"
+						placeholder="e.g. *://*.example.com/*, https://*.site.com/*"
+					><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+				<div class="editor-row"><!-- [NRS-1301] -->
+					<label for="ext-css">CSS</label><!-- [NRS-1301] -->
+					<textarea
+						id="ext-css"
+						rows="6"
+						placeholder="/* Optional CSS */"
+					></textarea><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+				<div class="editor-row"><!-- [NRS-1301] -->
+					<label for="ext-js">JavaScript</label><!-- [NRS-1301] -->
+					<textarea id="ext-js" rows="8" placeholder="// Optional JS"></textarea><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+				<div class="modal-actions"><!-- [NRS-1301] -->
+					<button id="btn-save-extension" class="setting-btn">
+						Save Extension
+					</button><!-- [NRS-1301] -->
+					<button id="btn-cancel-extension" class="modal-close">Cancel</button><!-- [NRS-1301] -->
+				</div><!-- [NRS-1301] -->
+			</div><!-- [NRS-1301] -->
+		</div><!-- [NRS-1301] -->
+		<script src="jarvis-agent-panel.js"></script><!-- [NRS-1301] -->
+		<script src="renderer.js"></script><!-- [NRS-1301] -->
+	</body><!-- [NRS-1301] -->
+</html>
+<!-- [NRS-1301] -->

@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-02-01T19:25:25.734Z",
+  "results": [
+    {
+      "name": "Response Format Consistency",
+      "version": "v4.0",
+      "passed": false,
+      "details": ""
+    },
+    {
+      "name": "Core Endpoints Available",
+      "version": "v4.0",
+      "passed": false,
+      "details": "Endpoint /health not available"
+    },
+    {
+      "name": "Field Naming Consistency",
+      "version": "v4.0",
+      "passed": false,
+      "details": ""
+    },
+    {
+      "name": "HTTP Status Code Consistency",
+      "version": "v4.0",
+      "passed": false,
+      "details": "/health returned undefined, expected 200"
+    },
+    {
+      "name": "Authentication Method Compatibility",
+      "version": "v4.0",
+      "passed": false,
+      "details": ""
+    },
+    {
+      "name": "Error Format Consistency",
+      "version": "v4.0",
+      "passed": false,
+      "details": "Cannot read properties of undefined (reading 'hasOwnProperty')"
+    }
+  ]
+}

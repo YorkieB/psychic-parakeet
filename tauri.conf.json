@@ -1,0 +1,49 @@
+{
+  "productName": "Jarvis Orchestrator",
+  "version": "1.0.0",
+  "identifier": "com.jarvis.orchestrator",
+  "build": {
+    "beforeDevCommand": "npm run --prefix dashboard dev",
+    "beforeBuildCommand": "npm run --prefix dashboard build"
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all"
+  },
+  "tauri": {
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.jarvis.orchestrator",
+      "windows": {
+        "certificateThumbprint": null,
+        "digestAlgorithm": "sha256",
+        "timestampUrl": null
+      },
+      "macOS": {
+        "frameworks": [],
+        "minimumSystemVersion": ""
+      },
+      "linux": {
+        "deb": {
+          "depends": []
+        },
+        "appimage": {
+          "bundleMediaFramework": false
+        }
+      }
+    },
+    "security": {
+      "csp": null
+    },
+    "windows": [
+      {
+        "title": "Jarvis Orchestrator",
+        "width": 1200,
+        "height": 800,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ]
+  }
+}

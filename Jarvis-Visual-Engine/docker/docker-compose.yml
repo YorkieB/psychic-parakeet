@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  vision-engine:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: jarvis-vision
+    restart: unless-stopped
+    environment:
+      - ENVIRONMENT=production
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - API_KEY=${API_KEY}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=vision_engine
+      - DB_USER=vision
+      - DB_PASSWORD=${DB_PASSWORD}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CAMERA_IP=${CAMERA_IP}
+      - CAMERA_PORT=${CAMERA_PORT}
+      - CAMERA_USERNAME=${CAMERA_USERNAME}
+      - CAMERA_PASSWORD=${CAMERA_PASSWORD}
+    volumes:
+      - ../data:/app/data
+      - ../logs:/app/logs
+      - ../config:/app/config
+    ports:
+      - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - vision-network
+
+  postgres:
+    image: timescale/timescaledb:latest-pg14-oss
+    container_name: jarvis-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=vision
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=vision_engine
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vision"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - vision-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: jarvis-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - vision-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: jarvis-pgadmin
+    restart: unless-stopped
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@localhost
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD:-admin}
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - vision-network
+
+volumes:
+  postgres-data:
+  redis-data:
+
+networks:
+  vision-network:
+    driver: bridge

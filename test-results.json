@@ -1,0 +1,3172 @@
+{
+  "stats": {
+    "total": 395,
+    "passed": 395,
+    "failed": 0,
+    "skipped": 0,
+    "duration": 367
+  },
+  "results": [
+    {
+      "name": "Basic health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 37
+    },
+    {
+      "name": "Readiness check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 3
+    },
+    {
+      "name": "Liveness probe",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Readiness probe",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Health metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Dependencies health",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 2
+    },
+    {
+      "name": "Detailed health",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "System status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Ping endpoint",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Version info",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Register new user",
+      "passed": true,
+      "expected": 201,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "User login",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get current user",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Check authentication",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "List sessions",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Auth statistics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Change password",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Reset password request",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Verify email",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Delete account",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Re-register for remaining tests",
+      "passed": true,
+      "expected": 201,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Re-login for remaining tests",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "List all agents",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "List agents with pagination",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "List online agents",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get specific agent",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get agent health",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Get agent metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get agent logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get agent config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Execute agent action",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Update agent config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Legacy agent status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "System capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Chat endpoint",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Agent summary",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Agent list",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "System information",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Prometheus metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "System statistics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Feature flags",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Environment info",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "System config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "System logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Update system config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Filtered logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "System status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Execute batch operations",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get batch status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get batch history",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Cancel batch",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Delete batch",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Security agent health",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Scan input for threats",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Check tool access",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get security events",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get security events (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get user threat level",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Security statistics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Stats summary",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Realtime stats",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Security trends",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Export stats",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get user security profile",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "List all users",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Block user",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Unblock user",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Delete user profile",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get rate limits",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get user rate limits",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Get specific rate limit",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Get rate limit config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Update rate limit config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Reset rate limits",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get threat patterns",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Add threat pattern",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get redaction log",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "List all agent health",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get specific agent health",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get agent health metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get agent health logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get agent health config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get agent status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Get agent health history",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Trigger health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Agent health summary",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "List agent health",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "List unhealthy agents",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "System health",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "System uptime",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "System resources",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "System alerts",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Create system alert",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Health reports",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "System health status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "System dependencies",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "System performance",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Live metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Latest metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Metrics history",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Metrics summary",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Export metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Agent metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "List incidents",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Create incident",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Health status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "List online agents health",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Metrics history (24h)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Critical alerts only",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Paginated incidents",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Export metrics as JSON",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Health reports with time range",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Analytics overview",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Agent analytics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Agent analytics (7 days)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Specific agent analytics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Request analytics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Request analytics (paginated)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Error analytics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Agent error analytics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Performance analytics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Usage analytics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "User analytics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Security analytics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Export analytics (JSON)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Export analytics (CSV)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Analytics reports",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Real-time analytics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Analytics trends",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Period comparison",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Analytics dashboard",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "System health score",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "List webhook events",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Create webhook",
+      "passed": true,
+      "expected": 201,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "List webhooks",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "List webhooks (paginated)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Dialogue - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Dialogue - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Dialogue - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Dialogue - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Dialogue - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Dialogue - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Dialogue - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Web - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Web - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Web - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Web - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Web - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Web - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Web - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Knowledge - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Knowledge - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Knowledge - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Knowledge - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Knowledge - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Knowledge - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Knowledge - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Finance - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Finance - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Finance - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Finance - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Finance - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Finance - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Finance - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Calendar - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Calendar - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Calendar - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Calendar - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Calendar - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Calendar - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Calendar - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Email - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Email - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Email - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Email - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Email - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Email - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Email - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Code - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Code - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Code - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Code - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Code - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Code - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Code - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Voice - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Voice - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Voice - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Voice - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Voice - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 5
+    },
+    {
+      "name": "Voice - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Voice - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Music - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Music - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Music - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Music - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Music - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Music - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Music - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Image - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Image - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Image - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Image - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Image - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Image - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Image - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Video - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Video - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Video - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Video - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Video - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Video - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Video - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Spotify - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Spotify - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Spotify - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Spotify - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Spotify - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Spotify - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Spotify - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "AppleMusic - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "AppleMusic - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "AppleMusic - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "AppleMusic - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "AppleMusic - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "AppleMusic - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "AppleMusic - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Weather - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Weather - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Weather - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Weather - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Weather - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Weather - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Weather - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "News - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "News - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "News - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "News - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "News - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "News - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "News - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Reminder - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Reminder - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Reminder - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Reminder - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Reminder - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Reminder - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Reminder - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Timer - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Timer - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Timer - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Timer - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Timer - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Timer - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Timer - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Alarm - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Alarm - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Alarm - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Alarm - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Alarm - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Alarm - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Alarm - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Story - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Story - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Story - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Story - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Story - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Story - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Story - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Calculator - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Calculator - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Calculator - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Calculator - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Calculator - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Calculator - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Calculator - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "UnitConverter - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "UnitConverter - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "UnitConverter - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "UnitConverter - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "UnitConverter - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "UnitConverter - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "UnitConverter - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Translation - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Translation - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Translation - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Translation - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Translation - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Translation - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Translation - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Command - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Command - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Command - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Command - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Command - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Command - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Command - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Context - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Context - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Context - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Context - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Context - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Context - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Context - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Memory - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Memory - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Memory - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Memory - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Memory - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Memory - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Memory - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Emotion - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Emotion - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Emotion - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Emotion - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 6
+    },
+    {
+      "name": "Emotion - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Emotion - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Emotion - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "File - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "File - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "File - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "File - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "File - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "File - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "File - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "ComputerControl - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "ComputerControl - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "ComputerControl - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "ComputerControl - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "ComputerControl - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "ComputerControl - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "ComputerControl - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "LLM - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "LLM - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "LLM - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "LLM - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "LLM - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "LLM - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "LLM - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Personality - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Personality - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Personality - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Personality - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Personality - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Personality - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Personality - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Listening - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Listening - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Listening - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Listening - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Listening - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Listening - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Listening - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Speech - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Speech - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Speech - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Speech - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Speech - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Speech - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Speech - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "VoiceCommand - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "VoiceCommand - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "VoiceCommand - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "VoiceCommand - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "VoiceCommand - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "VoiceCommand - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "VoiceCommand - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Reliability - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Reliability - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Reliability - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Reliability - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "Reliability - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Reliability - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "Reliability - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "EmotionsEngine - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "EmotionsEngine - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "EmotionsEngine - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "EmotionsEngine - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "EmotionsEngine - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "EmotionsEngine - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "EmotionsEngine - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "MemorySystem - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "MemorySystem - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "MemorySystem - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "MemorySystem - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "MemorySystem - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "MemorySystem - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "MemorySystem - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "VisualEngine - Health check",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "VisualEngine - Get capabilities",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "VisualEngine - Get status",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    },
+    {
+      "name": "VisualEngine - Get metrics",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "VisualEngine - Get logs",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "VisualEngine - Get logs (limited)",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 1
+    },
+    {
+      "name": "VisualEngine - Get config",
+      "passed": true,
+      "expected": 200,
+      "actual": 0,
+      "error": "",
+      "duration": 0
+    }
+  ],
+  "timestamp": "2026-02-01T19:25:29.826Z"
+}

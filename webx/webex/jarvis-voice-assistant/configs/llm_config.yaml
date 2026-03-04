@@ -1,0 +1,11 @@
+llm:
+  provider: openai
+  model: gpt-4o
+  temperature: 0.7
+  max_tokens: 150
+  top_p: 0.9
+  
+conversation:
+  max_history: 20
+  context_window: 8192
+  system_prompt: "You are Jarvis, an intelligent voice assistant controlling a browser automation system."

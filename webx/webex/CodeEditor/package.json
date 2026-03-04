@@ -1,0 +1,28 @@
+{
+  "name": "custom-code-editor",
+  "version": "1.0.0",
+  "description": "Custom Code Editor with advanced features",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder"
+  },
+  "keywords": [
+    "code-editor",
+    "electron",
+    "ide",
+    "customizable"
+  ],
+  "author": "Custom Developer",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "dependencies": {
+    "monaco-editor": "^0.45.0",
+    "marked": "^11.0.0",
+    "highlight.js": "^11.9.0"
+  }
+}

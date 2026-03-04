@@ -1,0 +1,29 @@
+appId: com.jarvis.desktop
+productName: Jarvis AI Assistant
+directories:
+  output: release
+  buildResources: build
+files:
+  - dist/**/*
+  - package.json
+win:
+  target:
+    - nsis
+  icon: public/icons/icon.ico
+  signingHashAlgorithms: []
+  sign: null
+mac:
+  target:
+    - dmg
+  icon: public/icons/icon.icns
+  category: public.app-category.productivity
+linux:
+  target:
+    - AppImage
+  icon: public/icons/icon.png
+  category: Utility
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true

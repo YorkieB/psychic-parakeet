@@ -1,0 +1,70 @@
+# Artillery load testing configuration for Jarvis API
+# Simulates realistic load patterns
+
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      name: "Warm up"
+    - duration: 120
+      arrivalRate: 10
+      name: "Ramp up load"
+    - duration: 180
+      arrivalRate: 20
+      name: "Sustained load"
+  processor: "./tests/load-test-processor.js"
+  defaults:
+    headers:
+      Content-Type: "application/json"
+
+scenarios:
+  - name: "Health Check Load Test"
+    weight: 30
+    flow:
+      - get:
+          url: "/health"
+      - get:
+          url: "/api/status"
+      - get:
+          url: "/ready"
+
+  - name: "Agent List Load Test"
+    weight: 25
+    flow:
+      - get:
+          url: "/api/agents"
+      - get:
+          url: "/api/agents?page=1&limit=10"
+      - get:
+          url: "/api/agents?status=online"
+
+  - name: "System Metrics Load Test"
+    weight: 20
+    flow:
+      - get:
+          url: "/api/metrics"
+      - get:
+          url: "/api/stats"
+      - get:
+          url: "/health/system"
+
+  - name: "Analytics Load Test"
+    weight: 15
+    flow:
+      - get:
+          url: "/api/analytics/overview"
+      - get:
+          url: "/api/analytics/agents"
+      - get:
+          url: "/api/analytics/performance"
+
+  - name: "Individual Agent Load Test"
+    weight: 10
+    flow:
+      - get:
+          url: "http://localhost:3001/health"
+      - get:
+          url: "http://localhost:3001/api/status"
+      - get:
+          url: "http://localhost:3001/api/metrics"

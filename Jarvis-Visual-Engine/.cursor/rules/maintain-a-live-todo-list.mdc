@@ -1,0 +1,31 @@
+---
+alwaysApply: true
+always_on: true
+trigger: always_on
+applyTo: "**"
+description: Maintain a live TODO list
+---
+
+# Maintain a live TODO list
+
+- For every non‑trivial request, start by creating a TODO list of the steps you plan to take.
+
+- Format it as a checklist and keep it at the top of your response, for example:
+
+- [ ] Understand the requirement
+
+- [ ] Inspect relevant files
+
+- [ ] Implement changes
+
+- [ ] Add/update tests
+
+- [ ] Run tests / build
+
+- [ ] Summarize changes
+
+- As you complete each step, update the checklist in later messages by changing [ ] to [x] and, if helpful, adding a one‑line note per item.
+
+- Do not add work that is not on the TODO list; if you discover new necessary steps, update the list first, then continue.
+
+- Keep the TODO list tightly focused on the current task so you do not wander off into unrelated changes.

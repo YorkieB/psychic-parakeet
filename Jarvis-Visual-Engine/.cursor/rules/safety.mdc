@@ -1,0 +1,113 @@
+---
+alwaysApply: true
+always_on: true
+applyTo: "**"
+description: Safety and “don’t break my repo” rules
+---
+# “don’t break my repo” rules
+
+- Never delete or rewrite large files without first summarizing the planned changes and asking for confirmation.
+
+- Never remove existing tests or documentation unless explicitly instructed.
+
+- For any change touching more than 50 lines, first propose a plan, then wait for approval before editing.
+
+- Do not modify CI/CD config, infrastructure, or deployment files (Dockerfiles, Terraform, GitHub Actions, etc.) unless I explicitly ask you to.
+
+- Do not introduce new third‑party services or SaaS dependencies without confirmation.
+
+- When unsure about requirements or existing behavior, ask clarifying questions instead of guessing.
+
+- Never run destructive shell commands (like dropping databases, deleting directories, or force‑pushing) unless I explicitly request them and confirm.
+
+# Style and consistency rules
+
+- Follow the existing coding style of the file you are editing; do not introduce a new style.
+
+- Use descriptive, meaningful names for variables and functions; avoid foo, bar, test, etc.
+
+- Prefer small, focused functions over large, multi‑purpose ones.
+
+- Keep functions under a reasonable length; if they get too long, suggest refactoring.
+
+- Maintain consistent naming conventions already used in the project (e.g. camelCase for variables, PascalCase for components).
+
+- Group related code logically and keep public APIs at the top of the file when consistent with the project.
+
+# Type safety and language preferences
+
+- Always write new code in TypeScript when working in a TS/JS project, and use strict typing where practical.
+
+- Prefer interfaces and type aliases over any or implicit unknown unless absolutely necessary.
+
+- Do not introduce new JavaScript files into a TypeScript project; use .ts/.tsx only.
+
+- When adding new types, ensure they integrate with existing type definitions and shared interfaces.
+
+# Testing and verification rules
+
+- For any non‑trivial change, add or update tests to cover the new behavior.
+
+- When fixing a bug, first reproduce it in a failing test, then make it pass.
+
+- Prefer small, focused tests over overly broad tests that are hard to understand.
+
+- Do not remove tests unless they are clearly redundant or invalid, and explain why they can be removed.
+
+- After making changes, describe how you would manually verify them (e.g. commands to run, pages to check).
+
+# Documentation and comments
+
+- When adding complex logic, include concise comments explaining the why, not the obvious what.
+
+- Keep documentation in sync with behavior: if you change public APIs, update relevant docs or README sections.
+
+- Avoid long, verbose comments that restate the code; focus on intent and assumptions.
+
+- If you introduce a new pattern, add a short comment or doc snippet showing how it should be used.
+
+# API and architecture rules
+
+- Do not change public API contracts (function signatures, API routes, event schemas) without clearly calling it out.
+
+- When introducing a new public function or endpoint, document its purpose, inputs, outputs, and error cases.
+
+- Prefer composition and small modules over deep inheritance hierarchies or over‑abstracted patterns.
+
+- Keep business logic out of controllers/route handlers when possible; move it into separate services or use‑case modules.
+
+# Performance and reliability rules
+
+- Avoid obvious performance pitfalls (unbounded loops, repeated heavy computations, N+1 queries) and call them out if you see them.
+
+- When adding new database queries, consider indexes and query efficiency; avoid loading more data than necessary.
+
+- Always handle errors and edge cases for I/O operations (network, database, filesystem).
+
+- Add sensible defaults and safe fallbacks instead of letting the app crash unexpectedly.
+
+# UX and product‑behavior rules
+
+- Preserve existing user workflows; do not change visible behavior unless requested or clearly broken.
+
+- When changing UI components, keep accessibility in mind (labels, keyboard navigation, readable contrast).
+
+- Avoid introducing breaking changes to configuration formats or stored data without a migration plan.
+
+“How to talk and work with me” rules
+
+- Before major changes, restate your understanding of the task and wait for confirmation if anything is ambiguous.
+
+- Prefer step‑by‑step workflows: plan → confirm → implement → summarize.
+
+- When you are uncertain, highlight your assumptions explicitly in the response.
+
+- Keep answers concise but complete; avoid unnecessary fluff.
+
+# Cursor‑specific behavior rules
+
+- Always show a brief diff‑style summary of what you changed after edits, focusing on important files and behaviors.
+
+- If a rule conflicts with the current file’s conventions, ask which should win instead of guessing.
+
+- When applying multiple rules, prioritize safety first (do not lose data or break CI) and then style.

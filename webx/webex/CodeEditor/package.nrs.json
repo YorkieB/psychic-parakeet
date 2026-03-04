@@ -1,0 +1,68 @@
+{
+  "name": {
+    "value": "custom-code-editor",
+    "comment": "Project identifier used by npm and tooling [NRS-1601]"
+  },
+  "version": {
+    "value": "1.0.0",
+    "comment": "Semantic version of the editor build [NRS-1601]"
+  },
+  "description": {
+    "value": "Custom Code Editor with advanced features",
+    "comment": "Human-readable summary shown in catalogs and logs [NRS-1601]"
+  },
+  "main": {
+    "value": "main.js",
+    "comment": "Electron entry point for app startup [NRS-1501]"
+  },
+  "scripts": {
+    "start": {
+      "value": "electron .",
+      "comment": "Launch production Electron app [NRS-1602]"
+    },
+    "dev": {
+      "value": "electron . --dev",
+      "comment": "Start app in developer mode with flags [NRS-1602]"
+    },
+    "build": {
+      "value": "electron-builder",
+      "comment": "Package the editor for distribution [NRS-1602]"
+    }
+  },
+  "keywords": {
+    "value": ["code-editor", "electron", "ide", "customizable"],
+    "comment": "Search tags to describe capabilities [NRS-1601]"
+  },
+  "author": {
+    "value": "Custom Developer",
+    "comment": "Package maintainer attribution [NRS-1601]"
+  },
+  "license": {
+    "value": "MIT",
+    "comment": "License identifier for distribution [NRS-1601]"
+  },
+  "devDependencies": {
+    "electron": {
+      "value": "^28.0.0",
+      "comment": "Runtime shell for desktop app [NRS-1501]"
+    },
+    "electron-builder": {
+      "value": "^24.0.0",
+      "comment": "Packaging tool to build installers [NRS-1602]"
+    }
+  },
+  "dependencies": {
+    "monaco-editor": {
+      "value": "^0.45.0",
+      "comment": "In-editor code editing engine [NRS-1503]"
+    },
+    "marked": {
+      "value": "^11.0.0",
+      "comment": "Markdown rendering support [NRS-1503]"
+    },
+    "highlight.js": {
+      "value": "^11.9.0",
+      "comment": "Syntax highlighting for code blocks [NRS-1504]"
+    }
+  }
+}

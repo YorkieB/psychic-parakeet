@@ -1,0 +1,6 @@
+# Flask API Server dependencies
+flask>=2.3.0,<4.0.0
+flask-cors>=4.0.0,<5.0.0
+
+# Core memory system dependencies (if not already installed)
+numpy>=1.21.0,<2.0.0

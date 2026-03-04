@@ -1,0 +1,48 @@
+# Test Configuration
+
+application:
+  name: "Vision Engine Test"
+  version: "1.0.0"
+  debug: true
+  log_level: "DEBUG"
+
+processing:
+  frame_rate: 5  # Very low for testing
+  resolution_strategy:
+    face_recognition: "480p"
+    scene_analysis: "360p"
+    motion_detection: "360p"
+  motion_threshold: 5.0
+  face_confidence_threshold: 0.6
+  smart_triggering: false  # Disable for testing
+
+vision_api:
+  primary: "gpt4o"
+  fallback: "claude"
+  detail_level: "low"  # Lower cost for testing
+  max_retries: 1
+  timeout: 10
+
+cache:
+  ttl: 60  # Short TTL for testing
+  max_size: 100
+  enabled: true
+
+privacy:
+  data_retention_days: 1  # Short retention for testing
+  audit_retention_days: 7
+  encryption_enabled: false  # Disable for faster tests
+  privacy_mode_default: false
+
+intelligence:
+  pattern_learning_enabled: false  # Disable for faster tests
+  context_awareness_enabled: true
+  predictive_analysis_enabled: false
+  anomaly_detection_enabled: false
+
+features:
+  spatial_memory: true
+  appearance_tracking: false  # Disable for faster tests
+  screen_assistance: false
+  visual_guidance: true
+  face_recognition: true
