@@ -108,7 +108,8 @@ export class LLMAgent extends EnhancedBaseAgent {
   }
 
   protected async startServer(): Promise<void> {
-    this.app.use(express.json());
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-call
+    this.app.use((express as any).json());
     this.setupHealthEndpoint();
     this.setupEnhancedRoutes();
 

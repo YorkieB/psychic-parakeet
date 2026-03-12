@@ -49,6 +49,16 @@ export default [
         clearImmediate: "readonly",
         // Node.js namespace
         NodeJS: "readonly",
+        // Node.js 18+ Web APIs
+        fetch: "readonly",
+        URL: "readonly",
+        URLSearchParams: "readonly",
+        AbortController: "readonly",
+        AbortSignal: "readonly",
+        btoa: "readonly",
+        atob: "readonly",
+        // TypeScript types used as values
+        BufferEncoding: "readonly",
       },
     },
     plugins: {
@@ -86,6 +96,14 @@ export default [
       // Node rules
       "node/no-missing-import": "off", // TypeScript handles this
       "node/no-unpublished-import": "warn",
+
+      // Disable base no-redeclare in favour of TypeScript-aware version
+      // (the base rule incorrectly flags TypeScript function overloads)
+      "no-redeclare": "off",
+      "@typescript-eslint/no-redeclare": "error",
+
+      // Allow `while (true)` loops with an explicit break
+      "no-constant-condition": ["error", { checkLoops: false }],
     },
   },
 
