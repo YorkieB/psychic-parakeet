@@ -4,6 +4,8 @@
   It sets up all the agents, connects the database, starts the API server, and coordinates everything while making sure Jarvis is ready to help you with whatever you need.
 */
 import dotenv from 'dotenv';
+import fs from 'node:fs';
+import path from 'node:path';
 import { AlarmAgent } from './agents/alarm-agent';
 import { AppleMusicAgent } from './agents/apple-music-agent';
 import { CalculatorAgent } from './agents/calculator-agent';
@@ -1115,8 +1117,6 @@ async function initializeBackgroundServices(
 
         // Run agent tables migration
         try {
-          const fs = require('node:fs');
-          const path = require('node:path');
           const migrationPath = path.join(
             __dirname,
             '../database/migrations/005_create_agent_tables.sql'

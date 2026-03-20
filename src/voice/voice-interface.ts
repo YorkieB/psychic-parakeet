@@ -63,7 +63,8 @@ export class VoiceInterface extends EventEmitter {
 
       try {
         // Try to use mic library if available
-        const mic = require("mic");
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const mic = require("mic") as (opts: Record<string, string>) => unknown;
 
         this.micInstance = mic({
           rate: "16000",

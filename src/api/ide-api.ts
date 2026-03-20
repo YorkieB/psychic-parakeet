@@ -528,7 +528,7 @@ export function createIDERouter() {
         { role: 'user', content: message },
       ];
 
-      let resp: Response;
+      let resp: Awaited<ReturnType<typeof fetch>>;
 
       // Handle local agents
       if (model === 'local-llm') {

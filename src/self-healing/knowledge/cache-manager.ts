@@ -145,8 +145,9 @@ export class RedisCacheManager implements CacheManager {
     this.defaultTTL = defaultTTLHours * 3600; // Convert to seconds for Redis
 
     try {
-      // Dynamic import
-      const Redis = require("ioredis");
+      // Dynamic import - ioredis is optional; cache silently degrades if unavailable
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const Redis = require("ioredis") as new (url: string, opts?: Record<string, unknown>) => unknown;
       this.redis = new Redis(redisUrl || process.env.REDIS_URL || "redis://localhost:6379", {
         retryStrategy: (times: number) => {
           if (times > 3) {

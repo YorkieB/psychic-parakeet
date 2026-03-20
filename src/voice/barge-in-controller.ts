@@ -34,9 +34,12 @@ export class BargeInController extends EventEmitter {
     try {
       // Dynamically require Cobra if available (optional dependency)
       // If package is not installed, barge-in will be disabled gracefully
-      // Using require() to avoid TypeScript compile-time errors
-      const cobraModule = require("@picovoice/cobra-node");
-      const Cobra = cobraModule.Cobra || cobraModule.default?.Cobra || cobraModule;
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const cobraModule = require("@picovoice/cobra-node") as {
+        Cobra?: new (key: string) => unknown;
+        default?: { Cobra?: new (key: string) => unknown };
+      } & (new (key: string) => unknown);
+      const Cobra = cobraModule.Cobra ?? cobraModule.default?.Cobra ?? cobraModule;
 
       if (Cobra && typeof Cobra === "function") {
         this.cobra = new Cobra(picovoiceKey);

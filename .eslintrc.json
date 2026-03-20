@@ -133,7 +133,10 @@
     "node/no-unsupported-features/es-syntax": "off",
     "node/no-missing-import": "off",
     "node/no-unpublished-import": "off",
-    "node/no-extraneous-import": "error"
+    "node/no-extraneous-import": "error",
+    "no-redeclare": "off",
+    "@typescript-eslint/no-redeclare": "error",
+    "no-constant-condition": ["error", { "checkLoops": false }]
   },
   "settings": {
     "import/resolver": {
@@ -146,6 +149,14 @@
   "env": {
     "node": true,
     "es2022": true
+  },
+  "globals": {
+    "fetch": "readonly",
+    "URL": "readonly",
+    "URLSearchParams": "readonly",
+    "AbortController": "readonly",
+    "AbortSignal": "readonly",
+    "BufferEncoding": "readonly"
   },
   "ignorePatterns": [
     "dist/",

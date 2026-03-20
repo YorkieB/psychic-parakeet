@@ -206,24 +206,24 @@ export class HealthAPI {
   /**
    * Helper: Check database health
    */
-  private async checkDatabaseHealth(): Promise<any> {
+  private async checkDatabaseHealth(): Promise<{ status: string; responseTime: number } | { status: string; error: string }> {
     try {
-      // TODO: Add actual database ping
-      return { status: 'healthy', responseTime: 0 };
-    } catch (error: any) {
-      return { status: 'unhealthy', error: error.message };
+      // TODO: Add actual database ping (e.g., await db.ping())
+      return await Promise.resolve({ status: 'healthy', responseTime: 0 });
+    } catch (error: unknown) {
+      return { status: 'unhealthy', error: (error as Error).message };
     }
   }
 
   /**
    * Helper: Check Redis health
    */
-  private async checkRedisHealth(): Promise<any> {
+  private async checkRedisHealth(): Promise<{ status: string; responseTime: number } | { status: string; error: string }> {
     try {
-      // TODO: Add actual Redis ping
-      return { status: 'healthy', responseTime: 0 };
-    } catch (error: any) {
-      return { status: 'unhealthy', error: error.message };
+      // TODO: Add actual Redis ping (e.g., await redisClient.ping())
+      return await Promise.resolve({ status: 'healthy', responseTime: 0 });
+    } catch (error: unknown) {
+      return { status: 'unhealthy', error: (error as Error).message };
     }
   }
 
