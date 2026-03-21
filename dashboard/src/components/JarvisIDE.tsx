@@ -2650,6 +2650,12 @@ export function JarvisIDE() {
       name: 'GPT-4.1 Nano',
       provider: 'OpenAI',
       tier: 'paid',
+      temperature: 0.3,
+      maxTokens: 16384,
+      category: 'chat',
+    },
+    {
+      id: 'o3-pro',
       name: 'o3 Pro',
       provider: 'OpenAI',
       tier: 'paid',

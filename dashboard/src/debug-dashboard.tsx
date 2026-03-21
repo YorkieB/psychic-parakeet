@@ -763,7 +763,7 @@ export function DebugDashboard() {
           </span>
           {lastPolled && <span>Last: {new Date(lastPolled).toLocaleTimeString()}</span>}
           <button
-            onClick={fetchAgents}
+            onClick={() => fetchAgents()}
             style={{
               background: '#1a2332',
               border: '1px solid #2a3a4a',

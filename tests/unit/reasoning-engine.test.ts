@@ -252,14 +252,14 @@ describe("Simple Reasoning Engine", () => {
     it("should use LLM when available", async () => {
       jest.setTimeout(30000); // 30 second timeout for LLM calls
 
-      if (!process.env.OPENAI_API_KEY) {
-        // Skip test if no API key
-        console.log("Skipping LLM test (no API key)");
+      // Skip test if Vertex AI is not configured
+      if (!process.env.VERTEX_AI_ENDPOINT_URL) {
+        console.log("Skipping LLM test (no VERTEX_AI_ENDPOINT_URL configured)");
         return;
       }
 
-      const { OpenAIClient } = await import("../../src/llm");
-      const llm = new OpenAIClient(silentLogger);
+      const { VertexLLMClient } = await import("../../src/llm");
+      const llm = new VertexLLMClient(silentLogger);
       const engineWithLLM = new SimpleReasoningEngine(orchestrator, silentLogger, llm);
 
       await registry.registerAgent({
