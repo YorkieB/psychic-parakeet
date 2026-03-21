@@ -14,15 +14,19 @@ All agents support you and must follow the rules below.
 
 All governance and workflow documents for this repository are defined in:
 
-`docs/**`
+`.github/docs/**`
 
-Treat `docs/**` as the single source of truth. If any rule, standard,
-workflow, or policy document exists outside `docs/**`, it is legacy
-unless explicitly linked from `docs/**`.
+Treat `.github/docs/**` as the single source of truth. If any rule, standard,
+workflow, or policy document exists outside `.github/docs/**`, it is legacy
+unless explicitly linked from `.github/docs/**`.
 
 When this file refers to documents such as `LAYERING-STANDARDS.md` or
-`WORKFLOW-TEST-ENFORCEMENT.md`, you MUST resolve them from `docs/**`
+`WORKFLOW-TEST-ENFORCEMENT.md`, you MUST resolve them from `.github/docs/**`
 first.
+
+Note: High-level feature documentation, guides, and archived reports live in
+`docs/**` (e.g., `docs/` for user guides, `docs/archive/` for historical
+status reports).
 
 ---
 
@@ -31,13 +35,13 @@ first.
 Enforce strict placement for singleton files:
 
 - Root is reserved for canonical project/config entrypoints and approved
-  wrappers only.
+ wrappers only.
 - Security singleton artifacts must live in `config/security/`.
 - Launcher implementations must live in `scripts/launchers/`; root
-  `.bat`/`.sh` launchers are wrappers only.
+ `.bat`/`.sh` launchers are wrappers only.
 - Test code must live under `tests/**` (or subproject canonical test
-  paths defined in docs/).
-- Audit/cleanup reports must live under `docs/archive/**`.
+ paths defined in .github/docs/).
+- Audit/cleanup reports and status files must live under `docs/archive/**`.
 
 If a singleton appears in the wrong location, classify and relocate it
 to the canonical path.
