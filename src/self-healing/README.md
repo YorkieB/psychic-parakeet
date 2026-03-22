@@ -1,221 +1,163 @@
-# Self-Healing Infrastructure for Jarvis v4
+# Module: Self-Healing
 
-## Overview
+**Location**: `src/self-healing/`  
+**Status**: Stable  
+**Last Updated**: 2026-03-22
 
-This module provides enterprise-grade self-healing capabilities for the Jarvis multi-agent system, including:
-- Individual sensors for all agents
-- Automatic spawning and respawning
-- Health monitoring and diagnostics
-- Crash detection and recovery
-- Lifecycle event tracking
+## Purpose
 
-## Phase 1 Implementation (Completed)
+The Self-Healing module implements automatic error detection, diagnosis, and recovery mechanisms. It monitors system health, identifies anomalies and failures, executes automated repairs, and learns from issues to prevent future occurrences. This enables the system to maintain high availability with minimal manual intervention.
 
-### ✅ Core Components
+## Architecture
 
-1. **Type Definitions** (`types/`)
-   - `agent.types.ts` - Agent state and lifecycle types
-   - `sensor.types.ts` - Sensor metrics and readings
-   - `spawn.types.ts` - Spawn configuration and strategies
+- **Diagnostic Engine** — Identifies root causes of failures
+- **Recovery System** — Executes automated recovery procedures
+- **Health Monitor** — Continuous system health tracking
+- **Anomaly Detector** — ML-based anomaly detection
+- **Learning System** — Captures and learns from incidents
+- **Remediation Executor** — Automated fix execution
 
-2. **Base Agent Sensor** (`sensors/agents/base-agent-sensor.ts`)
-   - Abstract base class for all agent sensors
-   - Implements 6 health checks:
-     - Ping test (responsiveness)
-     - Load test (workload capacity)
-     - Memory check (memory usage)
-     - Response time check (SLA compliance)
-     - Error tracking (failure rate)
-     - Crash detection (unexpected failures)
-   - Calculates health score (0-100)
-   - Maintains metrics history
+## Key Exports
 
-3. **Critical Agent Sensors** (`sensors/agents/`)
-   - `conversation-agent-sensor.ts` - Monitors DialogueAgent
-   - `code-agent-sensor.ts` - Monitors CodeAgent
-   - `context-agent-sensor.ts` - Monitors KnowledgeAgent (context)
-   - `memory-agent-sensor.ts` - Monitors KnowledgeAgent (memory)
-   - `command-agent-sensor.ts` - Monitors WebAgent (routing)
+### Classes
+- `DiagnosticEngine` — Root cause analysis
+- `RecoverySystem` — Automated recovery procedures
+- `HealthMonitor` — System health tracking
+- `AnomalyDetector` — Anomaly detection
+- `LearningSystem` — Incident learning
+- `RemediationExecutor` — Fix execution
 
-4. **Agent Spawner** (`spawner/agent-spawner.ts`)
-   - Spawns agents with timeout protection
-   - Respawns agents on failure
-   - Enforces respawn limits (max restarts per hour)
-   - Supports multiple spawn strategies
+### Types
+- `HealthStatus` — System health metrics
+- `Anomaly` — Detected anomaly
+- `DiagnosisResult` — Root cause analysis result
+- `RecoveryAction` — Remediation action
+- `Incident` — Incident record
 
-5. **Agent Lifecycle Tracker** (`spawner/agent-lifecycle.ts`)
-   - Tracks agent state (spawning, active, idle, error, respawning, killed)
-   - Records lifecycle events to database
-   - Maintains spawn history (spawn count, crash count)
-   - Updates ping timestamps
+### Functions
+- `diagnose(symptoms)` — Diagnose issue from symptoms
+- `recover(diagnosis)` — Execute recovery for diagnosed issue
+- `checkHealth()` — Check overall system health
+- `detectAnomalies()` — Find current anomalies
 
-6. **Agent Pool Manager** (`spawner/agent-pool-manager.ts`)
-   - Manages all agents in the system
-   - Spawns agents on startup (pre-spawn strategy)
-   - Performs health checks every 30 seconds
-   - Auto-respawns unhealthy agents
-   - Provides status and metrics APIs
+## Dependencies
 
-7. **Configuration** (`config/agents.config.ts`)
-   - Defines spawn configurations for all agents
-   - Configures spawn strategies, limits, and dependencies
-   - Sets health check intervals (15s for critical agents)
+### Internal
+- [`database`] — Incident and learning storage
+- [`config`] — Configuration
+- [`services`] — Logging and utilities
+- [`api`] — System endpoints for health checks
 
-8. **Database Migration** (`database/migrations/005_create_agent_tables.sql`)
-   - `agent_states` - Current state of all agents
-   - `agent_lifecycle_events` - Event log for all lifecycle events
-   - `agent_spawn_history` - Spawn and crash history
-   - Updates `sensor_readings` table with agent-specific columns
+### External
+- `ml-lib` — Machine learning for anomaly detection
+- `winston` — Logging
 
-## Usage
+## Usage Examples
 
-### Basic Setup
+### Check System Health
 
 ```typescript
-import { AgentPoolManager, AgentLifecycle } from './self-healing';
-import { DatabaseClient } from './database';
-import { createLogger } from './utils/logger';
-import { AGENT_SPAWN_CONFIG } from './self-healing/config';
+import { HealthMonitor } from '../self-healing';
 
-const logger = createLogger('JarvisSystem');
-const db = new DatabaseClient(logger);
-await db.connect();
+const monitor = new HealthMonitor();
+const health = await monitor.checkHealth();
 
-// Create lifecycle tracker
-const lifecycle = new AgentLifecycle(logger, db);
-
-// Create pool manager
-const poolManager = new AgentPoolManager(logger, lifecycle);
-
-// Register all agent configurations
-for (const config of Object.values(AGENT_SPAWN_CONFIG)) {
-  poolManager.registerConfig(config);
-}
-
-// Register sensors for critical agents
-const conversationSensor = new ConversationAgentSensor(logger, 15000);
-poolManager.registerSensor('ConversationAgent', conversationSensor);
-
-// Spawn all pre-spawn agents
-await poolManager.spawnAll();
+console.log(health.status); // 'healthy', 'degraded', 'critical'
+console.log(health.components); // Status of each component
 ```
 
-### Health Monitoring
-
-The pool manager automatically:
-- Checks health of all agents every 30 seconds
-- Auto-respawns unhealthy agents (if configured)
-- Logs all lifecycle events to database
-- Updates agent state in real-time
-
-### Manual Operations
+### Diagnose an Issue
 
 ```typescript
-// Get agent status
-const status = poolManager.getStatus('ConversationAgent');
+import { DiagnosticEngine } from '../self-healing';
 
-// Get all agent statuses
-const allStatuses = poolManager.getAllStatuses();
+const diagnostic = new DiagnosticEngine();
+const result = await diagnostic.diagnose({
+  symptoms: ['high CPU', 'slow response times'],
+  affectedComponent: 'api-server'
+});
 
-// Manually respawn an agent
-await poolManager.respawn('CodeAgent', 'manual_trigger');
-
-// Kill an agent
-await poolManager.kill('FinanceAgent');
-
-// Get agent instance
-const agent = poolManager.getAgent('ConversationAgent');
+console.log(result.diagnosis); // Root cause
+console.log(result.recommendations); // Suggested fixes
 ```
 
-## Agent Metrics
-
-Each sensor collects the following metrics:
+### Execute Automated Recovery
 
 ```typescript
-interface AgentMetrics {
-  status: 'active' | 'idle' | 'busy' | 'error' | 'offline';
-  uptime: number;                    // Seconds since spawn
-  lastActivity: Date;
-  responseTime: number;              // ms (p95)
-  successRate: number;                // % successful operations
-  errorRate: number;                  // % failed operations
-  memoryUsage: number;                // MB
-  cpuUsage: number;                   // %
-  activeRequests: number;
-  queuedRequests: number;
-  spawnCount: number;                 // How many times respawned
-  crashCount: number;                 // How many crashes
-  lastCrash?: Date;
-  lastRespawn?: Date;
-  isResponsive: boolean;              // Ping test passed
-  isHealthy: boolean;                 // All checks passed
-  healthScore: number;               // 0-100
+import { RecoverySystem } from '../self-healing';
+
+const recovery = new RecoverySystem();
+const success = await recovery.recover({
+  diagnosis: 'memory leak in cache',
+  severity: 'high',
+  component: 'caching-service'
+});
+```
+
+## Configuration
+
+```typescript
+{
+  enabled: boolean;
+  autoRecoveryEnabled: boolean;           // Auto-execute fixes
+  healthCheckInterval: number;            // Health check frequency (ms)
+  anomalyDetectionEnabled: boolean;
+  anomalyThreshold: number;               // Sensitivity (0-1)
+  learningEnabled: boolean;               // Learn from incidents
+  maxRecoveryAttempts: number;            // Retry limit
+  incidentRetentionDays: number;          // How long to keep records
 }
 ```
 
-## Spawn Strategies
+## Testing
 
-- **pre-spawn**: Spawn immediately on server startup (critical agents)
-- **on-demand**: Spawn when first request arrives
-- **lazy-spawn**: Spawn when needed, keep alive
-- **auto-respawn**: Automatically respawn on health check failure
-- **scale-to-zero**: Kill idle agents after timeout
+Run self-healing tests:
+```bash
+npm run test -- src/self-healing/
+```
 
-## Respawn Triggers
+Test coverage includes:
+- Diagnostic accuracy on known issues
+- Recovery success rates
+- Health monitoring correctness
+- Anomaly detection precision/recall
+- Learning system effectiveness
+- Recovery attempt limits
+- Incident logging
 
-- `agent_crash` - Process exit, uncaught exception
-- `health_check_fail` - Agent not responding to pings
-- `performance_degradation` - Response time > threshold
-- `memory_leak` - Memory usage growing unbounded
-- `manual_trigger` - Admin forces respawn
+## Performance Considerations
 
-## Respawn Limits
+- Health checks run in background (non-blocking)
+- Diagnostic runs are expensive; results cached
+- Anomaly detection uses sampling to reduce overhead
+- Recovery actions prioritized by severity
+- Incident storage uses log rotation to manage disk space
 
-- Max restarts per hour (default: 5)
-- Restart delay between respawns (default: 5 seconds)
-- Immediate respawn for critical agents
-- Manual intervention required after limit reached
+## Known Issues
 
-## Database Schema
+- [ ] Diagnostic accuracy low for novel issues (< 60%)
+- [ ] Recovery doesn't handle cascading failures well
+- [ ] Learning system requires manual labeling for now
+- [ ] No multi-system correlation in diagnostics yet
 
-### agent_states
-- `agent_name` (VARCHAR, UNIQUE)
-- `status` (VARCHAR)
-- `pid` (INTEGER)
-- `thread_id` (INTEGER)
-- `spawned_at` (TIMESTAMPTZ)
-- `last_ping` (TIMESTAMPTZ)
-- `metadata` (JSONB)
+## Related Modules
 
-### agent_lifecycle_events
-- `agent_name` (VARCHAR)
-- `event_type` (VARCHAR)
-- `timestamp` (TIMESTAMPTZ)
-- `details` (JSONB)
-- `error_message` (TEXT)
+- [`api`] — Health check endpoints
+- [`database`] — Incident persistence
+- [`services`] — Logging and utilities
+- [`config`] — Configuration
 
-### agent_spawn_history
-- `agent_name` (VARCHAR, UNIQUE)
-- `spawn_count` (INTEGER)
-- `crash_count` (INTEGER)
-- `last_spawn` (TIMESTAMPTZ)
-- `last_crash` (TIMESTAMPTZ)
-- `spawn_duration_ms` (INTEGER)
+## Contributing
 
-## Next Steps (Phase 2 & 3)
+When adding diagnostic or recovery procedures:
+1. Document the issue type it handles
+2. Validate recovery success through testing
+3. Add incident logging for learning
+4. Consider performance impact
+5. Test failure scenarios
 
-- [ ] Create sensors for remaining 24 agents
-- [ ] Implement performance-based respawn (memory leak detection)
-- [ ] Add dashboard API endpoints
-- [ ] Add WebSocket events for real-time updates
-- [ ] Implement diagnostic engine
-- [ ] Implement auto-repair mechanisms
-- [ ] Add learning from repair history
+## Changelog
 
-## Notes
-
-- All agents are monitored via HTTP health endpoints
-- Health checks run every 15-30 seconds depending on agent priority
-- Crash detection uses ping test failures combined with previous health state
-- Respawn limits prevent infinite restart loops
-- All events are logged to database for audit and analysis
+### 2026-03-22
+- Initial module documentation
+- Documented diagnostic, recovery, and learning systems
