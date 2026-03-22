@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-22  
 **Role:** Planning & PA Agent  
-**Status:** Ready for human owner decision and Phase 1 execution  
+**Status:** Ready for human owner decision and Phase 1 execution (revised with per-domain TypeDoc, tsoa, and linting-focused drift prevention)  
 **Branch:** `cursor/documentation-plan-management-67f9`
 
 ---
@@ -74,11 +74,12 @@ Transform the Jarvis codebase from minimal/inconsistent documentation to a **sel
 #### Phase 1.2: Configure TypeDoc
 - **Agent:** Coder – Feature Agent
 - **Deliverable:** `typedoc.json` with:
-  - Entry points: `src/**/*.ts`
+  - Entry points: Explicit per-domain sources (`src/agents/index.ts`, `src/self-healing/index.ts`, etc.)
+  - `entryPointStrategy: "resolve"` for better module resolution
   - Output: `docs/API-REFERENCE/` (git-ignored, CI artifact only)
   - Exclusions: tests, node_modules, temporary files
   - Custom tags: `@agent`, `@domain`, `@critical`
-- **Success:** `npx typedoc` runs without errors locally
+- **Success:** `npx typedoc` runs without errors locally; docs organized by domain
 
 #### Phase 1.3: Add JSDoc to Critical Files
 - **Agent:** Coder – Feature Agent
@@ -86,14 +87,16 @@ Transform the Jarvis codebase from minimal/inconsistent documentation to a **sel
 - **Target:** JSDoc coverage >80% for exported APIs
 - **Focus:** Explain "why" (intent), not just "what" (parameters)
 
-#### Phase 1.4: Generate OpenAPI Specs for 3 Representative Agents
+#### Phase 1.4: Set Up tsoa for OpenAPI Generation
 - **Agent:** Coder – Feature Agent
-- **Agents:** Dialogue, Web, Knowledge (representative HTTP endpoints)
-- **Deliverables:**
-  - `docs/APIs/agents/DIALOGUE-AGENT-API.yaml`
-  - `docs/APIs/agents/WEB-AGENT-API.yaml`
-  - `docs/APIs/agents/KNOWLEDGE-AGENT-API.yaml`
-- **Content:** Endpoints, request/response schemas, authentication, error codes, standardized response envelope
+- **Setup:**
+  - Install tsoa: `npm install --save-dev tsoa`
+  - Create `tsoa.json` configuration
+  - Add npm script: `"docs:openapi": "tsoa spec-and-routes"`
+- **Scope:** 2–3 representative controllers (Dialogue, Web, Knowledge)
+- **Decorators:** Add `@tsoa` annotations (`@Route`, `@Post`, `@Get`, etc.)
+- **Success:** `npm run docs:openapi` generates valid OpenAPI 3.1 spec
+- **Benefit:** Specs auto-generate from code; zero hand-authored YAML drift
 
 #### Phase 1.5: Create First 3 ADRs
 - **Agent:** Coder – Feature Agent
@@ -165,11 +168,12 @@ Transform the Jarvis codebase from minimal/inconsistent documentation to a **sel
 - **Format:** 200–500 words each; includes working code examples
 - **Links:** Reference ADRs and TypeDoc
 
-#### Phase 2.5: Standardize and Expand OpenAPI Specs
+#### Phase 2.5: Expand tsoa OpenAPI Generation to All Controllers
 - **Agent:** Coder – Feature Agent
-- **Expansion:** From Phase 1's 3 to **all HTTP-based agents**
-- **Deliverable:** `docs/APIs/INDEX.md` (listing all agents, endpoints, Swagger UI link)
-- **Publishing:** Options: GitHub Pages, Swagger UI at `/docs/api`, release artifacts
+- **Expansion:** From Phase 1's 2–3 to **all HTTP-based controllers**
+- **Deliverable:** `docs/APIs/README.md` (overview, Swagger UI link, instructions for adding endpoints)
+- **Automation:** tsoa regenerates spec on every build via CI (zero manual effort)
+- **Success:** All controllers have tsoa decorators; spec covers 100% of endpoints
 
 #### Phase 2.6: Add Documentation Validation to CI
 - **Agent:** Enforcement Supervisor
@@ -210,14 +214,16 @@ Transform the Jarvis codebase from minimal/inconsistent documentation to a **sel
 
 **Goal:** Fully automate documentation generation and drift detection; establish governance enforcement as blocking gate.
 
-#### Phase 3.1: Integrate Drift Detection Tool
-- **Agent:** Research Agent – External Knowledge
-- **Task:** Evaluate and recommend drift detection tool:
-  - DeepDocs, FluentDocs, or Autohand
-  - Cost, integration complexity, quality of generated docs
-  - Team workflow compatibility
-- **Integration:** Add tool to CI; parse output; post as PR comment
-- **Tie to Governance:** Link recommendations to governance documentation
+#### Phase 3.1: Establish Drift Prevention with eslint-plugin-jsdoc and dependency-cruiser
+- **Agent:** Coder – Feature Agent
+- **Setup:**
+  - Install and configure `eslint-plugin-jsdoc` (enforces JSDoc completeness on all exports)
+  - Install and configure `dependency-cruiser` (enforces module boundaries and prevents cycles)
+  - Create workflow files: `WORKFLOW-JSDoc-ENFORCEMENT.md` and `WORKFLOW-DEPENDENCY-INTEGRITY.md`
+- **CI Integration:** Both run on every PR; violations fail merge
+- **Benefits:** Open-source, zero-cost, deeply integrated, prevents drift at source (decorators) and architecture
+- **Optional:** External tools (DeepDocs, FluentDocs) evaluated for advanced analysis only
+- **Success:** Both linting tools pass on all PRs; no JSDoc gaps; no architectural violations
 
 #### Phase 3.2: Establish "Documentation as Test" Gate
 - **Agent:** Enforcement Supervisor
@@ -276,15 +282,18 @@ Transform the Jarvis codebase from minimal/inconsistent documentation to a **sel
 - **Recommendation:** Start with Option A; evolve to Option B if needed
 
 #### Phase 3 Checklist (Quarterly Verification)
-- [ ] Drift detection tool is running and preventing documentation rot
+- [ ] eslint-plugin-jsdoc is enforcing JSDoc completeness on all exports
+- [ ] dependency-cruiser is enforcing module boundaries and preventing cycles
+- [ ] Both tools run on every PR and fail merge if violations found
 - [ ] Documentation validation is blocking merges
 - [ ] ADR review process is held quarterly
 - [ ] Docs Guardian is actively enforcing documentation standards
 - [ ] Documentation coverage metrics are collected and reported
 - [ ] Documentation health report is generated each quarter
-- [ ] Team morale regarding documentation is positive (informal feedback)
+- [ ] Team morale regarding documentation tooling is positive (informal feedback)
+- [ ] Optional: External drift detection tools evaluated for advanced use cases
 
-**Phase 3 Owners:** Research Agent – External Knowledge (tool eval), Coder – Feature Agent (metrics, site), Enforcement Supervisor (hard gate), Planning & PA Agent (process), Docs Guardian (enforcement)
+**Phase 3 Owners:** Coder – Feature Agent (eslint-plugin-jsdoc + dependency-cruiser), Enforcement Supervisor (hard gate), Planning & PA Agent (process), Docs Guardian (enforcement)
 
 ---
 
