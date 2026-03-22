@@ -3,13 +3,13 @@
 
   It handles running approved commands while making sure only safe operations are performed and keeping track of command history.
 */
-import { exec } from "node:child_process";
-import { promisify } from "node:util";
-import type { Request, Response } from "express";
-import express from "express";
-import type { Logger } from "winston";
-import type { AgentRequest, AgentResponse } from "../types/agent";
-import { EnhancedBaseAgent } from "./base-agent-enhanced";
+import { exec } from 'node:child_process';
+import { promisify } from 'node:util';
+import type { Request, Response } from 'express';
+import express from 'express';
+import type { Logger } from 'winston';
+import type { AgentRequest, AgentResponse } from '../types/agent';
+import { EnhancedBaseAgent } from './base-agent-enhanced';
 
 const execAsync = promisify(exec);
 
@@ -22,37 +22,44 @@ interface CommandResult {
 }
 
 /**
- * Command Agent - Executes system commands and shell operations.
- * Provides safe command execution with sandboxing and validation.
+ * Executes approved shell commands behind an agent boundary.
+ *
+ * The Command agent exists so Jarvis can expose operational automation while
+ * still centralizing command allow-listing, execution history, and guardrails
+ * around higher-risk shell access.
+ *
+ * @agent CommandAgent
+ * @domain agents.command
+ * @critical
  */
 export class CommandAgent extends EnhancedBaseAgent {
   private commandHistory: CommandResult[] = [];
   private allowedCommands: Set<string>;
 
   constructor(logger: Logger) {
-    super("Command", "1.0.0", parseInt(process.env.COMMAND_AGENT_PORT || "3026", 10), logger);
+    super('Command', '1.0.0', parseInt(process.env.COMMAND_AGENT_PORT || '3026', 10), logger);
     // Whitelist of safe commands
     this.allowedCommands = new Set([
-      "echo",
-      "date",
-      "whoami",
-      "pwd",
-      "ls",
-      "dir",
-      "cat",
-      "type",
-      "node",
-      "npm",
-      "npx",
-      "git",
-      "which",
-      "where",
+      'echo',
+      'date',
+      'whoami',
+      'pwd',
+      'ls',
+      'dir',
+      'cat',
+      'type',
+      'node',
+      'npm',
+      'npx',
+      'git',
+      'which',
+      'where',
     ]);
   }
 
   protected async initialize(): Promise<void> {
-    this.logger.info("✅ Command Agent initialized");
-    this.logger.info("   Allowed commands: " + Array.from(this.allowedCommands).join(", "));
+    this.logger.info('✅ Command Agent initialized');
+    this.logger.info('   Allowed commands: ' + Array.from(this.allowedCommands).join(', '));
   }
 
   protected async startServer(): Promise<void> {
@@ -60,7 +67,7 @@ export class CommandAgent extends EnhancedBaseAgent {
     this.setupHealthEndpoint();
     this.setupEnhancedRoutes();
 
-    this.app.post("/api", async (req: Request, res: Response) => {
+    this.app.post('/api', async (req: Request, res: Response) => {
       const startTime = Date.now();
       const request = req.body as AgentRequest;
 
@@ -76,16 +83,16 @@ export class CommandAgent extends EnhancedBaseAgent {
         let result: unknown;
 
         switch (action) {
-          case "execute":
+          case 'execute':
             result = await this.executeCommand(inputs);
             break;
-          case "execute_safe":
+          case 'execute_safe':
             result = await this.executeSafeCommand(inputs);
             break;
-          case "history":
+          case 'history':
             result = await this.getHistory();
             break;
-          case "list_allowed":
+          case 'list_allowed':
             result = await this.listAllowedCommands();
             break;
           default:
@@ -101,7 +108,7 @@ export class CommandAgent extends EnhancedBaseAgent {
 
         res.json(response);
       } catch (error) {
-        this.logger.error("Error processing command request", {
+        this.logger.error('Error processing command request', {
           error: error instanceof Error ? error.message : String(error),
           requestId: request.id,
         });
@@ -109,7 +116,7 @@ export class CommandAgent extends EnhancedBaseAgent {
         const duration = Date.now() - startTime;
         const errorResponse: AgentResponse = {
           success: false,
-          error: error instanceof Error ? error.message : "Unknown error",
+          error: error instanceof Error ? error.message : 'Unknown error',
           metadata: { duration, retryCount: 0 },
         };
 
@@ -123,23 +130,23 @@ export class CommandAgent extends EnhancedBaseAgent {
           this.logger.info(`Command agent server listening on port ${this.port}`);
           resolve();
         })
-        .on("error", reject);
+        .on('error', reject);
     });
   }
 
   private async executeCommand(inputs: Record<string, unknown>): Promise<CommandResult> {
-    const command = (inputs.command as string) || "";
+    const command = (inputs.command as string) || '';
     const timeout = (inputs.timeout as number) || 30000;
 
     if (!command.trim()) {
-      throw new Error("Command is required");
+      throw new Error('Command is required');
     }
 
     // Security check - only allow whitelisted commands
-    const baseCommand = command.split(" ")[0].toLowerCase();
+    const baseCommand = command.split(' ')[0].toLowerCase();
     if (!this.allowedCommands.has(baseCommand)) {
       throw new Error(
-        `Command not allowed: ${baseCommand}. Use list_allowed to see permitted commands.`,
+        `Command not allowed: ${baseCommand}. Use list_allowed to see permitted commands.`
       );
     }
 
@@ -159,7 +166,7 @@ export class CommandAgent extends EnhancedBaseAgent {
     } catch (error: any) {
       const result: CommandResult = {
         command,
-        stdout: error.stdout?.trim() || "",
+        stdout: error.stdout?.trim() || '',
         stderr: error.stderr?.trim() || error.message,
         exitCode: error.code || 1,
         executedAt: new Date(),
@@ -171,19 +178,19 @@ export class CommandAgent extends EnhancedBaseAgent {
   }
 
   private async executeSafeCommand(inputs: Record<string, unknown>): Promise<object> {
-    const type = (inputs.type as string) || "echo";
-    const args = (inputs.args as string) || "";
+    const type = (inputs.type as string) || 'echo';
+    const args = (inputs.args as string) || '';
 
     // Pre-defined safe command templates
     const safeCommands: Record<string, string> = {
       echo: `echo ${args}`,
-      date: "date",
-      whoami: "whoami",
-      pwd: "pwd",
-      node_version: "node --version",
-      npm_version: "npm --version",
-      git_status: "git status",
-      list_files: process.platform === "win32" ? "dir" : "ls -la",
+      date: 'date',
+      whoami: 'whoami',
+      pwd: 'pwd',
+      node_version: 'node --version',
+      npm_version: 'npm --version',
+      git_status: 'git status',
+      list_files: process.platform === 'win32' ? 'dir' : 'ls -la',
     };
 
     const command = safeCommands[type];
@@ -209,7 +216,7 @@ export class CommandAgent extends EnhancedBaseAgent {
   }
 
   protected getCapabilities(): string[] {
-    return ["execute", "execute_safe", "history", "list_allowed"];
+    return ['execute', 'execute_safe', 'history', 'list_allowed'];
   }
 
   protected getDependencies(): string[] {
@@ -239,13 +246,13 @@ export class CommandAgent extends EnhancedBaseAgent {
 
   protected async updateConfig(config: any): Promise<void> {
     this.config = { ...this.config, ...config };
-    this.logger.info("Configuration updated", { config });
+    this.logger.info('Configuration updated', { config });
   }
 
   protected async restart(): Promise<void> {
-    this.logger.info("Restarting Command agent...");
+    this.logger.info('Restarting Command agent...');
     await this.stop();
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
     await this.start();
   }
 }

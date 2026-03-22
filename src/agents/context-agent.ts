@@ -4,11 +4,11 @@
   It handles storing context, tracking session details, and managing conversation memory while making sure Jarvis remembers what matters to you.
 */
 
-import type { Request, Response } from "express";
-import express from "express";
-import type { Logger } from "winston";
-import type { AgentRequest, AgentResponse } from "../types/agent";
-import { EnhancedBaseAgent } from "./base-agent-enhanced";
+import type { Request, Response } from 'express';
+import express from 'express';
+import type { Logger } from 'winston';
+import type { AgentRequest, AgentResponse } from '../types/agent';
+import { EnhancedBaseAgent } from './base-agent-enhanced';
 
 interface ContextEntry {
   key: string;
@@ -28,19 +28,26 @@ interface ConversationContext {
 }
 
 /**
- * Context Agent - Manages conversation and session context.
- * Provides context storage, retrieval, and lifecycle management.
+ * Maintains short-lived conversational and session-scoped context.
+ *
+ * The Context agent gives Jarvis a structured place to store transient facts,
+ * clean them up over time, and retrieve them consistently across dialogue and
+ * task-oriented flows.
+ *
+ * @agent ContextAgent
+ * @domain agents.memory
+ * @critical
  */
 export class ContextAgent extends EnhancedBaseAgent {
   private contexts: Map<string, ConversationContext> = new Map();
   private globalContext: Map<string, ContextEntry> = new Map();
 
   constructor(logger: Logger) {
-    super("Context", "1.0.0", parseInt(process.env.CONTEXT_AGENT_PORT || "3027", 10), logger);
+    super('Context', '1.0.0', parseInt(process.env.CONTEXT_AGENT_PORT || '3027', 10), logger);
   }
 
   protected async initialize(): Promise<void> {
-    this.logger.info("✅ Context Agent initialized");
+    this.logger.info('✅ Context Agent initialized');
     // Start context cleanup timer
     this.startContextCleanup();
   }
@@ -77,7 +84,7 @@ export class ContextAgent extends EnhancedBaseAgent {
     this.setupHealthEndpoint();
     this.setupEnhancedRoutes();
 
-    this.app.post("/api", async (req: Request, res: Response) => {
+    this.app.post('/api', async (req: Request, res: Response) => {
       const startTime = Date.now();
       const request = req.body as AgentRequest;
 
@@ -93,28 +100,28 @@ export class ContextAgent extends EnhancedBaseAgent {
         let result: unknown;
 
         switch (action) {
-          case "set":
+          case 'set':
             result = await this.setContext(inputs);
             break;
-          case "get":
+          case 'get':
             result = await this.getContext(inputs);
             break;
-          case "delete":
+          case 'delete':
             result = await this.deleteContext(inputs);
             break;
-          case "list":
+          case 'list':
             result = await this.listContext(inputs);
             break;
-          case "clear_session":
+          case 'clear_session':
             result = await this.clearSession(inputs);
             break;
-          case "set_global":
+          case 'set_global':
             result = await this.setGlobalContext(inputs);
             break;
-          case "get_global":
+          case 'get_global':
             result = await this.getGlobalContext(inputs);
             break;
-          case "get_session_info":
+          case 'get_session_info':
             result = await this.getSessionInfo(inputs);
             break;
           default:
@@ -130,7 +137,7 @@ export class ContextAgent extends EnhancedBaseAgent {
 
         res.json(response);
       } catch (error) {
-        this.logger.error("Error processing context request", {
+        this.logger.error('Error processing context request', {
           error: error instanceof Error ? error.message : String(error),
           requestId: request.id,
         });
@@ -138,7 +145,7 @@ export class ContextAgent extends EnhancedBaseAgent {
         const duration = Date.now() - startTime;
         const errorResponse: AgentResponse = {
           success: false,
-          error: error instanceof Error ? error.message : "Unknown error",
+          error: error instanceof Error ? error.message : 'Unknown error',
           metadata: { duration, retryCount: 0 },
         };
 
@@ -152,7 +159,7 @@ export class ContextAgent extends EnhancedBaseAgent {
           this.logger.info(`Context agent server listening on port ${this.port}`);
           resolve();
         })
-        .on("error", reject);
+        .on('error', reject);
     });
   }
 
@@ -172,14 +179,14 @@ export class ContextAgent extends EnhancedBaseAgent {
   }
 
   private async setContext(inputs: Record<string, unknown>): Promise<object> {
-    const sessionId = (inputs.sessionId as string) || "default";
+    const sessionId = (inputs.sessionId as string) || 'default';
     const key = inputs.key as string;
     const value = inputs.value;
     const ttl = inputs.ttl as number | undefined;
-    const source = (inputs.source as string) || "user";
+    const source = (inputs.source as string) || 'user';
 
     if (!key) {
-      throw new Error("Key is required");
+      throw new Error('Key is required');
     }
 
     const context = this.getOrCreateContext(sessionId);
@@ -198,11 +205,11 @@ export class ContextAgent extends EnhancedBaseAgent {
   }
 
   private async getContext(inputs: Record<string, unknown>): Promise<object> {
-    const sessionId = (inputs.sessionId as string) || "default";
+    const sessionId = (inputs.sessionId as string) || 'default';
     const key = inputs.key as string;
 
     if (!key) {
-      throw new Error("Key is required");
+      throw new Error('Key is required');
     }
 
     const context = this.contexts.get(sessionId);
@@ -227,11 +234,11 @@ export class ContextAgent extends EnhancedBaseAgent {
   }
 
   private async deleteContext(inputs: Record<string, unknown>): Promise<object> {
-    const sessionId = (inputs.sessionId as string) || "default";
+    const sessionId = (inputs.sessionId as string) || 'default';
     const key = inputs.key as string;
 
     if (!key) {
-      throw new Error("Key is required");
+      throw new Error('Key is required');
     }
 
     const context = this.contexts.get(sessionId);
@@ -241,14 +248,14 @@ export class ContextAgent extends EnhancedBaseAgent {
   }
 
   private async listContext(inputs: Record<string, unknown>): Promise<object> {
-    const sessionId = (inputs.sessionId as string) || "default";
+    const sessionId = (inputs.sessionId as string) || 'default';
 
     const context = this.contexts.get(sessionId);
     if (!context) {
       return { sessionId, entries: [], count: 0 };
     }
 
-    const entries = Array.from(context.entries.values()).map((e) => ({
+    const entries = Array.from(context.entries.values()).map(e => ({
       key: e.key,
       type: e.type,
       source: e.source,
@@ -259,7 +266,7 @@ export class ContextAgent extends EnhancedBaseAgent {
   }
 
   private async clearSession(inputs: Record<string, unknown>): Promise<object> {
-    const sessionId = (inputs.sessionId as string) || "default";
+    const sessionId = (inputs.sessionId as string) || 'default';
 
     const context = this.contexts.get(sessionId);
     const entriesCleared = context?.entries.size || 0;
@@ -275,21 +282,21 @@ export class ContextAgent extends EnhancedBaseAgent {
     const ttl = inputs.ttl as number | undefined;
 
     if (!key) {
-      throw new Error("Key is required");
+      throw new Error('Key is required');
     }
 
     const entry: ContextEntry = {
       key,
       value,
       type: typeof value,
-      source: "global",
+      source: 'global',
       timestamp: new Date(),
       ttl,
     };
 
     this.globalContext.set(key, entry);
 
-    return { key, set: true, scope: "global" };
+    return { key, set: true, scope: 'global' };
   }
 
   private async getGlobalContext(inputs: Record<string, unknown>): Promise<object> {
@@ -342,14 +349,14 @@ export class ContextAgent extends EnhancedBaseAgent {
 
   protected getCapabilities(): string[] {
     return [
-      "set",
-      "get",
-      "delete",
-      "list",
-      "clear_session",
-      "set_global",
-      "get_global",
-      "get_session_info",
+      'set',
+      'get',
+      'delete',
+      'list',
+      'clear_session',
+      'set_global',
+      'get_global',
+      'get_session_info',
     ];
   }
 
@@ -380,13 +387,13 @@ export class ContextAgent extends EnhancedBaseAgent {
 
   protected async updateConfig(config: any): Promise<void> {
     this.config = { ...this.config, ...config };
-    this.logger.info("Configuration updated", { config });
+    this.logger.info('Configuration updated', { config });
   }
 
   protected async restart(): Promise<void> {
-    this.logger.info("Restarting Context agent...");
+    this.logger.info('Restarting Context agent...');
     await this.stop();
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
     await this.start();
   }
 }

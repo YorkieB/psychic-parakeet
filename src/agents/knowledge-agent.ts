@@ -3,10 +3,10 @@
 
   It conducts deep research, fact-checks claims, and summarizes information from multiple sources while making sure you get reliable and well-sourced answers.
 */
-import axios from "axios";
-import type { Request, Response } from "express";
-import express from "express";
-import type { Logger } from "winston";
+import axios from 'axios';
+import type { Request, Response } from 'express';
+import express from 'express';
+import type { Logger } from 'winston';
 import type {
   AgentRequest,
   AgentResponse,
@@ -15,15 +15,20 @@ import type {
   ResearchSource,
   SearchResponse,
   Summary,
-} from "../types/agent";
-import { createLogger } from "../utils/logger";
-import { EnhancedBaseAgent } from "./base-agent-enhanced";
+} from '../types/agent';
+import { createLogger } from '../utils/logger';
+import { EnhancedBaseAgent } from './base-agent-enhanced';
 
 /**
- * Knowledge Agent that conducts research, fact-checking, and summarization.
- * Uses the Web Agent to gather information from multiple sources and synthesizes
- * comprehensive answers with citations. Provides intelligent information analysis
- * through multi-angle research and source verification.
+ * Synthesizes multi-source answers for research-oriented tasks.
+ *
+ * The Knowledge agent fans out Web-agent retrieval, ranks and deduplicates
+ * sources, and turns those results into research summaries, fact-check verdicts,
+ * and topic digests that are safer to consume than raw search output alone.
+ *
+ * @agent KnowledgeAgent
+ * @domain agents.knowledge
+ * @critical
  */
 export class KnowledgeAgent extends EnhancedBaseAgent {
   private readonly webAgentUrl: string;
@@ -35,11 +40,11 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
    * @param webAgentUrl - URL of the Web Agent API endpoint (default: http://localhost:3002/api)
    */
   constructor(
-    logger: Logger = createLogger("KnowledgeAgent"),
-    webAgentUrl: string = "http://localhost:3002/api",
+    logger: Logger = createLogger('KnowledgeAgent'),
+    webAgentUrl: string = 'http://localhost:3002/api'
   ) {
-    const port = parseInt(process.env.KNOWLEDGE_AGENT_PORT || "3003", 10);
-    super("Knowledge", "1.0.0", port, logger);
+    const port = parseInt(process.env.KNOWLEDGE_AGENT_PORT || '3003', 10);
+    super('Knowledge', '1.0.0', port, logger);
     this.webAgentUrl = webAgentUrl;
   }
 
@@ -56,7 +61,7 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
     // Setup enhanced routes (7 standard endpoints)
     this.setupEnhancedRoutes();
 
-    this.logger.info("Knowledge agent initialized with enhanced endpoints", {
+    this.logger.info('Knowledge agent initialized with enhanced endpoints', {
       webAgentUrl: this.webAgentUrl,
     });
   }
@@ -66,18 +71,18 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
    */
   protected async startServer(): Promise<void> {
     // Add POST endpoint for research
-    this.app.post("/api/research", async (req: Request, res: Response) => {
+    this.app.post('/api/research', async (req: Request, res: Response) => {
       try {
         const request: AgentRequest = req.body;
         const { inputs } = request;
 
         const topic = inputs?.topic as string;
-        const depth = (inputs?.depth as "quick" | "medium" | "deep") || "medium";
+        const depth = (inputs?.depth as 'quick' | 'medium' | 'deep') || 'medium';
 
         if (!topic) {
           const errorResponse: AgentResponse = {
             success: false,
-            error: "Topic is required in inputs",
+            error: 'Topic is required in inputs',
             metadata: {
               duration: 0,
               retryCount: 0,
@@ -108,13 +113,13 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
 
         res.json(response);
       } catch (error) {
-        this.logger.error("Error processing research request", {
+        this.logger.error('Error processing research request', {
           error: error instanceof Error ? error.message : String(error),
         });
 
         const errorResponse: AgentResponse = {
           success: false,
-          error: error instanceof Error ? error.message : "Research failed",
+          error: error instanceof Error ? error.message : 'Research failed',
           metadata: {
             duration: 0,
             retryCount: 0,
@@ -126,7 +131,7 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
     });
 
     // Add POST endpoint for fact-checking
-    this.app.post("/api/fact-check", async (req: Request, res: Response) => {
+    this.app.post('/api/fact-check', async (req: Request, res: Response) => {
       try {
         const request: AgentRequest = req.body;
         const { inputs } = request;
@@ -137,7 +142,7 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
         if (!claim) {
           const errorResponse: AgentResponse = {
             success: false,
-            error: "Claim is required in inputs",
+            error: 'Claim is required in inputs',
             metadata: {
               duration: 0,
               retryCount: 0,
@@ -168,13 +173,13 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
 
         res.json(response);
       } catch (error) {
-        this.logger.error("Error processing fact-check request", {
+        this.logger.error('Error processing fact-check request', {
           error: error instanceof Error ? error.message : String(error),
         });
 
         const errorResponse: AgentResponse = {
           success: false,
-          error: error instanceof Error ? error.message : "Fact-check failed",
+          error: error instanceof Error ? error.message : 'Fact-check failed',
           metadata: {
             duration: 0,
             retryCount: 0,
@@ -186,7 +191,7 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
     });
 
     // Add POST endpoint for summarization
-    this.app.post("/api/summarize", async (req: Request, res: Response) => {
+    this.app.post('/api/summarize', async (req: Request, res: Response) => {
       try {
         const request: AgentRequest = req.body;
         const { inputs } = request;
@@ -197,7 +202,7 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
         if (!query) {
           const errorResponse: AgentResponse = {
             success: false,
-            error: "Query is required in inputs",
+            error: 'Query is required in inputs',
             metadata: {
               duration: 0,
               retryCount: 0,
@@ -228,13 +233,13 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
 
         res.json(response);
       } catch (error) {
-        this.logger.error("Error processing summarize request", {
+        this.logger.error('Error processing summarize request', {
           error: error instanceof Error ? error.message : String(error),
         });
 
         const errorResponse: AgentResponse = {
           success: false,
-          error: error instanceof Error ? error.message : "Summarization failed",
+          error: error instanceof Error ? error.message : 'Summarization failed',
           metadata: {
             duration: 0,
             retryCount: 0,
@@ -252,7 +257,7 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
           this.logger.info(`Knowledge agent server listening on port ${this.port}`);
           resolve();
         })
-        .on("error", (error: Error) => {
+        .on('error', (error: Error) => {
           this.logger.error(`Failed to start server on port ${this.port}`, {
             error: error.message,
           });
@@ -271,10 +276,10 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
    */
   private async conductResearch(
     topic: string,
-    depth: "quick" | "medium" | "deep",
+    depth: 'quick' | 'medium' | 'deep'
   ): Promise<ResearchResult> {
     // Determine number of queries based on depth
-    const queryCount = depth === "quick" ? 1 : depth === "medium" ? 3 : 5;
+    const queryCount = depth === 'quick' ? 1 : depth === 'medium' ? 3 : 5;
 
     // Generate search queries for different angles
     const queries: string[] = [];
@@ -305,17 +310,17 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
           `${this.webAgentUrl}/search`,
           {
             id: `req_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
-            agentId: "Web",
-            action: "search",
+            agentId: 'Web',
+            action: 'search',
             inputs: { query, maxResults: 5 },
-            userId: "knowledge-agent",
+            userId: 'knowledge-agent',
             timestamp: new Date(),
-            priority: "MEDIUM",
+            priority: 'MEDIUM',
           },
           {
-            headers: { "Content-Type": "application/json" },
+            headers: { 'Content-Type': 'application/json' },
             timeout: 30000,
-          },
+          }
         );
 
         if (webResponse.data.success && webResponse.data.data) {
@@ -397,17 +402,17 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
           `${this.webAgentUrl}/search`,
           {
             id: `req_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
-            agentId: "Web",
-            action: "search",
+            agentId: 'Web',
+            action: 'search',
             inputs: { query, maxResults: numSources },
-            userId: "knowledge-agent",
+            userId: 'knowledge-agent',
             timestamp: new Date(),
-            priority: "HIGH",
+            priority: 'HIGH',
           },
           {
-            headers: { "Content-Type": "application/json" },
+            headers: { 'Content-Type': 'application/json' },
             timeout: 30000,
-          },
+          }
         );
 
         if (webResponse.data.success && webResponse.data.data) {
@@ -445,9 +450,9 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
 
     for (const source of allResults) {
       const verdict = this.analyzeSourceVerdict(source.snippet, claim);
-      if (verdict === "confirm") {
+      if (verdict === 'confirm') {
         confirmingSources.push(source);
-      } else if (verdict === "contradict") {
+      } else if (verdict === 'contradict') {
         contradictingSources.push(source);
       } else {
         neutralSources.push(source);
@@ -455,7 +460,7 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
     }
 
     // Determine overall verdict
-    let verdict: "CONFIRMED" | "DISPUTED" | "UNVERIFIED";
+    let verdict: 'CONFIRMED' | 'DISPUTED' | 'UNVERIFIED';
     let confidence: number;
     let explanation: string;
 
@@ -464,19 +469,19 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
     const totalRelevant = confirmCount + contradictCount;
 
     if (totalRelevant === 0) {
-      verdict = "UNVERIFIED";
+      verdict = 'UNVERIFIED';
       confidence = 0.0;
-      explanation = "No relevant sources found to verify this claim.";
+      explanation = 'No relevant sources found to verify this claim.';
     } else if (confirmCount > contradictCount * 2) {
-      verdict = "CONFIRMED";
+      verdict = 'CONFIRMED';
       confidence = Math.min(0.9, 0.5 + (confirmCount / (totalRelevant + 1)) * 0.4);
       explanation = `Claim is supported by ${confirmCount} source(s) with minimal contradiction (${contradictCount}).`;
     } else if (contradictCount > confirmCount * 2) {
-      verdict = "DISPUTED";
+      verdict = 'DISPUTED';
       confidence = Math.min(0.9, 0.5 + (contradictCount / (totalRelevant + 1)) * 0.4);
       explanation = `Claim is contradicted by ${contradictCount} source(s) with minimal support (${confirmCount}).`;
     } else {
-      verdict = "UNVERIFIED";
+      verdict = 'UNVERIFIED';
       confidence = 0.3;
       explanation = `Mixed evidence: ${confirmCount} supporting and ${contradictCount} contradicting sources.`;
     }
@@ -506,32 +511,32 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
         `${this.webAgentUrl}/search`,
         {
           id: `req_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
-          agentId: "Web",
-          action: "search",
+          agentId: 'Web',
+          action: 'search',
           inputs: { query, maxResults: maxSources },
-          userId: "knowledge-agent",
+          userId: 'knowledge-agent',
           timestamp: new Date(),
-          priority: "MEDIUM",
+          priority: 'MEDIUM',
         },
         {
-          headers: { "Content-Type": "application/json" },
+          headers: { 'Content-Type': 'application/json' },
           timeout: 30000,
-        },
+        }
       );
 
       if (!webResponse.data.success || !webResponse.data.data) {
-        throw new Error("Web search failed");
+        throw new Error('Web search failed');
       }
 
       const searchData = webResponse.data.data as SearchResponse;
       const results = searchData.results || [];
 
       // Combine snippets into summary
-      const snippets = results.map((r) => r.snippet).filter((s) => s && s.length > 20);
+      const snippets = results.map(r => r.snippet).filter(s => s && s.length > 20);
       const combinedSummary = this.combineSnippets(snippets, query);
       const wordCount = combinedSummary.split(/\s+/).length;
 
-      const sources = results.slice(0, maxSources).map((r) => ({
+      const sources = results.slice(0, maxSources).map(r => ({
         title: r.title,
         url: r.url,
       }));
@@ -545,7 +550,7 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
       };
     } catch (error) {
       throw new Error(
-        `Summarization failed: ${error instanceof Error ? error.message : "Unknown error"}`,
+        `Summarization failed: ${error instanceof Error ? error.message : 'Unknown error'}`
       );
     }
   }
@@ -557,11 +562,11 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
    */
   protected getCapabilities(): string[] {
     return [
-      "research",
-      "fact_checking",
-      "summarization",
-      "information_synthesis",
-      "multi_source_analysis",
+      'research',
+      'fact_checking',
+      'summarization',
+      'information_synthesis',
+      'multi_source_analysis',
     ];
   }
 
@@ -571,7 +576,7 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
    * @returns Array of agent IDs (Knowledge Agent depends on Web Agent)
    */
   protected getDependencies(): string[] {
-    return ["Web"];
+    return ['Web'];
   }
 
   /**
@@ -596,7 +601,7 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
     const topicWords = topic
       .toLowerCase()
       .split(/\s+/)
-      .filter((w) => w.length > 2);
+      .filter(w => w.length > 2);
 
     let matches = 0;
     for (const word of topicWords) {
@@ -625,7 +630,7 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
 
     for (const source of sources.slice(0, 5)) {
       // Extract sentences from snippet
-      const sentences = source.snippet.split(/[.!?]+/).filter((s) => s.trim().length > 20);
+      const sentences = source.snippet.split(/[.!?]+/).filter(s => s.trim().length > 20);
 
       for (const sentence of sentences.slice(0, 2)) {
         const trimmed = sentence.trim();
@@ -654,7 +659,7 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
       return `No information found about "${topic}".`;
     }
 
-    const snippets = sources.map((s) => s.snippet).filter((s) => s && s.length > 20);
+    const snippets = sources.map(s => s.snippet).filter(s => s && s.length > 20);
     return this.combineSnippets(snippets, topic);
   }
 
@@ -673,12 +678,12 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
     // Remove duplicates and combine
     const uniqueSnippets = Array.from(new Set(snippets));
     const combined = uniqueSnippets
-      .map((s) => s.trim())
-      .filter((s) => s.length > 0)
-      .join(" ");
+      .map(s => s.trim())
+      .filter(s => s.length > 0)
+      .join(' ');
 
     // Clean up and limit length
-    const cleaned = combined.replace(/\s+/g, " ").substring(0, 1000).trim();
+    const cleaned = combined.replace(/\s+/g, ' ').substring(0, 1000).trim();
 
     return cleaned || `Information about "${topic}" gathered from ${snippets.length} source(s).`;
   }
@@ -709,32 +714,32 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
    */
   private analyzeSourceVerdict(
     snippet: string,
-    claim: string,
-  ): "confirm" | "contradict" | "neutral" {
+    claim: string
+  ): 'confirm' | 'contradict' | 'neutral' {
     const snippetLower = snippet.toLowerCase();
     const claimLower = claim.toLowerCase();
 
     // Keywords that suggest confirmation
     const confirmKeywords = [
-      "true",
-      "correct",
-      "accurate",
-      "verified",
-      "confirmed",
-      "fact",
-      "indeed",
-      "yes",
+      'true',
+      'correct',
+      'accurate',
+      'verified',
+      'confirmed',
+      'fact',
+      'indeed',
+      'yes',
     ];
     // Keywords that suggest contradiction
     const contradictKeywords = [
-      "false",
-      "incorrect",
-      "wrong",
-      "debunked",
-      "disputed",
-      "myth",
-      "no",
-      "not true",
+      'false',
+      'incorrect',
+      'wrong',
+      'debunked',
+      'disputed',
+      'myth',
+      'no',
+      'not true',
     ];
 
     let confirmScore = 0;
@@ -749,15 +754,15 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
     }
 
     // Check if claim keywords appear in snippet (suggests relevance)
-    const claimWords = claimLower.split(/\s+/).filter((w) => w.length > 3);
-    const relevantWords = claimWords.filter((w) => snippetLower.includes(w));
+    const claimWords = claimLower.split(/\s+/).filter(w => w.length > 3);
+    const relevantWords = claimWords.filter(w => snippetLower.includes(w));
     const relevance = claimWords.length > 0 ? relevantWords.length / claimWords.length : 0;
 
-    if (relevance < 0.3) return "neutral"; // Not relevant enough
+    if (relevance < 0.3) return 'neutral'; // Not relevant enough
 
-    if (confirmScore > contradictScore) return "confirm";
-    if (contradictScore > confirmScore) return "contradict";
-    return "neutral";
+    if (confirmScore > contradictScore) return 'confirm';
+    if (contradictScore > confirmScore) return 'contradict';
+    return 'neutral';
   }
 
   /**
@@ -767,7 +772,7 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
    * @returns Promise that resolves after the sleep duration
    */
   private sleep(ms: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   /**
@@ -795,28 +800,28 @@ export class KnowledgeAgent extends EnhancedBaseAgent {
    */
   protected async updateConfig(config: any): Promise<void> {
     this.config = { ...this.config, ...config };
-    this.logger.info("Configuration updated", { config });
+    this.logger.info('Configuration updated', { config });
   }
 
   /**
    * Restart the agent
    */
   protected async restart(): Promise<void> {
-    this.logger.info("Restarting Knowledge agent...");
+    this.logger.info('Restarting Knowledge agent...');
     await this.stop();
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
     await this.start();
   }
 }
 
 // If this file is executed directly, start the agent
 if (require.main === module) {
-  const logger = createLogger("KnowledgeAgent");
-  const webAgentUrl = process.env.WEB_AGENT_URL || "http://localhost:3002/api";
+  const logger = createLogger('KnowledgeAgent');
+  const webAgentUrl = process.env.WEB_AGENT_URL || 'http://localhost:3002/api';
   const agent = new KnowledgeAgent(logger, webAgentUrl);
 
-  agent.start().catch((error) => {
-    logger.error("Failed to start Knowledge Agent", {
+  agent.start().catch(error => {
+    logger.error('Failed to start Knowledge Agent', {
       error: error instanceof Error ? error.message : String(error),
     });
     process.exit(1);

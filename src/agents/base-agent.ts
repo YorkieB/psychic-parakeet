@@ -11,8 +11,15 @@ import type { Logger } from 'winston';
 import { type AgentRegistration, AgentStatus, type HealthCheck } from '../types/agent';
 
 /**
- * Abstract base class for all agents in the system.
- * Provides common functionality for agent lifecycle, health checks, and registration.
+ * Defines the minimum runtime contract for every Jarvis agent.
+ *
+ * This abstraction standardizes lifecycle management, health exposure, and
+ * orchestrator registration so higher-level systems can treat specialized
+ * agents as consistent operational units.
+ *
+ * @agent BaseAgent
+ * @domain agents.foundation
+ * @critical
  */
 export abstract class BaseAgent {
   protected readonly agentId: string;

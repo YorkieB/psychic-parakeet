@@ -4,18 +4,26 @@
   It handles speech-to-text, text-to-speech with emotion, voice cloning, and emotional analysis while making sure Jarvis can communicate naturally.
 */
 
-import fs from "node:fs";
-import path from "node:path";
-import type { Request, Response } from "express";
-import express from "express";
-import FormData from "form-data";
-import type { Logger } from "winston";
-import type { VertexLLMClient } from "../llm";
-import type { AgentRequest, AgentResponse } from "../types/agent";
-import { EnhancedBaseAgent } from "./base-agent-enhanced";
+import fs from 'node:fs';
+import path from 'node:path';
+import type { Request, Response } from 'express';
+import express from 'express';
+import FormData from 'form-data';
+import type { Logger } from 'winston';
+import type { VertexLLMClient } from '../llm';
+import type { AgentRequest, AgentResponse } from '../types/agent';
+import { EnhancedBaseAgent } from './base-agent-enhanced';
 
 /**
- * Voice Agent - Handles speech-to-text, text-to-speech with emotion, and voice I/O.
+ * Owns Jarvis's speech input and speech output pipeline.
+ *
+ * The Voice agent connects transcription, expressive text-to-speech, cloned
+ * voice management, and emotion-aware delivery so Jarvis can operate as a voice
+ * interface rather than only a text assistant.
+ *
+ * @agent VoiceAgent
+ * @domain agents.voice
+ * @critical
  */
 export class VoiceAgent extends EnhancedBaseAgent {
   private llm: VertexLLMClient;
@@ -23,12 +31,12 @@ export class VoiceAgent extends EnhancedBaseAgent {
   private clonedVoiceId: string | null = null;
 
   constructor(logger: Logger, llm: VertexLLMClient) {
-    super("Voice", "1.0.0", parseInt(process.env.VOICE_AGENT_PORT || "3008", 10), logger);
+    super('Voice', '1.0.0', parseInt(process.env.VOICE_AGENT_PORT || '3008', 10), logger);
     this.llm = llm;
-    this.elevenLabsApiKey = process.env.ELEVENLABS_API_KEY || "";
+    this.elevenLabsApiKey = process.env.ELEVENLABS_API_KEY || '';
 
     if (!this.elevenLabsApiKey) {
-      logger.warn("⚠️  ElevenLabs API key not found. Voice features limited.");
+      logger.warn('⚠️  ElevenLabs API key not found. Voice features limited.');
     }
   }
 
@@ -41,7 +49,7 @@ export class VoiceAgent extends EnhancedBaseAgent {
       this.clonedVoiceId = voiceId;
       this.logger.info(`✅ Cloned voice loaded: ${voiceId}`);
     } else {
-      this.logger.info("ℹ️  No cloned voice found. Use default voice or clone one.");
+      this.logger.info('ℹ️  No cloned voice found. Use default voice or clone one.');
     }
   }
 
@@ -50,7 +58,7 @@ export class VoiceAgent extends EnhancedBaseAgent {
     this.setupHealthEndpoint();
     this.setupEnhancedRoutes();
 
-    this.app.post("/api", async (req: Request, res: Response) => {
+    this.app.post('/api', async (req: Request, res: Response) => {
       const startTime = Date.now();
       const request = req.body as AgentRequest;
 
@@ -78,7 +86,7 @@ export class VoiceAgent extends EnhancedBaseAgent {
 
         res.json(response);
       } catch (error) {
-        this.logger.error("Error processing voice request", {
+        this.logger.error('Error processing voice request', {
           error: error instanceof Error ? error.message : String(error),
           requestId: request.id,
         });
@@ -86,7 +94,7 @@ export class VoiceAgent extends EnhancedBaseAgent {
         const duration = Date.now() - startTime;
         const errorResponse: AgentResponse = {
           success: false,
-          error: error instanceof Error ? error.message : "Unknown error",
+          error: error instanceof Error ? error.message : 'Unknown error',
           metadata: {
             duration,
             retryCount: 0,
@@ -103,7 +111,7 @@ export class VoiceAgent extends EnhancedBaseAgent {
           this.logger.info(`Voice agent server listening on port ${this.port}`);
           resolve();
         })
-        .on("error", (error: Error) => {
+        .on('error', (error: Error) => {
           this.logger.error(`Failed to start server on port ${this.port}`, {
             error: error.message,
           });
@@ -121,15 +129,15 @@ export class VoiceAgent extends EnhancedBaseAgent {
 
   private async runAction(action: string, inputs: Record<string, unknown>): Promise<unknown> {
     switch (action) {
-      case "speech_to_text":
+      case 'speech_to_text':
         return this.speechToText(inputs);
-      case "text_to_speech":
+      case 'text_to_speech':
         return this.textToSpeech(inputs);
-      case "analyze_voice_emotion":
+      case 'analyze_voice_emotion':
         return this.analyzeVoiceEmotion(inputs);
-      case "clone_voice":
+      case 'clone_voice':
         return this.cloneVoice(inputs);
-      case "adjust_emotion":
+      case 'adjust_emotion':
         return this.adjustEmotion(inputs);
       default:
         throw new Error(`Unknown action: ${action}`);
@@ -138,11 +146,11 @@ export class VoiceAgent extends EnhancedBaseAgent {
 
   protected getCapabilities(): string[] {
     return [
-      "speech_to_text",
-      "text_to_speech",
-      "analyze_voice_emotion",
-      "clone_voice",
-      "adjust_emotion",
+      'speech_to_text',
+      'text_to_speech',
+      'analyze_voice_emotion',
+      'clone_voice',
+      'adjust_emotion',
     ];
   }
 
@@ -161,22 +169,22 @@ export class VoiceAgent extends EnhancedBaseAgent {
     const audioFile = inputs.audioFile as string;
 
     if (!audioFile || !fs.existsSync(audioFile)) {
-      throw new Error("Audio file required and must exist");
+      throw new Error('Audio file required and must exist');
     }
 
     const openaiKey = process.env.OPENAI_API_KEY;
     if (!openaiKey) {
-      throw new Error("OpenAI API key required for speech-to-text");
+      throw new Error('OpenAI API key required for speech-to-text');
     }
 
     try {
       const formData = new FormData();
-      formData.append("file", fs.createReadStream(audioFile));
-      formData.append("model", "whisper-1");
-      formData.append("language", "en");
+      formData.append('file', fs.createReadStream(audioFile));
+      formData.append('model', 'whisper-1');
+      formData.append('language', 'en');
 
-      const response = await fetch("https://api.openai.com/v1/audio/transcriptions", {
-        method: "POST",
+      const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+        method: 'POST',
         headers: {
           Authorization: `Bearer ${openaiKey}`,
           ...formData.getHeaders(),
@@ -199,12 +207,12 @@ export class VoiceAgent extends EnhancedBaseAgent {
 
       return {
         text: result.text,
-        language: result.language || "en",
+        language: result.language || 'en',
         duration: result.duration,
         confidence: 0.95,
       };
     } catch (error) {
-      this.logger.error("Speech-to-text failed:", error);
+      this.logger.error('Speech-to-text failed:', error);
       throw error;
     }
   }
@@ -214,33 +222,33 @@ export class VoiceAgent extends EnhancedBaseAgent {
    */
   private async textToSpeech(inputs: Record<string, unknown>): Promise<TTSResult> {
     const text = inputs.text as string;
-    const emotion = (inputs.emotion as EmotionType) || "neutral";
+    const emotion = (inputs.emotion as EmotionType) || 'neutral';
     const outputFile =
-      (inputs.outputFile as string) || path.join(process.cwd(), "temp", "speech.mp3");
+      (inputs.outputFile as string) || path.join(process.cwd(), 'temp', 'speech.mp3');
 
     if (!text) {
-      throw new Error("Text required for TTS");
+      throw new Error('Text required for TTS');
     }
 
     if (!this.elevenLabsApiKey) {
-      throw new Error("ElevenLabs API key not configured");
+      throw new Error('ElevenLabs API key not configured');
     }
 
-    const voiceId = this.clonedVoiceId || "EXAVITQu4vr4xnSDxMaL"; // Default: Bella
+    const voiceId = this.clonedVoiceId || 'EXAVITQu4vr4xnSDxMaL'; // Default: Bella
 
     try {
       const voiceSettings = this.getEmotionSettings(emotion);
 
       const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          Accept: "audio/mpeg",
-          "Content-Type": "application/json",
-          "xi-api-key": this.elevenLabsApiKey,
+          Accept: 'audio/mpeg',
+          'Content-Type': 'application/json',
+          'xi-api-key': this.elevenLabsApiKey,
         },
         body: JSON.stringify({
           text,
-          model_id: "eleven_multilingual_v2",
+          model_id: 'eleven_multilingual_v2',
           voice_settings: voiceSettings,
         }),
       });
@@ -268,7 +276,7 @@ export class VoiceAgent extends EnhancedBaseAgent {
         text,
       };
     } catch (error) {
-      this.logger.error("Text-to-speech failed:", error);
+      this.logger.error('Text-to-speech failed:', error);
       throw error;
     }
   }
@@ -281,13 +289,13 @@ export class VoiceAgent extends EnhancedBaseAgent {
     const context = inputs.context as string;
 
     if (!text) {
-      throw new Error("Text required for emotion analysis");
+      throw new Error('Text required for emotion analysis');
     }
 
     const prompt = `Analyze the emotional content of this user input and recommend an appropriate response tone.
 
 User input: "${text}"
-${context ? `Context: ${context}` : ""}
+${context ? `Context: ${context}` : ''}
 
 Available emotions: neutral, warm, empathetic, excited, calm, serious, playful, urgent
 
@@ -310,20 +318,20 @@ Respond in JSON:
       const analysis = JSON.parse(response);
 
       this.logger.info(
-        `Emotion analysis: User=${analysis.userEmotion}, Suggest=${analysis.suggestedTone}`,
+        `Emotion analysis: User=${analysis.userEmotion}, Suggest=${analysis.suggestedTone}`
       );
 
       return analysis;
     } catch (error) {
-      this.logger.error("Emotion analysis failed:", error);
+      this.logger.error('Emotion analysis failed:', error);
 
       return {
-        userEmotion: "unknown",
-        sentiment: "neutral",
-        urgency: "normal",
-        suggestedTone: "neutral",
+        userEmotion: 'unknown',
+        sentiment: 'neutral',
+        urgency: 'normal',
+        suggestedTone: 'neutral',
         intensity: 0.5,
-        reasoning: "Analysis failed, using neutral tone",
+        reasoning: 'Analysis failed, using neutral tone',
       };
     }
   }
@@ -333,33 +341,33 @@ Respond in JSON:
    */
   private async cloneVoice(inputs: Record<string, unknown>): Promise<VoiceCloneResult> {
     const audioFiles = inputs.audioFiles as string[];
-    const voiceName = (inputs.voiceName as string) || "Jarvis Clone";
-    const description = (inputs.description as string) || "Cloned voice for Jarvis AI";
+    const voiceName = (inputs.voiceName as string) || 'Jarvis Clone';
+    const description = (inputs.description as string) || 'Cloned voice for Jarvis AI';
 
     if (!audioFiles || audioFiles.length === 0) {
-      throw new Error("At least one audio file required for voice cloning");
+      throw new Error('At least one audio file required for voice cloning');
     }
 
     if (!this.elevenLabsApiKey) {
-      throw new Error("ElevenLabs API key required for voice cloning");
+      throw new Error('ElevenLabs API key required for voice cloning');
     }
 
     try {
       const formData = new FormData();
-      formData.append("name", voiceName);
-      formData.append("description", description);
+      formData.append('name', voiceName);
+      formData.append('description', description);
 
       for (const audioFile of audioFiles) {
         if (!fs.existsSync(audioFile)) {
           throw new Error(`Audio file not found: ${audioFile}`);
         }
-        formData.append("files", fs.createReadStream(audioFile));
+        formData.append('files', fs.createReadStream(audioFile));
       }
 
-      const response = await fetch("https://api.elevenlabs.io/v1/voices/add", {
-        method: "POST",
+      const response = await fetch('https://api.elevenlabs.io/v1/voices/add', {
+        method: 'POST',
         headers: {
-          "xi-api-key": this.elevenLabsApiKey,
+          'xi-api-key': this.elevenLabsApiKey,
           ...formData.getHeaders(),
         },
         body: formData as any,
@@ -383,7 +391,7 @@ Respond in JSON:
         message: `Voice cloned successfully! Add JARVIS_VOICE_ID=${result.voice_id} to your .env file`,
       };
     } catch (error) {
-      this.logger.error("Voice cloning failed:", error);
+      this.logger.error('Voice cloning failed:', error);
       throw error;
     }
   }
@@ -479,30 +487,36 @@ Respond in JSON:
    */
   protected async updateConfig(config: any): Promise<void> {
     this.config = { ...this.config, ...config };
-    this.logger.info("Configuration updated", { config });
+    this.logger.info('Configuration updated', { config });
   }
 
   /**
    * Restart the agent
    */
   protected async restart(): Promise<void> {
-    this.logger.info("Restarting Voice agent...");
+    this.logger.info('Restarting Voice agent...');
     await this.stop();
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
     await this.start();
   }
 }
 
-// Types
+/**
+ * Emotion presets supported by the Voice agent's expressive speech pipeline.
+ *
+ * @agent VoiceEmotionPreset
+ * @domain agents.voice
+ * @critical
+ */
 export type EmotionType =
-  | "neutral"
-  | "warm"
-  | "empathetic"
-  | "excited"
-  | "calm"
-  | "serious"
-  | "playful"
-  | "urgent";
+  | 'neutral'
+  | 'warm'
+  | 'empathetic'
+  | 'excited'
+  | 'calm'
+  | 'serious'
+  | 'playful'
+  | 'urgent';
 
 interface VoiceSettings {
   stability: number;
@@ -527,8 +541,8 @@ interface TTSResult {
 
 interface EmotionAnalysis {
   userEmotion: string;
-  sentiment: "positive" | "negative" | "neutral";
-  urgency: "low" | "normal" | "high" | "emergency";
+  sentiment: 'positive' | 'negative' | 'neutral';
+  urgency: 'low' | 'normal' | 'high' | 'emergency';
   suggestedTone: EmotionType;
   intensity: number;
   reasoning: string;

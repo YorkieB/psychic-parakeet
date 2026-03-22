@@ -11,19 +11,14 @@
     "src/shared/index.ts"
   ],
   "entryPointStrategy": "resolve",
+  "name": "Jarvis Internal API Reference",
   "out": "docs/API-REFERENCE",
-  "exclude": [
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "node_modules/**",
-    "**/*.d.ts"
-  ],
+  "exclude": ["tests", "node_modules/**", "**/*.d.ts"],
+  "cleanOutputDir": true,
   "excludePrivate": false,
   "excludeProtected": false,
   "includeVersion": true,
-  "sort": [
-    "source-order"
-  ],
+  "sort": ["source-order"],
   "categoryOrder": [
     "Core",
     "Agents",
@@ -36,21 +31,13 @@
     "Utilities",
     "Logging"
   ],
-  "blockTags": [
-    "@agent",
-    "@domain",
-    "@reliabilityThreshold"
-  ],
-  "modifierTags": [
-    "@critical",
-    "@internal",
-    "@experimental"
-  ],
+  "blockTags": ["@agent", "@domain", "@reliabilityThreshold"],
+  "modifierTags": ["@critical", "@internal", "@experimental"],
   "plugin": [],
   "readme": "README.md",
   "navigationLinks": {
-    "GitHub": "https://github.com/YorkieB/psychic-parakeet",
-    "Architecture ADRs": "docs/ARCHITECTURE/"
+    "Architecture ADRs": "../ARCHITECTURE/",
+    "OpenAPI Explorer": "../APIs/index.html"
   },
   "visibilityFilters": {
     "protected": true,

@@ -4,15 +4,15 @@
   It handles web searches, fact-checking, and information retrieval while making sure Jarvis can find answers to your questions online.
 */
 
-import type { Request, Response } from "express";
-import express from "express";
-import type { Logger } from "winston";
-import type { AgentRequest, AgentResponse } from "../types/agent";
-import { createLogger } from "../utils/logger";
-import { EnhancedBaseAgent } from "./base-agent-enhanced";
+import type { Request, Response } from 'express';
+import express from 'express';
+import type { Logger } from 'winston';
+import type { AgentRequest, AgentResponse } from '../types/agent';
+import { createLogger } from '../utils/logger';
+import { EnhancedBaseAgent } from './base-agent-enhanced';
 
 // Search engine type
-type SearchEngine = "brave" | "google" | "auto";
+type SearchEngine = 'brave' | 'google' | 'auto';
 
 // Search result interface
 interface SearchResult {
@@ -23,9 +23,15 @@ interface SearchResult {
 }
 
 /**
- * Web agent that handles web search and information retrieval.
- * Supports multiple search engines: Brave Search API and Google Custom Search API.
- * Set WEB_SEARCH_ENGINE env var to 'brave', 'google', or 'auto' (default: auto).
+ * Provides Jarvis's real-time retrieval and search capability.
+ *
+ * The Web agent selects an available provider, normalizes search results into a
+ * common response shape, and supplies the live context consumed by higher-level
+ * reasoning agents such as Dialogue and Knowledge.
+ *
+ * @agent WebAgent
+ * @domain agents.web
+ * @critical
  */
 export class WebAgent extends EnhancedBaseAgent {
   private searchEngine: SearchEngine;
@@ -35,13 +41,13 @@ export class WebAgent extends EnhancedBaseAgent {
    *
    * @param logger - Winston logger instance (optional, creates default if not provided)
    */
-  constructor(logger: Logger = createLogger("WebAgent")) {
-    const port = parseInt(process.env.WEB_AGENT_PORT || "3002", 10);
-    super("Web", "1.0.0", port, logger);
+  constructor(logger: Logger = createLogger('WebAgent')) {
+    const port = parseInt(process.env.WEB_AGENT_PORT || '3002', 10);
+    super('Web', '1.0.0', port, logger);
 
     // Determine which search engine to use
     const configuredEngine = (
-      process.env.WEB_SEARCH_ENGINE || "auto"
+      process.env.WEB_SEARCH_ENGINE || 'auto'
     ).toLowerCase() as SearchEngine;
     this.searchEngine = configuredEngine;
 
@@ -61,7 +67,7 @@ export class WebAgent extends EnhancedBaseAgent {
     // Setup enhanced routes (7 standard endpoints)
     this.setupEnhancedRoutes();
 
-    this.logger.info("Web agent initialized with enhanced endpoints");
+    this.logger.info('Web agent initialized with enhanced endpoints');
   }
 
   /**
@@ -70,11 +76,11 @@ export class WebAgent extends EnhancedBaseAgent {
   private async searchBrave(
     query: string,
     maxResults: number,
-    requestId: string,
+    requestId: string
   ): Promise<{ results: SearchResult[]; source: string }> {
     const braveApiKey = process.env.BRAVE_API_KEY;
     if (!braveApiKey) {
-      throw new Error("BRAVE_API_KEY environment variable is required for Brave search");
+      throw new Error('BRAVE_API_KEY environment variable is required for Brave search');
     }
 
     this.logger.info(`Searching Brave for: "${query}"`, {
@@ -83,19 +89,19 @@ export class WebAgent extends EnhancedBaseAgent {
       maxResults,
     });
 
-    const braveApiUrl = "https://api.search.brave.com/res/v1/web/search";
+    const braveApiUrl = 'https://api.search.brave.com/res/v1/web/search';
     const searchParams = new URLSearchParams({
       q: query,
       count: maxResults.toString(),
-      safesearch: process.env.WEB_SEARCH_SAFE_MODE || "moderate",
+      safesearch: process.env.WEB_SEARCH_SAFE_MODE || 'moderate',
     });
 
     const braveResponse = await fetch(`${braveApiUrl}?${searchParams.toString()}`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        Accept: "application/json",
-        "Accept-Encoding": "gzip",
-        "X-Subscription-Token": braveApiKey,
+        Accept: 'application/json',
+        'Accept-Encoding': 'gzip',
+        'X-Subscription-Token': braveApiKey,
       },
     });
 
@@ -116,14 +122,14 @@ export class WebAgent extends EnhancedBaseAgent {
     };
 
     const braveResults = braveData.web?.results || [];
-    const results = braveResults.slice(0, maxResults).map((result) => ({
+    const results = braveResults.slice(0, maxResults).map(result => ({
       title: result.title,
       url: result.url,
-      snippet: result.description || "No description available",
+      snippet: result.description || 'No description available',
       hostname: result.meta_url?.hostname || new URL(result.url).hostname,
     }));
 
-    return { results, source: "brave" };
+    return { results, source: 'brave' };
   }
 
   /**
@@ -132,14 +138,14 @@ export class WebAgent extends EnhancedBaseAgent {
   private async searchGoogle(
     query: string,
     maxResults: number,
-    requestId: string,
+    requestId: string
   ): Promise<{ results: SearchResult[]; source: string }> {
     const googleApiKey = process.env.GOOGLE_SEARCH_API_KEY;
     const googleCx = process.env.GOOGLE_SEARCH_CX;
 
     if (!googleApiKey || !googleCx) {
       throw new Error(
-        "GOOGLE_SEARCH_API_KEY and GOOGLE_SEARCH_CX environment variables are required for Google search",
+        'GOOGLE_SEARCH_API_KEY and GOOGLE_SEARCH_CX environment variables are required for Google search'
       );
     }
 
@@ -150,19 +156,19 @@ export class WebAgent extends EnhancedBaseAgent {
     });
 
     // Google Custom Search API allows max 10 results per request
-    const googleApiUrl = "https://www.googleapis.com/customsearch/v1";
+    const googleApiUrl = 'https://www.googleapis.com/customsearch/v1';
     const searchParams = new URLSearchParams({
       key: googleApiKey,
       cx: googleCx,
       q: query,
       num: Math.min(maxResults, 10).toString(),
-      safe: process.env.WEB_SEARCH_SAFE_MODE === "off" ? "off" : "active",
+      safe: process.env.WEB_SEARCH_SAFE_MODE === 'off' ? 'off' : 'active',
     });
 
     const googleResponse = await fetch(`${googleApiUrl}?${searchParams.toString()}`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        Accept: "application/json",
+        Accept: 'application/json',
       },
     });
 
@@ -184,14 +190,14 @@ export class WebAgent extends EnhancedBaseAgent {
     };
 
     const googleResults = googleData.items || [];
-    const results = googleResults.slice(0, maxResults).map((result) => ({
+    const results = googleResults.slice(0, maxResults).map(result => ({
       title: result.title,
       url: result.link,
-      snippet: result.snippet || "No description available",
+      snippet: result.snippet || 'No description available',
       hostname: result.displayLink || new URL(result.link).hostname,
     }));
 
-    return { results, source: "google" };
+    return { results, source: 'google' };
   }
 
   /**
@@ -201,26 +207,26 @@ export class WebAgent extends EnhancedBaseAgent {
     const hasBrave = !!process.env.BRAVE_API_KEY;
     const hasGoogle = !!process.env.GOOGLE_SEARCH_API_KEY && !!process.env.GOOGLE_SEARCH_CX;
 
-    if (this.searchEngine === "google") {
-      if (hasGoogle) return "google";
+    if (this.searchEngine === 'google') {
+      if (hasGoogle) return 'google';
       if (hasBrave) {
-        this.logger.warn("Google search requested but not configured, falling back to Brave");
-        return "brave";
+        this.logger.warn('Google search requested but not configured, falling back to Brave');
+        return 'brave';
       }
-    } else if (this.searchEngine === "brave") {
-      if (hasBrave) return "brave";
+    } else if (this.searchEngine === 'brave') {
+      if (hasBrave) return 'brave';
       if (hasGoogle) {
-        this.logger.warn("Brave search requested but not configured, falling back to Google");
-        return "google";
+        this.logger.warn('Brave search requested but not configured, falling back to Google');
+        return 'google';
       }
     } else {
       // Auto mode: prefer Google if available, otherwise Brave
-      if (hasGoogle) return "google";
-      if (hasBrave) return "brave";
+      if (hasGoogle) return 'google';
+      if (hasBrave) return 'brave';
     }
 
     throw new Error(
-      "No search engine configured. Set BRAVE_API_KEY or GOOGLE_SEARCH_API_KEY + GOOGLE_SEARCH_CX",
+      'No search engine configured. Set BRAVE_API_KEY or GOOGLE_SEARCH_API_KEY + GOOGLE_SEARCH_CX'
     );
   }
 
@@ -229,7 +235,7 @@ export class WebAgent extends EnhancedBaseAgent {
    */
   protected async startServer(): Promise<void> {
     // Add POST endpoint for web search
-    this.app.post("/api/search", async (req: Request, res: Response) => {
+    this.app.post('/api/search', async (req: Request, res: Response) => {
       try {
         const request: AgentRequest = req.body;
         const { inputs } = request;
@@ -243,7 +249,7 @@ export class WebAgent extends EnhancedBaseAgent {
         if (!query) {
           const errorResponse: AgentResponse = {
             success: false,
-            error: "Query is required in inputs",
+            error: 'Query is required in inputs',
             metadata: {
               duration: 0,
               retryCount: 0,
@@ -257,7 +263,7 @@ export class WebAgent extends EnhancedBaseAgent {
 
         // Determine which engine to use
         let engine: SearchEngine;
-        if (requestedEngine && ["brave", "google"].includes(requestedEngine)) {
+        if (requestedEngine && ['brave', 'google'].includes(requestedEngine)) {
           engine = requestedEngine;
         } else {
           engine = this.getAvailableEngine();
@@ -266,7 +272,7 @@ export class WebAgent extends EnhancedBaseAgent {
         // Perform search
         let searchResult: { results: SearchResult[]; source: string };
 
-        if (engine === "google") {
+        if (engine === 'google') {
           searchResult = await this.searchGoogle(query, maxResults, request.id);
         } else {
           searchResult = await this.searchBrave(query, maxResults, request.id);
@@ -301,19 +307,19 @@ export class WebAgent extends EnhancedBaseAgent {
 
         res.json(response);
       } catch (error) {
-        this.logger.error("Error processing web search request", {
+        this.logger.error('Error processing web search request', {
           error: error instanceof Error ? error.message : String(error),
           query: (req.body as AgentRequest)?.inputs?.query,
         });
 
         // Fallback to error response with helpful message
-        const query = ((req.body as AgentRequest)?.inputs?.query as string) || "unknown";
+        const query = ((req.body as AgentRequest)?.inputs?.query as string) || 'unknown';
         const fallbackResults = [
           {
             title: `Search temporarily unavailable for "${query}"`,
             url: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
-            snippet: "The search service is currently unavailable. Please try again later.",
-            hostname: "google.com",
+            snippet: 'The search service is currently unavailable. Please try again later.',
+            hostname: 'google.com',
           },
         ];
 
@@ -322,14 +328,14 @@ export class WebAgent extends EnhancedBaseAgent {
           query,
           resultCount: 1,
           timestamp: new Date(),
-          source: "fallback" as const,
-          error: error instanceof Error ? error.message : "Unknown error",
+          source: 'fallback' as const,
+          error: error instanceof Error ? error.message : 'Unknown error',
         };
 
         const response: AgentResponse = {
           success: false,
           data: fallbackResponse,
-          error: error instanceof Error ? error.message : "Search service unavailable",
+          error: error instanceof Error ? error.message : 'Search service unavailable',
           metadata: {
             duration: 0,
             retryCount: 0,
@@ -347,7 +353,7 @@ export class WebAgent extends EnhancedBaseAgent {
           this.logger.info(`Web agent server listening on port ${this.port}`);
           resolve();
         })
-        .on("error", (error: Error) => {
+        .on('error', (error: Error) => {
           this.logger.error(`Failed to start server on port ${this.port}`, {
             error: error.message,
           });
@@ -362,7 +368,7 @@ export class WebAgent extends EnhancedBaseAgent {
    * @returns Array of capability strings
    */
   protected getCapabilities(): string[] {
-    return ["web_search", "information_retrieval", "fact_checking"];
+    return ['web_search', 'information_retrieval', 'fact_checking'];
   }
 
   /**
@@ -409,27 +415,27 @@ export class WebAgent extends EnhancedBaseAgent {
    */
   protected async updateConfig(config: any): Promise<void> {
     this.config = { ...this.config, ...config };
-    this.logger.info("Configuration updated", { config });
+    this.logger.info('Configuration updated', { config });
   }
 
   /**
    * Restart the agent
    */
   protected async restart(): Promise<void> {
-    this.logger.info("Restarting Web agent...");
+    this.logger.info('Restarting Web agent...');
     await this.stop();
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
     await this.start();
   }
 }
 
 // If this file is executed directly, start the agent
 if (require.main === module) {
-  const logger = createLogger("WebAgent");
+  const logger = createLogger('WebAgent');
   const agent = new WebAgent(logger);
 
-  agent.start().catch((error) => {
-    logger.error("Failed to start Web Agent", {
+  agent.start().catch(error => {
+    logger.error('Failed to start Web Agent', {
       error: error instanceof Error ? error.message : String(error),
     });
     process.exit(1);

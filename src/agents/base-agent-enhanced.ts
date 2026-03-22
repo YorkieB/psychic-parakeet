@@ -9,7 +9,16 @@ import { errorResponse, successResponse } from '../utils/response';
 import { BaseAgent } from './base-agent';
 
 /**
- * Enhanced base agent with standard endpoints
+ * Adds standardized observability and management endpoints to the core agent
+ * contract.
+ *
+ * The enhanced base agent is the default superclass for operational agents that
+ * need consistent metrics, logs, restart hooks, and configuration management in
+ * addition to the lifecycle defined by {@link BaseAgent}.
+ *
+ * @agent EnhancedBaseAgent
+ * @domain agents.foundation
+ * @critical
  */
 export abstract class EnhancedBaseAgent extends BaseAgent {
   protected requestCount: number = 0;

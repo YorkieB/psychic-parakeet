@@ -1,0 +1,1297 @@
+{
+  "openapi": "3.1.0",
+  "components": {
+    "examples": {},
+    "headers": {},
+    "parameters": {},
+    "requestBodies": {},
+    "responses": {},
+    "schemas": {
+      "MemoryUsageSnapshot": {
+        "properties": {
+          "rss": {
+            "type": "number",
+            "format": "double",
+            "description": "Resident set size in bytes."
+          },
+          "heapTotal": {
+            "type": "number",
+            "format": "double",
+            "description": "Total V8 heap size in bytes."
+          },
+          "heapUsed": {
+            "type": "number",
+            "format": "double",
+            "description": "Used V8 heap size in bytes."
+          },
+          "external": {
+            "type": "number",
+            "format": "double",
+            "description": "External memory tracked by Node.js in bytes."
+          },
+          "arrayBuffers": {
+            "type": "number",
+            "format": "double",
+            "description": "Array buffer memory in bytes."
+          }
+        },
+        "type": "object",
+        "additionalProperties": false
+      },
+      "AgentHealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "healthy",
+              "degraded",
+              "unhealthy"
+            ],
+            "description": "High-level health classification used by monitoring and self-healing."
+          },
+          "uptime": {
+            "type": "number",
+            "format": "double",
+            "description": "Agent uptime, in seconds."
+          },
+          "memory": {
+            "$ref": "#/components/schemas/MemoryUsageSnapshot",
+            "description": "Process memory snapshot when the health probe was served."
+          },
+          "requestCount": {
+            "type": "number",
+            "format": "double",
+            "description": "Count of requests seen since process start, when available."
+          },
+          "errorCount": {
+            "type": "number",
+            "format": "double",
+            "description": "Count of failed requests seen since process start, when available."
+          },
+          "avgResponseTime": {
+            "type": "number",
+            "format": "double",
+            "description": "Average response time tracked by the enhanced base agent."
+          }
+        },
+        "required": [
+          "status",
+          "uptime"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "AgentMetricsResponse": {
+        "properties": {
+          "requestCount": {
+            "type": "number",
+            "format": "double",
+            "description": "Total requests processed by the agent."
+          },
+          "errorCount": {
+            "type": "number",
+            "format": "double",
+            "description": "Total requests that ended in an error state."
+          },
+          "uptime": {
+            "type": "number",
+            "format": "double",
+            "description": "Agent uptime, in milliseconds."
+          },
+          "lastRequest": {
+            "type": "string",
+            "description": "ISO timestamp for the most recent handled request."
+          },
+          "averageResponseTime": {
+            "type": "number",
+            "format": "double",
+            "description": "Rolling average response time in milliseconds."
+          },
+          "status": {
+            "type": "string",
+            "description": "Operational status reported by the agent."
+          }
+        },
+        "required": [
+          "requestCount",
+          "errorCount",
+          "uptime"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "SearchResultItem": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Human-readable title from the search provider."
+          },
+          "url": {
+            "type": "string",
+            "description": "Canonical result URL."
+          },
+          "snippet": {
+            "type": "string",
+            "description": "Excerpt or description returned by the provider."
+          },
+          "hostname": {
+            "type": "string",
+            "description": "Hostname derived from the result URL."
+          }
+        },
+        "required": [
+          "title",
+          "url",
+          "snippet",
+          "hostname"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "WebSearchPayload": {
+        "properties": {
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/SearchResultItem"
+            },
+            "type": "array",
+            "description": "Ordered list of normalized search results."
+          },
+          "query": {
+            "type": "string",
+            "description": "Query string used for the search."
+          },
+          "resultCount": {
+            "type": "number",
+            "format": "double",
+            "description": "Count of results returned in this response."
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Timestamp recorded by the Web agent when the search completed."
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "brave",
+              "google",
+              "fallback"
+            ],
+            "description": "Provider that fulfilled the request or a fallback source."
+          },
+          "duration": {
+            "type": "number",
+            "format": "double",
+            "description": "Agent-side duration for the search, in milliseconds."
+          },
+          "error": {
+            "type": "string",
+            "description": "Optional provider error information when fallback handling was used."
+          }
+        },
+        "required": [
+          "results",
+          "query",
+          "resultCount",
+          "timestamp",
+          "source"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "AgentExecutionMetadata": {
+        "description": "Documentation DTOs shared by the representative agent controllers.\n\nThese interfaces intentionally mirror the stable request and response shapes\nexposed by the Dialogue, Web, and Knowledge agents so tsoa can generate a\nreadable OpenAPI contract for Phase 1 of the documentation system.",
+        "properties": {
+          "duration": {
+            "type": "number",
+            "format": "double",
+            "description": "Time spent fulfilling the request, in milliseconds."
+          },
+          "retryCount": {
+            "type": "number",
+            "format": "double",
+            "description": "Number of retry attempts applied before the final response."
+          }
+        },
+        "required": [
+          "duration",
+          "retryCount"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "WebSearchResponseEnvelope": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Indicates that the proxied Web search succeeded."
+          },
+          "data": {
+            "$ref": "#/components/schemas/WebSearchPayload",
+            "description": "Search results and provider metadata."
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/AgentExecutionMetadata",
+            "description": "Execution metadata captured for the Web agent request."
+          },
+          "error": {
+            "type": "string",
+            "description": "Optional error field when the Web agent had to fall back."
+          }
+        },
+        "required": [
+          "success",
+          "data",
+          "metadata"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "AgentErrorEnvelope": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              false
+            ],
+            "description": "Indicates that the proxied agent request failed."
+          },
+          "error": {
+            "type": "string",
+            "description": "Human-readable error summary returned to the caller."
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/AgentExecutionMetadata",
+            "description": "Execution metadata captured for the failed request."
+          }
+        },
+        "required": [
+          "success",
+          "error",
+          "metadata"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "WebSearchRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Search query that should be submitted to the configured search provider."
+          },
+          "maxResults": {
+            "type": "number",
+            "format": "double",
+            "description": "Maximum number of results to return."
+          },
+          "engine": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "brave",
+              "google"
+            ],
+            "description": "Optional per-request search engine override."
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ResearchSourceItem": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the source document or result."
+          },
+          "url": {
+            "type": "string",
+            "description": "Canonical URL for the source."
+          },
+          "snippet": {
+            "type": "string",
+            "description": "Excerpt used in the synthesis pipeline."
+          },
+          "relevance": {
+            "type": "number",
+            "format": "double",
+            "description": "Relative relevance score assigned by the Knowledge agent."
+          },
+          "hostname": {
+            "type": "string",
+            "description": "Hostname used to help explain provenance."
+          }
+        },
+        "required": [
+          "title",
+          "url",
+          "snippet",
+          "relevance",
+          "hostname"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "KnowledgeResearchPayload": {
+        "properties": {
+          "topic": {
+            "type": "string",
+            "description": "Topic that the Knowledge agent researched."
+          },
+          "summary": {
+            "type": "string",
+            "description": "Synthesized answer built from the top-ranked sources."
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/ResearchSourceItem"
+            },
+            "type": "array",
+            "description": "Sources retained after de-duplication and ranking."
+          },
+          "keyPoints": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "description": "Key points extracted from the highest-value source snippets."
+          },
+          "confidence": {
+            "type": "number",
+            "format": "double",
+            "description": "Confidence score for the overall synthesis."
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Timestamp recorded when the synthesis completed."
+          },
+          "queriesUsed": {
+            "type": "number",
+            "format": "double",
+            "description": "Number of distinct search queries issued for the topic."
+          },
+          "depth": {
+            "type": "string",
+            "enum": [
+              "quick",
+              "medium",
+              "deep"
+            ],
+            "description": "Research depth that drove the query fan-out."
+          }
+        },
+        "required": [
+          "topic",
+          "summary",
+          "sources",
+          "keyPoints",
+          "confidence",
+          "timestamp",
+          "queriesUsed",
+          "depth"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "KnowledgeResearchResponseEnvelope": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              true
+            ],
+            "description": "Indicates that the Knowledge research request succeeded."
+          },
+          "data": {
+            "$ref": "#/components/schemas/KnowledgeResearchPayload",
+            "description": "Research payload generated by the Knowledge agent."
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/AgentExecutionMetadata",
+            "description": "Execution metadata captured for the request."
+          }
+        },
+        "required": [
+          "success",
+          "data",
+          "metadata"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "KnowledgeResearchRequest": {
+        "properties": {
+          "topic": {
+            "type": "string",
+            "description": "Topic or question that should be researched from multiple angles."
+          },
+          "depth": {
+            "type": "string",
+            "enum": [
+              "quick",
+              "medium",
+              "deep"
+            ],
+            "description": "Depth of research requested for the topic."
+          }
+        },
+        "required": [
+          "topic"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "KnowledgeFactCheckPayload": {
+        "properties": {
+          "claim": {
+            "type": "string",
+            "description": "Claim that was evaluated."
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "CONFIRMED",
+              "DISPUTED",
+              "UNVERIFIED"
+            ],
+            "description": "Final verdict calculated by the Knowledge agent."
+          },
+          "confidence": {
+            "type": "number",
+            "format": "double",
+            "description": "Confidence score for the verdict."
+          },
+          "confirmingSources": {
+            "items": {
+              "$ref": "#/components/schemas/ResearchSourceItem"
+            },
+            "type": "array",
+            "description": "Sources that support the claim."
+          },
+          "contradictingSources": {
+            "items": {
+              "$ref": "#/components/schemas/ResearchSourceItem"
+            },
+            "type": "array",
+            "description": "Sources that dispute the claim."
+          },
+          "neutralSources": {
+            "items": {
+              "$ref": "#/components/schemas/ResearchSourceItem"
+            },
+            "type": "array",
+            "description": "Sources that were relevant but inconclusive."
+          },
+          "explanation": {
+            "type": "string",
+            "description": "Narrative explanation of the verdict."
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Timestamp recorded when the fact-check completed."
+          }
+        },
+        "required": [
+          "claim",
+          "verdict",
+          "confidence",
+          "confirmingSources",
+          "contradictingSources",
+          "neutralSources",
+          "explanation",
+          "timestamp"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "KnowledgeFactCheckResponseEnvelope": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              true
+            ],
+            "description": "Indicates that the fact-check request succeeded."
+          },
+          "data": {
+            "$ref": "#/components/schemas/KnowledgeFactCheckPayload",
+            "description": "Fact-check result returned by the Knowledge agent."
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/AgentExecutionMetadata",
+            "description": "Execution metadata captured for the request."
+          }
+        },
+        "required": [
+          "success",
+          "data",
+          "metadata"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "KnowledgeFactCheckRequest": {
+        "properties": {
+          "claim": {
+            "type": "string",
+            "description": "Claim that should be verified across multiple sources."
+          },
+          "sources": {
+            "type": "number",
+            "format": "double",
+            "description": "Number of sources to inspect per fact-check query."
+          }
+        },
+        "required": [
+          "claim"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "SummarySourceItem": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Human-readable source title."
+          },
+          "url": {
+            "type": "string",
+            "description": "Canonical URL for the source."
+          }
+        },
+        "required": [
+          "title",
+          "url"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "KnowledgeSummaryPayload": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Query that was summarized."
+          },
+          "summary": {
+            "type": "string",
+            "description": "Combined synthesis built from the fetched sources."
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/SummarySourceItem"
+            },
+            "type": "array",
+            "description": "Sources cited by the summarized response."
+          },
+          "wordCount": {
+            "type": "number",
+            "format": "double",
+            "description": "Word count of the final summary text."
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Timestamp recorded when summarization completed."
+          }
+        },
+        "required": [
+          "query",
+          "summary",
+          "sources",
+          "wordCount",
+          "timestamp"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "KnowledgeSummaryResponseEnvelope": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              true
+            ],
+            "description": "Indicates that the summarization request succeeded."
+          },
+          "data": {
+            "$ref": "#/components/schemas/KnowledgeSummaryPayload",
+            "description": "Summarization payload returned by the Knowledge agent."
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/AgentExecutionMetadata",
+            "description": "Execution metadata captured for the request."
+          }
+        },
+        "required": [
+          "success",
+          "data",
+          "metadata"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "KnowledgeSummarizeRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Topic or search query to summarize from the web."
+          },
+          "maxSources": {
+            "type": "number",
+            "format": "double",
+            "description": "Maximum number of source documents to incorporate."
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "DialogueRespondPayload": {
+        "properties": {
+          "response": {
+            "type": "string",
+            "description": "Primary natural-language answer returned to the caller."
+          },
+          "message": {
+            "type": "string",
+            "description": "Backwards-compatible alias for clients that still read `message`."
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "llm",
+              "llm+web",
+              "mock"
+            ],
+            "description": "Indicates whether the answer came from the LLM, the web, or fallback logic."
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "ISO timestamp recorded when the response payload was created."
+          }
+        },
+        "required": [
+          "response",
+          "message",
+          "source",
+          "timestamp"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "DialogueResponseEnvelope": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "enum": [
+              true
+            ],
+            "description": "Indicates that the proxied Dialogue request succeeded."
+          },
+          "data": {
+            "$ref": "#/components/schemas/DialogueRespondPayload",
+            "description": "Dialogue-specific response payload."
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/AgentExecutionMetadata",
+            "description": "Execution metadata captured for the successful request."
+          }
+        },
+        "required": [
+          "success",
+          "data",
+          "metadata"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Record_string.string_": {
+        "properties": {},
+        "additionalProperties": {
+          "type": "string"
+        },
+        "type": "object",
+        "description": "Construct a type with a set of properties K of type T"
+      },
+      "DialogueRespondRequest": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "End-user message to be answered by the Dialogue agent."
+          },
+          "context": {
+            "$ref": "#/components/schemas/Record_string.string_",
+            "description": "Optional lightweight context to inject into the response generation flow,\nsuch as the current topic, session labels, or prior decisions."
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {}
+  },
+  "info": {
+    "title": "Jarvis Representative Agent API",
+    "version": "4.0.0",
+    "description": "Phase 1 OpenAPI surface generated from representative Dialogue, Web, and Knowledge controllers for the Jarvis documentation system foundation.",
+    "contact": {}
+  },
+  "paths": {
+    "/api/web/health": {
+      "get": {
+        "operationId": "getWebHealth",
+        "responses": {
+          "200": {
+            "description": "Web agent health returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentHealthResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get the current health snapshot for the Web agent.",
+        "tags": [
+          "Web"
+        ],
+        "security": [],
+        "parameters": []
+      }
+    },
+    "/api/web/metrics": {
+      "get": {
+        "operationId": "getWebMetrics",
+        "responses": {
+          "200": {
+            "description": "Web agent metrics returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentMetricsResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get rolling search and performance metrics for the Web agent.",
+        "tags": [
+          "Web"
+        ],
+        "security": [],
+        "parameters": []
+      }
+    },
+    "/api/web/search": {
+      "post": {
+        "operationId": "searchWithWebAgent",
+        "responses": {
+          "200": {
+            "description": "Search results returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebSearchResponseEnvelope"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "results": [
+                          {
+                            "title": "Jarvis documentation system foundations",
+                            "url": "https://example.com/jarvis-docs",
+                            "snippet": "A representative result returned by the Web agent.",
+                            "hostname": "example.com"
+                          }
+                        ],
+                        "query": "jarvis documentation system foundations",
+                        "resultCount": 1,
+                        "timestamp": "2026-03-22T11:05:24.498Z",
+                        "source": "google",
+                        "duration": 231
+                      },
+                      "metadata": {
+                        "duration": 231,
+                        "retryCount": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is missing a query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The Web agent search request failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentErrorEnvelope"
+                }
+              }
+            }
+          }
+        },
+        "description": "Run a web search through the configured provider and return normalized\nsearch results for downstream agent consumption.",
+        "tags": [
+          "Web"
+        ],
+        "security": [],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebSearchRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/knowledge/health": {
+      "get": {
+        "operationId": "getKnowledgeHealth",
+        "responses": {
+          "200": {
+            "description": "Knowledge agent health returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentHealthResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get the current health snapshot for the Knowledge agent.",
+        "tags": [
+          "Knowledge"
+        ],
+        "security": [],
+        "parameters": []
+      }
+    },
+    "/api/knowledge/metrics": {
+      "get": {
+        "operationId": "getKnowledgeMetrics",
+        "responses": {
+          "200": {
+            "description": "Knowledge agent metrics returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentMetricsResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get rolling synthesis and performance metrics for the Knowledge agent.",
+        "tags": [
+          "Knowledge"
+        ],
+        "security": [],
+        "parameters": []
+      }
+    },
+    "/api/knowledge/research": {
+      "post": {
+        "operationId": "researchWithKnowledgeAgent",
+        "responses": {
+          "200": {
+            "description": "Research result returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KnowledgeResearchResponseEnvelope"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "topic": "documentation drift prevention",
+                        "summary": "Documentation drift is reduced by generating docs from source code.",
+                        "sources": [
+                          {
+                            "title": "Generated documentation guide",
+                            "url": "https://example.com/generated-docs",
+                            "snippet": "A representative source snippet.",
+                            "relevance": 0.93,
+                            "hostname": "example.com"
+                          }
+                        ],
+                        "keyPoints": [
+                          "Generate API reference from code.",
+                          "Keep architecture rationale in ADRs."
+                        ],
+                        "confidence": 0.86,
+                        "timestamp": "2026-03-22T11:05:24.498Z",
+                        "queriesUsed": 3,
+                        "depth": "medium"
+                      },
+                      "metadata": {
+                        "duration": 618,
+                        "retryCount": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is missing a topic",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The Knowledge agent research request failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentErrorEnvelope"
+                }
+              }
+            }
+          }
+        },
+        "description": "Research a topic from multiple angles and synthesize a citation-friendly\nanswer from the highest-value retrieved sources.",
+        "tags": [
+          "Knowledge"
+        ],
+        "security": [],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KnowledgeResearchRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/knowledge/fact-check": {
+      "post": {
+        "operationId": "factCheckWithKnowledgeAgent",
+        "responses": {
+          "200": {
+            "description": "Fact-check result returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KnowledgeFactCheckResponseEnvelope"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "claim": "Generated documentation reduces drift.",
+                        "verdict": "CONFIRMED",
+                        "confidence": 0.82,
+                        "confirmingSources": [
+                          {
+                            "title": "Documentation best practices",
+                            "url": "https://example.com/best-practices",
+                            "snippet": "Generated documentation reduces stale reference material.",
+                            "relevance": 0.88,
+                            "hostname": "example.com"
+                          }
+                        ],
+                        "contradictingSources": [],
+                        "neutralSources": [],
+                        "explanation": "Most retrieved sources support the claim with minimal contradiction.",
+                        "timestamp": "2026-03-22T11:05:24.498Z"
+                      },
+                      "metadata": {
+                        "duration": 744,
+                        "retryCount": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is missing a claim",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The Knowledge agent fact-check request failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentErrorEnvelope"
+                }
+              }
+            }
+          }
+        },
+        "description": "Verify a claim across multiple sources and return a confidence-weighted\nverdict describing whether the claim is supported, disputed, or unresolved.",
+        "tags": [
+          "Knowledge"
+        ],
+        "security": [],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KnowledgeFactCheckRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/knowledge/summarize": {
+      "post": {
+        "operationId": "summarizeWithKnowledgeAgent",
+        "responses": {
+          "200": {
+            "description": "Summary returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KnowledgeSummaryResponseEnvelope"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "query": "Jarvis documentation system phase 1",
+                        "summary": "Phase 1 establishes TypeDoc, representative OpenAPI, ADRs, and a glossary.",
+                        "sources": [
+                          {
+                            "title": "Implementation plan",
+                            "url": "https://example.com/implementation-plan"
+                          }
+                        ],
+                        "wordCount": 12,
+                        "timestamp": "2026-03-22T11:05:24.498Z"
+                      },
+                      "metadata": {
+                        "duration": 403,
+                        "retryCount": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is missing a query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The Knowledge agent summarize request failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentErrorEnvelope"
+                }
+              }
+            }
+          }
+        },
+        "description": "Summarize current web information about a topic into a concise digest with\nsource references and a computed word count.",
+        "tags": [
+          "Knowledge"
+        ],
+        "security": [],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KnowledgeSummarizeRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/dialogue/health": {
+      "get": {
+        "operationId": "getDialogueHealth",
+        "responses": {
+          "200": {
+            "description": "Dialogue agent health returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentHealthResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get the current health snapshot for the Dialogue agent.",
+        "tags": [
+          "Dialogue"
+        ],
+        "security": [],
+        "parameters": []
+      }
+    },
+    "/api/dialogue/metrics": {
+      "get": {
+        "operationId": "getDialogueMetrics",
+        "responses": {
+          "200": {
+            "description": "Dialogue agent metrics returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentMetricsResponse"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get rolling metrics captured by the enhanced Dialogue agent base class.",
+        "tags": [
+          "Dialogue"
+        ],
+        "security": [],
+        "parameters": []
+      }
+    },
+    "/api/dialogue/respond": {
+      "post": {
+        "operationId": "respondWithDialogueAgent",
+        "responses": {
+          "200": {
+            "description": "Dialogue response generated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DialogueResponseEnvelope"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "response": "Jarvis is online and ready to help.",
+                        "message": "Jarvis is online and ready to help.",
+                        "source": "llm",
+                        "timestamp": "2026-03-22T11:05:24.498Z"
+                      },
+                      "metadata": {
+                        "duration": 184,
+                        "retryCount": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is missing a message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentErrorEnvelope"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "The Dialogue agent could not process the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentErrorEnvelope"
+                }
+              }
+            }
+          }
+        },
+        "description": "Generate a conversational response and, when needed, enrich it with recent\nweb context before returning a final answer.",
+        "tags": [
+          "Dialogue"
+        ],
+        "security": [],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DialogueRespondRequest"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Dialogue",
+      "description": "Conversational response generation and dialogue health endpoints."
+    },
+    {
+      "name": "Web",
+      "description": "Real-time web search and retrieval endpoints."
+    },
+    {
+      "name": "Knowledge",
+      "description": "Research, fact-checking, and summarization endpoints."
+    }
+  ],
+  "jsonSchemaDialect": "https://spec.openapis.org/oas/3.1/dialect/base"
+}

@@ -3,16 +3,23 @@
 
   It handles storing memories, searching through them, and managing different types of memory while making sure Jarvis can remember things in smart ways.
 */
-import axios, { type AxiosInstance } from "axios";
-import type { Request, Response } from "express";
-import express from "express";
-import type { Logger } from "winston";
-import type { AgentRequest, AgentResponse } from "../types/agent";
-import { EnhancedBaseAgent } from "./base-agent-enhanced";
+import axios, { type AxiosInstance } from 'axios';
+import type { Request, Response } from 'express';
+import express from 'express';
+import type { Logger } from 'winston';
+import type { AgentRequest, AgentResponse } from '../types/agent';
+import { EnhancedBaseAgent } from './base-agent-enhanced';
 
 /**
- * Memory System Agent that provides memory management capabilities.
- * Integrates the Jarvis Memory System Python service into the Jarvis Orchestrator.
+ * Bridges the TypeScript runtime to the external Jarvis memory-service backend.
+ *
+ * This agent keeps the orchestration layer aligned with the Python memory
+ * system, translating Jarvis requests into the remote ingestion, recall, and
+ * search operations exposed by that service.
+ *
+ * @agent MemorySystemAgent
+ * @domain agents.memory
+ * @critical
  */
 export class MemorySystemAgent extends EnhancedBaseAgent {
   private readonly pythonApiUrl: string;
@@ -30,14 +37,14 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
     super(agentId, version, port, logger);
 
     // Get Python API URL from environment or use default
-    this.pythonApiUrl = process.env.MEMORY_SYSTEM_API_URL || "http://localhost:3035";
+    this.pythonApiUrl = process.env.MEMORY_SYSTEM_API_URL || 'http://localhost:3035';
 
     // Create axios client for Python API
     this.axiosClient = axios.create({
       baseURL: this.pythonApiUrl,
-      timeout: parseInt(process.env.MEMORY_SYSTEM_TIMEOUT || "30000", 10),
+      timeout: parseInt(process.env.MEMORY_SYSTEM_TIMEOUT || '30000', 10),
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
 
@@ -55,7 +62,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
     this.setupHealthEndpoint();
     this.setupEnhancedRoutes();
 
-    this.logger.info("Memory System agent initialized");
+    this.logger.info('Memory System agent initialized');
   }
 
   /**
@@ -63,7 +70,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
    */
   protected async startServer(): Promise<void> {
     // POST endpoint for ingesting memories
-    this.app.post("/api/ingest", async (req: Request, res: Response) => {
+    this.app.post('/api/ingest', async (req: Request, res: Response) => {
       const startTime = Date.now();
       try {
         const request: AgentRequest = req.body;
@@ -71,7 +78,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
 
         // Extract parameters from inputs
         const text = inputs?.text as string;
-        const userId = (inputs?.userId as string) || "default";
+        const userId = (inputs?.userId as string) || 'default';
         const emotion = inputs?.emotion as string;
         const context = inputs?.context as string;
         const importanceScore = inputs?.importanceScore as number;
@@ -81,7 +88,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
           const errorResponse: AgentResponse = {
             success: false,
             data: {
-              error: "Missing required parameter: text",
+              error: 'Missing required parameter: text',
             },
             metadata: {
               duration: Date.now() - startTime,
@@ -99,7 +106,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
         });
 
         // Call Python API
-        const pythonResponse = await this.axiosClient.post("/api/ingest", {
+        const pythonResponse = await this.axiosClient.post('/api/ingest', {
           text,
           user_id: userId,
           emotion,
@@ -129,7 +136,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
 
         res.json(response);
       } catch (error) {
-        this.logger.error("Error ingesting memory", {
+        this.logger.error('Error ingesting memory', {
           error: error instanceof Error ? error.message : String(error),
           axiosError: axios.isAxiosError(error)
             ? {
@@ -147,7 +154,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
               ? error.response?.data?.error || error.message
               : error instanceof Error
                 ? error.message
-                : "Internal server error",
+                : 'Internal server error',
           },
           metadata: {
             duration,
@@ -162,7 +169,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
     });
 
     // POST endpoint for querying memories
-    this.app.post("/api/query", async (req: Request, res: Response) => {
+    this.app.post('/api/query', async (req: Request, res: Response) => {
       const startTime = Date.now();
       try {
         const request: AgentRequest = req.body;
@@ -170,14 +177,14 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
 
         // Extract parameters from inputs
         const query = inputs?.query as string;
-        const userId = (inputs?.userId as string) || "default";
+        const userId = (inputs?.userId as string) || 'default';
         const topK = (inputs?.topK as number) || 10;
 
         if (!query) {
           const errorResponse: AgentResponse = {
             success: false,
             data: {
-              error: "Missing required parameter: query",
+              error: 'Missing required parameter: query',
             },
             metadata: {
               duration: Date.now() - startTime,
@@ -196,7 +203,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
         });
 
         // Call Python API
-        const pythonResponse = await this.axiosClient.post("/api/query", {
+        const pythonResponse = await this.axiosClient.post('/api/query', {
           query,
           user_id: userId,
           top_k: topK,
@@ -224,7 +231,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
 
         res.json(response);
       } catch (error) {
-        this.logger.error("Error querying memories", {
+        this.logger.error('Error querying memories', {
           error: error instanceof Error ? error.message : String(error),
         });
 
@@ -236,7 +243,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
               ? error.response?.data?.error || error.message
               : error instanceof Error
                 ? error.message
-                : "Internal server error",
+                : 'Internal server error',
           },
           metadata: {
             duration,
@@ -251,13 +258,13 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
     });
 
     // POST endpoint for consolidating memories
-    this.app.post("/api/consolidate", async (req: Request, res: Response) => {
+    this.app.post('/api/consolidate', async (req: Request, res: Response) => {
       const startTime = Date.now();
       try {
         const request: AgentRequest = req.body;
         const { inputs } = request;
 
-        const userId = (inputs?.userId as string) || "default";
+        const userId = (inputs?.userId as string) || 'default';
 
         this.logger.info(`Consolidating memories: ${request.id}`, {
           requestId: request.id,
@@ -265,7 +272,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
         });
 
         // Call Python API
-        const pythonResponse = await this.axiosClient.post("/api/consolidate", {
+        const pythonResponse = await this.axiosClient.post('/api/consolidate', {
           user_id: userId,
         });
 
@@ -290,7 +297,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
 
         res.json(response);
       } catch (error) {
-        this.logger.error("Error consolidating memories", {
+        this.logger.error('Error consolidating memories', {
           error: error instanceof Error ? error.message : String(error),
         });
 
@@ -302,7 +309,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
               ? error.response?.data?.error || error.message
               : error instanceof Error
                 ? error.message
-                : "Internal server error",
+                : 'Internal server error',
           },
           metadata: {
             duration,
@@ -317,13 +324,13 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
     });
 
     // GET endpoint for statistics
-    this.app.get("/api/stats", async (req: Request, res: Response) => {
+    this.app.get('/api/stats', async (req: Request, res: Response) => {
       const startTime = Date.now();
       try {
-        const userId = (req.query.userId as string) || "default";
+        const userId = (req.query.userId as string) || 'default';
 
         // Call Python API
-        const pythonResponse = await this.axiosClient.get("/api/stats", {
+        const pythonResponse = await this.axiosClient.get('/api/stats', {
           params: { user_id: userId },
         });
 
@@ -339,7 +346,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
 
         res.json(response);
       } catch (error) {
-        this.logger.error("Error getting stats", {
+        this.logger.error('Error getting stats', {
           error: error instanceof Error ? error.message : String(error),
         });
 
@@ -351,7 +358,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
               ? error.response?.data?.error || error.message
               : error instanceof Error
                 ? error.message
-                : "Internal server error",
+                : 'Internal server error',
           },
           metadata: {
             duration,
@@ -366,14 +373,14 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
     });
 
     // GET endpoint for recent STM memories
-    this.app.get("/api/stm/recent", async (req: Request, res: Response) => {
+    this.app.get('/api/stm/recent', async (req: Request, res: Response) => {
       const startTime = Date.now();
       try {
-        const userId = (req.query.userId as string) || "default";
-        const num = parseInt((req.query.num as string) || "10", 10);
+        const userId = (req.query.userId as string) || 'default';
+        const num = parseInt((req.query.num as string) || '10', 10);
 
         // Call Python API
-        const pythonResponse = await this.axiosClient.get("/api/stm/recent", {
+        const pythonResponse = await this.axiosClient.get('/api/stm/recent', {
           params: { user_id: userId, num },
         });
 
@@ -392,7 +399,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
 
         res.json(response);
       } catch (error) {
-        this.logger.error("Error getting recent STM memories", {
+        this.logger.error('Error getting recent STM memories', {
           error: error instanceof Error ? error.message : String(error),
         });
 
@@ -404,7 +411,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
               ? error.response?.data?.error || error.message
               : error instanceof Error
                 ? error.message
-                : "Internal server error",
+                : 'Internal server error',
           },
           metadata: {
             duration,
@@ -419,21 +426,21 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
     });
 
     // POST endpoint for STM search
-    this.app.post("/api/stm/search", async (req: Request, res: Response) => {
+    this.app.post('/api/stm/search', async (req: Request, res: Response) => {
       const startTime = Date.now();
       try {
         const request: AgentRequest = req.body;
         const { inputs } = request;
 
         const query = inputs?.query as string;
-        const userId = (inputs?.userId as string) || "default";
+        const userId = (inputs?.userId as string) || 'default';
         const topK = (inputs?.topK as number) || 5;
 
         if (!query) {
           const errorResponse: AgentResponse = {
             success: false,
             data: {
-              error: "Missing required parameter: query",
+              error: 'Missing required parameter: query',
             },
             metadata: {
               duration: Date.now() - startTime,
@@ -445,7 +452,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
         }
 
         // Call Python API
-        const pythonResponse = await this.axiosClient.post("/api/stm/search", {
+        const pythonResponse = await this.axiosClient.post('/api/stm/search', {
           query,
           user_id: userId,
           top_k: topK,
@@ -466,7 +473,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
 
         res.json(response);
       } catch (error) {
-        this.logger.error("Error searching STM", {
+        this.logger.error('Error searching STM', {
           error: error instanceof Error ? error.message : String(error),
         });
 
@@ -478,7 +485,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
               ? error.response?.data?.error || error.message
               : error instanceof Error
                 ? error.message
-                : "Internal server error",
+                : 'Internal server error',
           },
           metadata: {
             duration,
@@ -493,21 +500,21 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
     });
 
     // GET endpoint for status
-    this.app.get("/api/status", async (req: Request, res: Response) => {
+    this.app.get('/api/status', async (req: Request, res: Response) => {
       try {
         // Check Python API health first
-        const healthResponse = await this.axiosClient.get("/health");
-        const statsResponse = await this.axiosClient.get("/api/stats");
+        const healthResponse = await this.axiosClient.get('/health');
+        const statsResponse = await this.axiosClient.get('/api/stats');
 
         res.json({
           status: this.getStatus(),
           pythonApi: {
-            healthy: healthResponse.data.status === "healthy",
+            healthy: healthResponse.data.status === 'healthy',
             stats: statsResponse.data.stats,
           },
         });
       } catch (error) {
-        this.logger.error("Error getting status", {
+        this.logger.error('Error getting status', {
           error: error instanceof Error ? error.message : String(error),
         });
 
@@ -515,7 +522,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
           status: this.getStatus(),
           pythonApi: {
             healthy: false,
-            error: error instanceof Error ? error.message : "Unknown error",
+            error: error instanceof Error ? error.message : 'Unknown error',
           },
         });
       }
@@ -528,7 +535,7 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
           this.logger.info(`Memory System agent server listening on port ${this.port}`);
           resolve();
         })
-        .on("error", (error: Error) => {
+        .on('error', (error: Error) => {
           this.logger.error(`Failed to start server on port ${this.port}`, {
             error: error.message,
           });
@@ -542,13 +549,13 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
    */
   protected getCapabilities(): string[] {
     return [
-      "memory_ingestion",
-      "memory_query",
-      "memory_consolidation",
-      "stm_operations",
-      "mtm_operations",
-      "ltm_operations",
-      "memory_statistics",
+      'memory_ingestion',
+      'memory_query',
+      'memory_consolidation',
+      'stm_operations',
+      'mtm_operations',
+      'ltm_operations',
+      'memory_statistics',
     ];
   }
 
@@ -578,13 +585,13 @@ export class MemorySystemAgent extends EnhancedBaseAgent {
 
   protected async updateConfig(config: any): Promise<void> {
     this.config = { ...this.config, ...config };
-    this.logger.info("Configuration updated", { config });
+    this.logger.info('Configuration updated', { config });
   }
 
   protected async restart(): Promise<void> {
-    this.logger.info("Restarting Memory System agent...");
+    this.logger.info('Restarting Memory System agent...');
     await this.stop();
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
     await this.start();
   }
 }

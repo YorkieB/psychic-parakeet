@@ -4,11 +4,11 @@
   It analyzes news, websites, and content for reliability while making sure Jarvis can distinguish between facts and misinformation.
 */
 
-import type { Request, Response } from "express";
-import express from "express";
-import type { Logger } from "winston";
-import type { AgentRequest, AgentResponse } from "../types/agent";
-import { EnhancedBaseAgent } from "./base-agent-enhanced";
+import type { Request, Response } from 'express';
+import express from 'express';
+import type { Logger } from 'winston';
+import type { AgentRequest, AgentResponse } from '../types/agent';
+import { EnhancedBaseAgent } from './base-agent-enhanced';
 
 // Lazy import for ReliabilityAlgorithm to handle ES module compatibility
 let ReliabilityAlgorithm: any;
@@ -16,13 +16,12 @@ let ReliabilityAlgorithm: any;
 async function loadReliabilityModule() {
   if (!ReliabilityAlgorithm) {
     try {
-      const module = await import(
-        "../reliability/components/reliability-algorithm/reliability-algorithm"
-      );
+      const module =
+        await import('../reliability/components/reliability-algorithm/reliability-algorithm');
       ReliabilityAlgorithm = module.ReliabilityAlgorithm;
     } catch (error) {
       throw new Error(
-        `Failed to load reliability module: ${error instanceof Error ? error.message : String(error)}`,
+        `Failed to load reliability module: ${error instanceof Error ? error.message : String(error)}`
       );
     }
   }
@@ -30,8 +29,16 @@ async function loadReliabilityModule() {
 }
 
 /**
- * Reliability Agent that provides source reliability assessment capabilities.
- * Integrates the Algo-2 reliability assessment system into the Jarvis Orchestrator.
+ * Wraps Jarvis's source-trust and evidence-quality assessment pipeline.
+ *
+ * The Reliability agent lazily loads the reliability subsystem, exposes
+ * assessment endpoints to the rest of Jarvis, and turns the deeper scoring,
+ * MAD, and GTVP machinery into a single operational agent surface.
+ *
+ * @agent ReliabilityAgent
+ * @domain agents.reliability
+ * @reliabilityThreshold 0.7
+ * @critical
  */
 export class ReliabilityAgent extends EnhancedBaseAgent {
   private reliabilityAlgorithm: any;
@@ -49,7 +56,7 @@ export class ReliabilityAgent extends EnhancedBaseAgent {
     super(agentId, version, port, logger);
 
     // Algorithm will be initialized lazily in initialize() method
-    this.logger.info("Reliability agent created (algorithm will be initialized on start)");
+    this.logger.info('Reliability agent created (algorithm will be initialized on start)');
   }
 
   /**
@@ -68,69 +75,69 @@ export class ReliabilityAgent extends EnhancedBaseAgent {
       const vertexUrl = process.env.VERTEX_AI_ENDPOINT_URL?.trim();
       const primaryProvider = vertexUrl
         ? {
-            provider: "vertex-ai" as const,
+            provider: 'vertex-ai' as const,
             vertexEndpointUrl: vertexUrl,
-            vertexUseRawPredict: process.env.VERTEX_AI_USE_RAW_PREDICT === "true",
-            model: process.env.VERTEX_AI_MODEL || "qwen3-30b-a3b-claude-4_5-opus-high-reasoning",
-            maxTokens: parseInt(process.env.VERTEX_AI_MAX_TOKENS || "4000", 10),
-            temperature: parseFloat(process.env.VERTEX_AI_TEMPERATURE || "0.1"),
-            timeout: parseInt(process.env.VERTEX_AI_TIMEOUT || "60000", 10),
+            vertexUseRawPredict: process.env.VERTEX_AI_USE_RAW_PREDICT === 'true',
+            model: process.env.VERTEX_AI_MODEL || 'qwen3-30b-a3b-claude-4_5-opus-high-reasoning',
+            maxTokens: parseInt(process.env.VERTEX_AI_MAX_TOKENS || '4000', 10),
+            temperature: parseFloat(process.env.VERTEX_AI_TEMPERATURE || '0.1'),
+            timeout: parseInt(process.env.VERTEX_AI_TIMEOUT || '60000', 10),
           }
         : {
-            provider: "claude-sonnet" as const,
-            apiKey: process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || "",
+            provider: 'claude-sonnet' as const,
+            apiKey: process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY || '',
             model:
-              process.env.ANTHROPIC_MODEL || process.env.CLAUDE_MODEL || "claude-3-sonnet-20240229",
-            baseUrl: process.env.ANTHROPIC_BASE_URL || "https://api.anthropic.com",
+              process.env.ANTHROPIC_MODEL || process.env.CLAUDE_MODEL || 'claude-3-sonnet-20240229',
+            baseUrl: process.env.ANTHROPIC_BASE_URL || 'https://api.anthropic.com',
             maxTokens: 4000,
             temperature: 0.1,
-            timeout: parseInt(process.env.ANTHROPIC_TIMEOUT || "30000", 10),
+            timeout: parseInt(process.env.ANTHROPIC_TIMEOUT || '30000', 10),
           };
 
       const config: any = {
         aiEngine: {
           primaryProvider,
           secondaryProvider: {
-            provider: "gpt-4o" as const,
-            apiKey: process.env.OPENAI_API_KEY || "",
-            model: process.env.OPENAI_MODEL || "gpt-4o",
+            provider: 'gpt-4o' as const,
+            apiKey: process.env.OPENAI_API_KEY || '',
+            model: process.env.OPENAI_MODEL || 'gpt-4o',
             maxTokens: 4000,
             temperature: 0.1,
-            timeout: parseInt(process.env.OPENAI_TIMEOUT || "30000", 10),
+            timeout: parseInt(process.env.OPENAI_TIMEOUT || '30000', 10),
           },
-          enableConsensusMode: process.env.ENABLE_CONSENSUS_MODE === "true",
-          enableCaching: process.env.ENABLE_RELIABILITY_CACHE !== "false",
+          enableConsensusMode: process.env.ENABLE_CONSENSUS_MODE === 'true',
+          enableCaching: process.env.ENABLE_RELIABILITY_CACHE !== 'false',
           promptLibrary: new Map(),
           consensusThreshold: 0.1,
           retryConfig: { maxRetries: 3, backoffMs: 1000, timeoutMs: 30000 },
           rateLimiting: { requestsPerMinute: 100, burstLimit: 20 },
         },
-        enableDebugLogging: process.env.RELIABILITY_DEBUG === "true",
-        assessmentTimeout: parseInt(process.env.RELIABILITY_TIMEOUT || "60000", 10),
+        enableDebugLogging: process.env.RELIABILITY_DEBUG === 'true',
+        assessmentTimeout: parseInt(process.env.RELIABILITY_TIMEOUT || '60000', 10),
         madFramework:
-          process.env.ENABLE_MAD === "true"
+          process.env.ENABLE_MAD === 'true'
             ? {
                 enabled: true,
                 claudeConfig: {
-                  apiKey: process.env.ANTHROPIC_API_KEY || "",
-                  model: process.env.ANTHROPIC_MODEL || "claude-3-sonnet-20240229",
+                  apiKey: process.env.ANTHROPIC_API_KEY || '',
+                  model: process.env.ANTHROPIC_MODEL || 'claude-3-sonnet-20240229',
                 },
                 gptConfig: {
-                  apiKey: process.env.OPENAI_API_KEY || "",
-                  model: process.env.OPENAI_MODEL || "gpt-4o",
+                  apiKey: process.env.OPENAI_API_KEY || '',
+                  model: process.env.OPENAI_MODEL || 'gpt-4o',
                 },
               }
             : { enabled: false },
         gtvpFramework:
-          process.env.ENABLE_GTVP === "true"
+          process.env.ENABLE_GTVP === 'true'
             ? {
                 enabled: true,
                 gtvpConfig: {
-                  maxAuthorities: parseInt(process.env.GTVP_MAX_AUTHORITIES || "3", 10),
-                  conflictResolutionStrategy: (process.env.GTVP_CONFLICT_STRATEGY || "majority") as
-                    | "majority"
-                    | "weighted"
-                    | "strict",
+                  maxAuthorities: parseInt(process.env.GTVP_MAX_AUTHORITIES || '3', 10),
+                  conflictResolutionStrategy: (process.env.GTVP_CONFLICT_STRATEGY || 'majority') as
+                    | 'majority'
+                    | 'weighted'
+                    | 'strict',
                 },
               }
             : { enabled: false },
@@ -138,9 +145,9 @@ export class ReliabilityAgent extends EnhancedBaseAgent {
 
       this.reliabilityAlgorithm = new ReliabilityAlgorithm(config);
       this.reliabilityModuleLoaded = true;
-      this.logger.info("Reliability agent initialized with Algo-2 system");
+      this.logger.info('Reliability agent initialized with Algo-2 system');
     } catch (error) {
-      this.logger.error("Failed to initialize reliability algorithm", {
+      this.logger.error('Failed to initialize reliability algorithm', {
         error: error instanceof Error ? error.message : String(error),
       });
       throw error;
@@ -156,10 +163,10 @@ export class ReliabilityAgent extends EnhancedBaseAgent {
       await this.initializeReliabilityAlgorithm();
     } catch (error) {
       this.logger.warn(
-        "Reliability algorithm could not be initialized. Agent will start but assessment features will be unavailable.",
+        'Reliability algorithm could not be initialized. Agent will start but assessment features will be unavailable.',
         {
           error: error instanceof Error ? error.message : String(error),
-        },
+        }
       );
       // Continue without the algorithm - agent can still respond but will return errors for assess requests
     }
@@ -171,7 +178,7 @@ export class ReliabilityAgent extends EnhancedBaseAgent {
     this.setupHealthEndpoint();
     this.setupEnhancedRoutes();
 
-    this.logger.info("Reliability agent initialized");
+    this.logger.info('Reliability agent initialized');
   }
 
   /**
@@ -179,7 +186,7 @@ export class ReliabilityAgent extends EnhancedBaseAgent {
    */
   protected async startServer(): Promise<void> {
     // POST endpoint for reliability assessment
-    this.app.post("/api/assess", async (req: Request, res: Response) => {
+    this.app.post('/api/assess', async (req: Request, res: Response) => {
       const startTime = Date.now();
       try {
         const request: AgentRequest = req.body;
@@ -188,13 +195,13 @@ export class ReliabilityAgent extends EnhancedBaseAgent {
         // Extract assessment parameters from inputs
         const sourceUrl = inputs?.sourceUrl as string;
         const sourceContent = inputs?.sourceContent as string;
-        const priority = (inputs?.priority as string) || "normal";
+        const priority = (inputs?.priority as string) || 'normal';
 
         if (!sourceUrl && !sourceContent) {
           const errorResponse: AgentResponse = {
             success: false,
             data: {
-              error: "Missing required parameter: sourceUrl or sourceContent",
+              error: 'Missing required parameter: sourceUrl or sourceContent',
             },
             metadata: {
               duration: Date.now() - startTime,
@@ -235,7 +242,7 @@ export class ReliabilityAgent extends EnhancedBaseAgent {
         const assessmentRequest: any = {
           sourceUrl: sourceUrl || undefined,
           sourceContent: sourceContent || undefined,
-          priority: priority as "low" | "normal" | "high",
+          priority: priority as 'low' | 'normal' | 'high',
           options: {
             useMAD: inputs?.useMAD === true,
             useFallacyDetection: inputs?.useFallacyDetection !== false,
@@ -273,7 +280,7 @@ export class ReliabilityAgent extends EnhancedBaseAgent {
 
         res.json(response);
       } catch (error) {
-        this.logger.error("Error processing reliability assessment request", {
+        this.logger.error('Error processing reliability assessment request', {
           error: error instanceof Error ? error.message : String(error),
         });
 
@@ -281,7 +288,7 @@ export class ReliabilityAgent extends EnhancedBaseAgent {
         const errorResponse: AgentResponse = {
           success: false,
           data: {
-            error: error instanceof Error ? error.message : "Internal server error",
+            error: error instanceof Error ? error.message : 'Internal server error',
           },
           metadata: {
             duration,
@@ -294,22 +301,22 @@ export class ReliabilityAgent extends EnhancedBaseAgent {
     });
 
     // GET endpoint for health check with reliability system status
-    this.app.get("/api/status", async (req: Request, res: Response) => {
+    this.app.get('/api/status', async (req: Request, res: Response) => {
       try {
         res.json({
           status: this.getStatus(),
           reliabilitySystem: {
-            algorithm: "operational",
+            algorithm: 'operational',
             features: {
-              madFramework: process.env.ENABLE_MAD === "true",
-              gtvpFramework: process.env.ENABLE_GTVP === "true",
+              madFramework: process.env.ENABLE_MAD === 'true',
+              gtvpFramework: process.env.ENABLE_GTVP === 'true',
               fallacyDetection: true,
             },
           },
         });
       } catch (error) {
         res.status(500).json({
-          error: error instanceof Error ? error.message : "Internal server error",
+          error: error instanceof Error ? error.message : 'Internal server error',
         });
       }
     });
@@ -321,7 +328,7 @@ export class ReliabilityAgent extends EnhancedBaseAgent {
           this.logger.info(`Reliability agent server listening on port ${this.port}`);
           resolve();
         })
-        .on("error", (error: Error) => {
+        .on('error', (error: Error) => {
           this.logger.error(`Failed to start server on port ${this.port}`, {
             error: error.message,
           });
@@ -335,11 +342,11 @@ export class ReliabilityAgent extends EnhancedBaseAgent {
    */
   protected getCapabilities(): string[] {
     return [
-      "assess_reliability",
-      "source_analysis",
-      "fallacy_detection",
-      "multi_agent_debate",
-      "ground_truth_verification",
+      'assess_reliability',
+      'source_analysis',
+      'fallacy_detection',
+      'multi_agent_debate',
+      'ground_truth_verification',
     ];
   }
 
@@ -376,13 +383,13 @@ export class ReliabilityAgent extends EnhancedBaseAgent {
 
   protected async updateConfig(config: any): Promise<void> {
     this.config = { ...this.config, ...config };
-    this.logger.info("Configuration updated", { config });
+    this.logger.info('Configuration updated', { config });
   }
 
   protected async restart(): Promise<void> {
-    this.logger.info("Restarting Reliability agent...");
+    this.logger.info('Restarting Reliability agent...');
     await this.stop();
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
     await this.start();
   }
 }

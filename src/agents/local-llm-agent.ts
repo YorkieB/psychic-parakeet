@@ -27,8 +27,15 @@ interface Conversation {
 }
 
 /**
- * Local Fallback LLM Agent - Completely offline AI assistant
- * Runs entirely on local PC with no internet or API dependencies
+ * Provides the offline fallback reasoning path for Jarvis.
+ *
+ * When hosted model providers are unavailable, the Local LLM agent keeps core
+ * assistant behavior alive through rule-based responses, a lightweight local
+ * knowledge base, and conversation-aware fallback handling.
+ *
+ * @agent LocalLLMAgent
+ * @domain agents.llm
+ * @critical
  */
 export class LocalLLMAgent extends EnhancedBaseAgent {
   private defaultConfig: LocalConfig;

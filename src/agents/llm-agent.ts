@@ -43,8 +43,15 @@ interface Conversation {
 }
 
 /**
- * LLM Agent - Provides direct access to language model capabilities.
- * Manages conversations, completions, and LLM configuration.
+ * Exposes Jarvis's direct large-language-model access layer.
+ *
+ * The LLM agent manages provider selection, conversation state, completion
+ * settings, and higher-level text operations so other parts of the system can
+ * call into model capabilities through a stable agent contract.
+ *
+ * @agent LLMAgent
+ * @domain agents.llm
+ * @critical
  */
 export class LLMAgent extends EnhancedBaseAgent {
   private defaultConfig: LLMConfig;
@@ -595,33 +602,33 @@ export class LLMAgent extends EnhancedBaseAgent {
     // The keys are lowercase for case-insensitive matching.
     const aliases: Record<string, string> = {
       // Current models (verified in ListModels)
-      'gemini-2.5-flash':         'gemini-2.5-flash',
-      'gemini-2.5-pro':           'gemini-2.5-pro',
-      'gemini-2.0-flash':         'gemini-2.0-flash',
-      'gemini-2.0-flash-001':     'gemini-2.0-flash-001',
-      'gemini-2.0-flash-lite':    'gemini-2.0-flash-lite',
-      'gemini-2.0-flash-lite-001':'gemini-2.0-flash-lite-001',
-      'gemini-2.5-flash-lite':    'gemini-2.5-flash-lite',
+      'gemini-2.5-flash': 'gemini-2.5-flash',
+      'gemini-2.5-pro': 'gemini-2.5-pro',
+      'gemini-2.0-flash': 'gemini-2.0-flash',
+      'gemini-2.0-flash-001': 'gemini-2.0-flash-001',
+      'gemini-2.0-flash-lite': 'gemini-2.0-flash-lite',
+      'gemini-2.0-flash-lite-001': 'gemini-2.0-flash-lite-001',
+      'gemini-2.5-flash-lite': 'gemini-2.5-flash-lite',
 
       // "latest" aliases (these exist in ListModels)
-      'gemini-flash-latest':      'gemini-flash-latest',
+      'gemini-flash-latest': 'gemini-flash-latest',
       'gemini-flash-lite-latest': 'gemini-flash-lite-latest',
-      'gemini-pro-latest':        'gemini-pro-latest',
+      'gemini-pro-latest': 'gemini-pro-latest',
 
       // Deprecated 1.x → route to current equivalents
-      'gemini-1.5-flash':         'gemini-2.5-flash',
-      'gemini-1.5-flash-latest':  'gemini-flash-latest',
-      'gemini-1.5-flash-exp':     'gemini-2.5-flash',
-      'gemini-1.5-pro':           'gemini-2.5-pro',
-      'gemini-1.5-pro-latest':    'gemini-pro-latest',
-      'gemini-1.0-pro':           'gemini-2.0-flash',
-      'gemini-1.0-pro-001':       'gemini-2.0-flash-001',
-      'gemini-pro':               'gemini-pro-latest',
+      'gemini-1.5-flash': 'gemini-2.5-flash',
+      'gemini-1.5-flash-latest': 'gemini-flash-latest',
+      'gemini-1.5-flash-exp': 'gemini-2.5-flash',
+      'gemini-1.5-pro': 'gemini-2.5-pro',
+      'gemini-1.5-pro-latest': 'gemini-pro-latest',
+      'gemini-1.0-pro': 'gemini-2.0-flash',
+      'gemini-1.0-pro-001': 'gemini-2.0-flash-001',
+      'gemini-pro': 'gemini-pro-latest',
 
       // Preview / next-gen models (verified in ListModels)
-      'gemini-3-flash-preview':   'gemini-3-flash-preview',
-      'gemini-3-pro-preview':     'gemini-3-pro-preview',
-      'gemini-3.1-pro-preview':   'gemini-3.1-pro-preview',
+      'gemini-3-flash-preview': 'gemini-3-flash-preview',
+      'gemini-3-pro-preview': 'gemini-3-pro-preview',
+      'gemini-3.1-pro-preview': 'gemini-3.1-pro-preview',
     };
 
     const normalized = requestedModel.trim();

@@ -4,23 +4,30 @@
   It handles audio recording, speech transcription, and wake word detection while making sure Jarvis can hear you when you need help.
 */
 
-import type { Request, Response } from "express";
-import express from "express";
-import type { Logger } from "winston";
-import type { AgentRequest, AgentResponse } from "../types/agent";
-import { EnhancedBaseAgent } from "./base-agent-enhanced";
+import type { Request, Response } from 'express';
+import express from 'express';
+import type { Logger } from 'winston';
+import type { AgentRequest, AgentResponse } from '../types/agent';
+import { EnhancedBaseAgent } from './base-agent-enhanced';
 
 interface ListeningSession {
   id: string;
-  status: "idle" | "listening" | "processing" | "paused";
+  status: 'idle' | 'listening' | 'processing' | 'paused';
   startedAt?: Date;
   duration: number;
   transcriptions: Array<{ text: string; timestamp: Date; confidence: number }>;
 }
 
 /**
- * Listening Agent - Manages audio listening and transcription sessions.
- * Provides continuous listening mode with wake word detection.
+ * Manages the always-listening side of the Jarvis voice experience.
+ *
+ * The Listening agent tracks wake-word configuration, audio session state, and
+ * transcription history so voice-first interactions can be coordinated without
+ * coupling that responsibility into the synthesis or command layers.
+ *
+ * @agent ListeningAgent
+ * @domain agents.voice
+ * @critical
  */
 export class ListeningAgent extends EnhancedBaseAgent {
   private currentSession: ListeningSession;
@@ -28,20 +35,20 @@ export class ListeningAgent extends EnhancedBaseAgent {
   private isListeningEnabled: boolean;
 
   constructor(logger: Logger) {
-    super("Listening", "1.0.0", parseInt(process.env.LISTENING_AGENT_PORT || "3029", 10), logger);
-    this.wakeWords = ["jarvis", "hey jarvis", "ok jarvis"];
+    super('Listening', '1.0.0', parseInt(process.env.LISTENING_AGENT_PORT || '3029', 10), logger);
+    this.wakeWords = ['jarvis', 'hey jarvis', 'ok jarvis'];
     this.isListeningEnabled = false;
     this.currentSession = {
       id: `session-${Date.now()}`,
-      status: "idle",
+      status: 'idle',
       duration: 0,
       transcriptions: [],
     };
   }
 
   protected async initialize(): Promise<void> {
-    this.logger.info("✅ Listening Agent initialized");
-    this.logger.info(`   Wake words: ${this.wakeWords.join(", ")}`);
+    this.logger.info('✅ Listening Agent initialized');
+    this.logger.info(`   Wake words: ${this.wakeWords.join(', ')}`);
   }
 
   protected async startServer(): Promise<void> {
@@ -49,7 +56,7 @@ export class ListeningAgent extends EnhancedBaseAgent {
     this.setupHealthEndpoint();
     this.setupEnhancedRoutes();
 
-    this.app.post("/api", async (req: Request, res: Response) => {
+    this.app.post('/api', async (req: Request, res: Response) => {
       const startTime = Date.now();
       const request = req.body as AgentRequest;
 
@@ -65,31 +72,31 @@ export class ListeningAgent extends EnhancedBaseAgent {
         let result: unknown;
 
         switch (action) {
-          case "start_listening":
+          case 'start_listening':
             result = await this.startListening(inputs);
             break;
-          case "stop_listening":
+          case 'stop_listening':
             result = await this.stopListening();
             break;
-          case "pause":
+          case 'pause':
             result = await this.pauseListening();
             break;
-          case "resume":
+          case 'resume':
             result = await this.resumeListening();
             break;
-          case "get_status":
+          case 'get_status':
             result = await this.getListeningStatus();
             break;
-          case "get_transcriptions":
+          case 'get_transcriptions':
             result = await this.getTranscriptions(inputs);
             break;
-          case "set_wake_words":
+          case 'set_wake_words':
             result = await this.setWakeWords(inputs);
             break;
-          case "check_wake_word":
+          case 'check_wake_word':
             result = await this.checkWakeWord(inputs);
             break;
-          case "simulate_input":
+          case 'simulate_input':
             result = await this.simulateInput(inputs);
             break;
           default:
@@ -105,7 +112,7 @@ export class ListeningAgent extends EnhancedBaseAgent {
 
         res.json(response);
       } catch (error) {
-        this.logger.error("Error processing listening request", {
+        this.logger.error('Error processing listening request', {
           error: error instanceof Error ? error.message : String(error),
           requestId: request.id,
         });
@@ -113,7 +120,7 @@ export class ListeningAgent extends EnhancedBaseAgent {
         const duration = Date.now() - startTime;
         const errorResponse: AgentResponse = {
           success: false,
-          error: error instanceof Error ? error.message : "Unknown error",
+          error: error instanceof Error ? error.message : 'Unknown error',
           metadata: { duration, retryCount: 0 },
         };
 
@@ -127,7 +134,7 @@ export class ListeningAgent extends EnhancedBaseAgent {
           this.logger.info(`Listening agent server listening on port ${this.port}`);
           resolve();
         })
-        .on("error", reject);
+        .on('error', reject);
     });
   }
 
@@ -137,7 +144,7 @@ export class ListeningAgent extends EnhancedBaseAgent {
     this.isListeningEnabled = true;
     this.currentSession = {
       id: `session-${Date.now()}`,
-      status: "listening",
+      status: 'listening',
       startedAt: new Date(),
       duration: 0,
       transcriptions: [],
@@ -147,10 +154,10 @@ export class ListeningAgent extends EnhancedBaseAgent {
 
     return {
       sessionId: this.currentSession.id,
-      status: "listening",
+      status: 'listening',
       continuous,
       wakeWords: this.wakeWords,
-      message: "Listening started. In production, this would capture audio.",
+      message: 'Listening started. In production, this would capture audio.',
     };
   }
 
@@ -160,32 +167,32 @@ export class ListeningAgent extends EnhancedBaseAgent {
     if (this.currentSession.startedAt) {
       this.currentSession.duration = Date.now() - this.currentSession.startedAt.getTime();
     }
-    this.currentSession.status = "idle";
+    this.currentSession.status = 'idle';
 
     return {
       sessionId: this.currentSession.id,
-      status: "stopped",
+      status: 'stopped',
       duration: this.currentSession.duration,
       transcriptionCount: this.currentSession.transcriptions.length,
     };
   }
 
   private async pauseListening(): Promise<object> {
-    if (this.currentSession.status !== "listening") {
+    if (this.currentSession.status !== 'listening') {
       return { status: this.currentSession.status, paused: false };
     }
 
-    this.currentSession.status = "paused";
-    return { sessionId: this.currentSession.id, status: "paused" };
+    this.currentSession.status = 'paused';
+    return { sessionId: this.currentSession.id, status: 'paused' };
   }
 
   private async resumeListening(): Promise<object> {
-    if (this.currentSession.status !== "paused") {
+    if (this.currentSession.status !== 'paused') {
       return { status: this.currentSession.status, resumed: false };
     }
 
-    this.currentSession.status = "listening";
-    return { sessionId: this.currentSession.id, status: "listening" };
+    this.currentSession.status = 'listening';
+    return { sessionId: this.currentSession.id, status: 'listening' };
   }
 
   private async getListeningStatus(): Promise<object> {
@@ -209,7 +216,7 @@ export class ListeningAgent extends EnhancedBaseAgent {
     let transcriptions = this.currentSession.transcriptions;
 
     if (since) {
-      transcriptions = transcriptions.filter((t) => t.timestamp >= since);
+      transcriptions = transcriptions.filter(t => t.timestamp >= since);
     }
 
     return {
@@ -223,34 +230,34 @@ export class ListeningAgent extends EnhancedBaseAgent {
     const words = inputs.words as string[];
 
     if (!Array.isArray(words) || words.length === 0) {
-      throw new Error("At least one wake word is required");
+      throw new Error('At least one wake word is required');
     }
 
-    this.wakeWords = words.map((w) => w.toLowerCase().trim());
+    this.wakeWords = words.map(w => w.toLowerCase().trim());
 
     return { wakeWords: this.wakeWords };
   }
 
   private async checkWakeWord(inputs: Record<string, unknown>): Promise<object> {
-    const text = ((inputs.text as string) || "").toLowerCase();
+    const text = ((inputs.text as string) || '').toLowerCase();
 
-    const detected = this.wakeWords.some((word) => text.includes(word));
-    const matchedWord = this.wakeWords.find((word) => text.includes(word));
+    const detected = this.wakeWords.some(word => text.includes(word));
+    const matchedWord = this.wakeWords.find(word => text.includes(word));
 
     return {
       text,
       wakeWordDetected: detected,
       matchedWord: matchedWord || null,
-      command: detected ? text.replace(matchedWord!, "").trim() : null,
+      command: detected ? text.replace(matchedWord!, '').trim() : null,
     };
   }
 
   private async simulateInput(inputs: Record<string, unknown>): Promise<object> {
-    const text = (inputs.text as string) || "";
+    const text = (inputs.text as string) || '';
     const confidence = (inputs.confidence as number) || 0.9;
 
     if (!text.trim()) {
-      throw new Error("Text is required");
+      throw new Error('Text is required');
     }
 
     const transcription = {
@@ -273,20 +280,20 @@ export class ListeningAgent extends EnhancedBaseAgent {
 
   protected getCapabilities(): string[] {
     return [
-      "start_listening",
-      "stop_listening",
-      "pause",
-      "resume",
-      "get_status",
-      "get_transcriptions",
-      "set_wake_words",
-      "check_wake_word",
-      "simulate_input",
+      'start_listening',
+      'stop_listening',
+      'pause',
+      'resume',
+      'get_status',
+      'get_transcriptions',
+      'set_wake_words',
+      'check_wake_word',
+      'simulate_input',
     ];
   }
 
   protected getDependencies(): string[] {
-    return ["Voice"];
+    return ['Voice'];
   }
 
   protected getPriority(): number {
@@ -312,13 +319,13 @@ export class ListeningAgent extends EnhancedBaseAgent {
 
   protected async updateConfig(config: any): Promise<void> {
     this.config = { ...this.config, ...config };
-    this.logger.info("Configuration updated", { config });
+    this.logger.info('Configuration updated', { config });
   }
 
   protected async restart(): Promise<void> {
-    this.logger.info("Restarting Listening agent...");
+    this.logger.info('Restarting Listening agent...');
     await this.stop();
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
     await this.start();
   }
 }

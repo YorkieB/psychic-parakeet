@@ -29,8 +29,15 @@ interface ParsedCommand {
 }
 
 /**
- * Voice Command Agent - Parses and routes voice commands.
- * Provides pattern matching and intent detection for voice inputs.
+ * Parses spoken commands into structured Jarvis actions.
+ *
+ * The Voice Command agent is the bridge between free-form voice input and the
+ * task execution layer, using patterns, extracted parameters, and confidence
+ * scoring to route utterances into concrete operations.
+ *
+ * @agent VoiceCommandAgent
+ * @domain agents.voice
+ * @critical
  */
 export class VoiceCommandAgent extends EnhancedBaseAgent {
   private commands: Map<string, Command> = new Map();

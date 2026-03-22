@@ -4,16 +4,16 @@
   It stores, retrieves, and searches through memories while making sure Jarvis can recall what matters to you and learn from past interactions.
 */
 
-import type { Request, Response } from "express";
-import express from "express";
-import type { Logger } from "winston";
-import type { AgentRequest, AgentResponse } from "../types/agent";
-import { EnhancedBaseAgent } from "./base-agent-enhanced";
+import type { Request, Response } from 'express';
+import express from 'express';
+import type { Logger } from 'winston';
+import type { AgentRequest, AgentResponse } from '../types/agent';
+import { EnhancedBaseAgent } from './base-agent-enhanced';
 
 interface Memory {
   id: string;
   content: string;
-  type: "fact" | "preference" | "event" | "conversation" | "knowledge";
+  type: 'fact' | 'preference' | 'event' | 'conversation' | 'knowledge';
   importance: number; // 1-10
   tags: string[];
   metadata: Record<string, unknown>;
@@ -23,19 +23,26 @@ interface Memory {
 }
 
 /**
- * Memory Agent - Manages long-term and short-term memory.
- * Provides storage, retrieval, and search of memories with importance ranking.
+ * Stores and retrieves Jarvis memories with ranking-aware lookup semantics.
+ *
+ * The Memory agent handles durable recall concerns that outlive a single
+ * dialogue turn, including tagging, importance scoring, recency tracking, and
+ * search over remembered facts, events, and preferences.
+ *
+ * @agent MemoryAgent
+ * @domain agents.memory
+ * @critical
  */
 export class MemoryAgent extends EnhancedBaseAgent {
   private memories: Map<string, Memory> = new Map();
   private tagIndex: Map<string, Set<string>> = new Map(); // tag -> memory IDs
 
   constructor(logger: Logger) {
-    super("Memory", "1.0.0", parseInt(process.env.MEMORY_AGENT_PORT || "3028", 10), logger);
+    super('Memory', '1.0.0', parseInt(process.env.MEMORY_AGENT_PORT || '3028', 10), logger);
   }
 
   protected async initialize(): Promise<void> {
-    this.logger.info("✅ Memory Agent initialized");
+    this.logger.info('✅ Memory Agent initialized');
   }
 
   protected async startServer(): Promise<void> {
@@ -43,7 +50,7 @@ export class MemoryAgent extends EnhancedBaseAgent {
     this.setupHealthEndpoint();
     this.setupEnhancedRoutes();
 
-    this.app.post("/api", async (req: Request, res: Response) => {
+    this.app.post('/api', async (req: Request, res: Response) => {
       const startTime = Date.now();
       const request = req.body as AgentRequest;
 
@@ -59,31 +66,31 @@ export class MemoryAgent extends EnhancedBaseAgent {
         let result: unknown;
 
         switch (action) {
-          case "store":
+          case 'store':
             result = await this.storeMemory(inputs);
             break;
-          case "recall":
+          case 'recall':
             result = await this.recallMemory(inputs);
             break;
-          case "search":
+          case 'search':
             result = await this.searchMemories(inputs);
             break;
-          case "search_by_tag":
+          case 'search_by_tag':
             result = await this.searchByTag(inputs);
             break;
-          case "update":
+          case 'update':
             result = await this.updateMemory(inputs);
             break;
-          case "forget":
+          case 'forget':
             result = await this.forgetMemory(inputs);
             break;
-          case "list_recent":
+          case 'list_recent':
             result = await this.listRecentMemories(inputs);
             break;
-          case "list_important":
+          case 'list_important':
             result = await this.listImportantMemories(inputs);
             break;
-          case "get_stats":
+          case 'get_stats':
             result = await this.getStats();
             break;
           default:
@@ -99,7 +106,7 @@ export class MemoryAgent extends EnhancedBaseAgent {
 
         res.json(response);
       } catch (error) {
-        this.logger.error("Error processing memory request", {
+        this.logger.error('Error processing memory request', {
           error: error instanceof Error ? error.message : String(error),
           requestId: request.id,
         });
@@ -107,7 +114,7 @@ export class MemoryAgent extends EnhancedBaseAgent {
         const duration = Date.now() - startTime;
         const errorResponse: AgentResponse = {
           success: false,
-          error: error instanceof Error ? error.message : "Unknown error",
+          error: error instanceof Error ? error.message : 'Unknown error',
           metadata: { duration, retryCount: 0 },
         };
 
@@ -121,20 +128,20 @@ export class MemoryAgent extends EnhancedBaseAgent {
           this.logger.info(`Memory agent server listening on port ${this.port}`);
           resolve();
         })
-        .on("error", reject);
+        .on('error', reject);
     });
   }
 
   private async storeMemory(inputs: Record<string, unknown>): Promise<Memory> {
     const id = `mem-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const content = (inputs.content as string) || "";
-    const type = (inputs.type as Memory["type"]) || "knowledge";
+    const content = (inputs.content as string) || '';
+    const type = (inputs.type as Memory['type']) || 'knowledge';
     const importance = Math.min(10, Math.max(1, (inputs.importance as number) || 5));
     const tags = (inputs.tags as string[]) || [];
     const metadata = (inputs.metadata as Record<string, unknown>) || {};
 
     if (!content.trim()) {
-      throw new Error("Content is required");
+      throw new Error('Content is required');
     }
 
     const memory: Memory = {
@@ -167,7 +174,7 @@ export class MemoryAgent extends EnhancedBaseAgent {
     const id = inputs.id as string;
 
     if (!id) {
-      throw new Error("Memory ID is required");
+      throw new Error('Memory ID is required');
     }
 
     const memory = this.memories.get(id);
@@ -183,8 +190,8 @@ export class MemoryAgent extends EnhancedBaseAgent {
   }
 
   private async searchMemories(inputs: Record<string, unknown>): Promise<object> {
-    const query = ((inputs.query as string) || "").toLowerCase();
-    const type = inputs.type as Memory["type"] | undefined;
+    const query = ((inputs.query as string) || '').toLowerCase();
+    const type = inputs.type as Memory['type'] | undefined;
     const minImportance = (inputs.minImportance as number) || 0;
     const limit = (inputs.limit as number) || 10;
 
@@ -192,18 +199,18 @@ export class MemoryAgent extends EnhancedBaseAgent {
 
     // Filter by type
     if (type) {
-      results = results.filter((m) => m.type === type);
+      results = results.filter(m => m.type === type);
     }
 
     // Filter by importance
-    results = results.filter((m) => m.importance >= minImportance);
+    results = results.filter(m => m.importance >= minImportance);
 
     // Search by content
     if (query) {
       results = results.filter(
-        (m) =>
+        m =>
           m.content.toLowerCase().includes(query) ||
-          m.tags.some((t) => t.toLowerCase().includes(query)),
+          m.tags.some(t => t.toLowerCase().includes(query))
       );
     }
 
@@ -226,7 +233,7 @@ export class MemoryAgent extends EnhancedBaseAgent {
     const matchAll = inputs.matchAll !== false;
 
     if (tags.length === 0) {
-      throw new Error("At least one tag is required");
+      throw new Error('At least one tag is required');
     }
 
     let matchingIds: Set<string>;
@@ -236,19 +243,19 @@ export class MemoryAgent extends EnhancedBaseAgent {
       matchingIds = new Set(this.tagIndex.get(tags[0]) || []);
       for (let i = 1; i < tags.length; i++) {
         const tagIds = this.tagIndex.get(tags[i]) || new Set();
-        matchingIds = new Set([...matchingIds].filter((id) => tagIds.has(id)));
+        matchingIds = new Set([...matchingIds].filter(id => tagIds.has(id)));
       }
     } else {
       // Find memories that have ANY of the tags
       matchingIds = new Set();
       for (const tag of tags) {
         const tagIds = this.tagIndex.get(tag) || new Set();
-        tagIds.forEach((id) => matchingIds.add(id));
+        tagIds.forEach(id => matchingIds.add(id));
       }
     }
 
     const memories = Array.from(matchingIds)
-      .map((id) => this.memories.get(id)!)
+      .map(id => this.memories.get(id)!)
       .filter(Boolean)
       .sort((a, b) => b.importance - a.importance);
 
@@ -320,7 +327,7 @@ export class MemoryAgent extends EnhancedBaseAgent {
     const minImportance = (inputs.minImportance as number) || 7;
 
     const memories = Array.from(this.memories.values())
-      .filter((m) => m.importance >= minImportance)
+      .filter(m => m.importance >= minImportance)
       .sort((a, b) => b.importance - a.importance)
       .slice(0, limit);
 
@@ -347,15 +354,15 @@ export class MemoryAgent extends EnhancedBaseAgent {
 
   protected getCapabilities(): string[] {
     return [
-      "store",
-      "recall",
-      "search",
-      "search_by_tag",
-      "update",
-      "forget",
-      "list_recent",
-      "list_important",
-      "get_stats",
+      'store',
+      'recall',
+      'search',
+      'search_by_tag',
+      'update',
+      'forget',
+      'list_recent',
+      'list_important',
+      'get_stats',
     ];
   }
 
@@ -386,13 +393,13 @@ export class MemoryAgent extends EnhancedBaseAgent {
 
   protected async updateConfig(config: any): Promise<void> {
     this.config = { ...this.config, ...config };
-    this.logger.info("Configuration updated", { config });
+    this.logger.info('Configuration updated', { config });
   }
 
   protected async restart(): Promise<void> {
-    this.logger.info("Restarting Memory agent...");
+    this.logger.info('Restarting Memory agent...');
     await this.stop();
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
     await this.start();
   }
 }

@@ -1,0 +1,38 @@
+{
+  "entryFile": "src/api/server.ts",
+  "controllerPathGlobs": ["src/api/controllers/*-controller.ts"],
+  "noImplicitAdditionalProperties": "silently-remove-extras",
+  "ignore": ["**/node_modules/**", "**/tests/**"],
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "spec": {
+    "outputDirectory": "docs/APIs",
+    "specFileBaseName": "openapi",
+    "specVersion": 3,
+    "name": "Jarvis Representative Agent API",
+    "description": "Phase 1 OpenAPI surface generated from representative Dialogue, Web, and Knowledge controllers for the Jarvis documentation system foundation.",
+    "version": "4.0.0",
+    "useTitleTagsForInlineObjects": true,
+    "tags": [
+      {
+        "name": "Dialogue",
+        "description": "Conversational response generation and dialogue health endpoints."
+      },
+      {
+        "name": "Web",
+        "description": "Real-time web search and retrieval endpoints."
+      },
+      {
+        "name": "Knowledge",
+        "description": "Research, fact-checking, and summarization endpoints."
+      }
+    ]
+  },
+  "routes": {
+    "routesDir": "docs/APIs/generated",
+    "middleware": "express",
+    "basePath": "/"
+  }
+}
