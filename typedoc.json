@@ -1,0 +1,60 @@
+{
+  "entryPoints": [
+    "src/agents/index.ts",
+    "src/orchestrator/index.ts",
+    "src/security/index.ts",
+    "src/self-healing/index.ts",
+    "src/reliability/index.ts",
+    "src/knowledge/index.ts",
+    "src/voice/index.ts",
+    "src/dashboard/index.ts",
+    "src/shared/index.ts"
+  ],
+  "entryPointStrategy": "resolve",
+  "out": "docs/API-REFERENCE",
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "node_modules/**",
+    "**/*.d.ts"
+  ],
+  "excludePrivate": false,
+  "excludeProtected": false,
+  "includeVersion": true,
+  "sort": [
+    "source-order"
+  ],
+  "categoryOrder": [
+    "Core",
+    "Agents",
+    "Orchestrator",
+    "Security",
+    "Self-Healing",
+    "Knowledge",
+    "Voice",
+    "Dashboard",
+    "Utilities",
+    "Logging"
+  ],
+  "blockTags": [
+    "@agent",
+    "@domain",
+    "@reliabilityThreshold"
+  ],
+  "modifierTags": [
+    "@critical",
+    "@internal",
+    "@experimental"
+  ],
+  "plugin": [],
+  "readme": "README.md",
+  "navigationLinks": {
+    "GitHub": "https://github.com/YorkieB/psychic-parakeet",
+    "Architecture ADRs": "docs/ARCHITECTURE/"
+  },
+  "visibilityFilters": {
+    "protected": true,
+    "private": false,
+    "@internal": false
+  }
+}
