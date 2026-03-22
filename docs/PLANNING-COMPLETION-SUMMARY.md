@@ -1,14 +1,47 @@
 # Planning & PA Agent — Documentation Implementation Planning — FINAL SUMMARY
 
-**Date:** 2026-03-22 10:35–10:42 UTC  
-**Automation Trigger:** Cron (hourly)  
+**Date:** 2026-03-22 10:35 UTC (initial) → 2026-03-22 11:05 UTC (revised)  
+**Automation Trigger:** Cron (hourly) / Manual refinement request  
 **Role:** Planning & PA Agent (autonomous agent)  
 **Branch:** `cursor/documentation-plan-management-67f9`  
-**Status:** ✅ **PLANNING PHASE COMPLETE**
+**Status:** ✅ **PLANNING PHASE REFINED & COMPLETE**
 
 ---
 
-## Executive Summary
+## Refinements Applied (2026-03-22 11:00 UTC)
+
+**Response to user feedback on initial plan:**
+
+### 1. TypeDoc Configuration: Per-Domain EntryPoints
+- **Changed from:** `src/**/*.ts` glob pattern
+- **Changed to:** Explicit per-domain sources with `entryPointStrategy: "resolve"`
+- **Rationale:** Better module resolution, cleaner domain-organized documentation
+- **Example:** `["src/agents/index.ts", "src/self-healing/index.ts", "src/reliability/index.ts", "src/security/index.ts"]`
+
+### 2. OpenAPI Specification: tsoa-Generated (Not Hand-Authored)
+- **Changed from:** Manual YAML spec creation (3 agents in Phase 1, all in Phase 2)
+- **Changed to:** tsoa decorators on controllers; automatic spec generation
+- **Rationale:** Specs auto-generate from code; zero drift; decorators stay synchronized with implementation
+- **Phase 1 Simplification:** Just 2–3 decorated controllers; Phase 2 expands to all
+- **CI Automation:** Specs regenerate on every build via `npm run docs:openapi`
+
+### 3. Drift Prevention & Enforcement: Linting-First Approach
+- **Changed from:** Evaluation and integration of external tools (DeepDocs, FluentDocs, Autohand)
+- **Changed to:** Primary enforcement via eslint-plugin-jsdoc + dependency-cruiser
+- **Rationale:**
+  - eslint-plugin-jsdoc: Prevents JSDoc drift at source (enforces completeness)
+  - dependency-cruiser: Prevents architectural drift (enforces boundaries, detects cycles)
+  - Both open-source, zero-cost, deeply integrated with TypeScript
+  - External tools remain optional for advanced analysis
+- **Phase 3 Simplification:** Focus on linting enforcement, not external tool integration
+
+### 4. Documentation Consolidation
+- **Removed:** PROGRESS-DASHBOARD.md (automated tracking not needed yet)
+- **Removed:** QUICK-REFERENCE-HUMAN-OWNER.md (consolidated into single plan)
+- **Kept:** Single canonical implementation plan (IMPLEMENTATION-PLAN-DOCUMENTATION.md)
+- **Rationale:** Human owner prefers single source of truth; less document sprawl
+
+---
 
 Your **Planning & PA Agent** has completed the planning phase for the documentation implementation system. The following has been delivered:
 
@@ -144,27 +177,31 @@ Transform the Jarvis codebase (275+ TypeScript files) from minimal/inconsistent 
 
 ---
 
-## Human Owner Decisions Required
+## Human Owner Decisions Required (Updated: Now 6 Decisions)
 
 ### ✅ Decision 1: Confirm Approach
 **Recommended:** Approach D (Governance-Integrated)  
 **Your Decision:** __________ (yes/no or alternate)
 
-### ✅ Decision 2: OpenAPI Scope
-**Recommended:** All HTTP-based agents (Phase 2)  
-**Your Decision:** __________ (limited / comprehensive / deferred)
+### ✅ Decision 2: TypeDoc Configuration Strategy (NEW)
+**Recommended:** Per-domain entryPoints with `entryPointStrategy: "resolve"`  
+**Your Decision:** __________ (per-domain / glob pattern / other)
 
-### ✅ Decision 3: ADR Backfill
+### ✅ Decision 3: OpenAPI Specification Approach (REFINED)
+**Recommended:** tsoa-generated specs from decorated controllers  
+**Your Decision:** __________ (tsoa-generated / hand-authored YAML / other)
+
+### ✅ Decision 4: Drift Prevention & Enforcement Tools (REFINED)
+**Recommended:** eslint-plugin-jsdoc + dependency-cruiser (primary); external tools optional  
+**Your Decision:** __________ (linting-first / external tools / hybrid)
+
+### ✅ Decision 5: ADR Backfill
 **Recommended:** 3 critical decisions (orchestration, security, self-healing)  
 **Your Decision:** __________ (none / 3 critical / comprehensive)
 
-### ✅ Decision 4: Enforcement Timeline
+### ✅ Decision 6: Enforcement Timeline
 **Recommended:** Phased (Phase 1–2 advisory → Phase 3 hard gate)  
 **Your Decision:** __________ (phased / accelerate / defer)
-
-### ✅ Decision 5: Drift Detection Tool Budget
-**Recommended:** Defer to Phase 3 research evaluation  
-**Your Decision:** __________ (defer / $0 only / $___k budget)
 
 ---
 
