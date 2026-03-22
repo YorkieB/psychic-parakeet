@@ -15,8 +15,8 @@
   "out": "docs/API-REFERENCE",
   "exclude": ["tests", "node_modules/**", "**/*.d.ts"],
   "cleanOutputDir": true,
-  "excludePrivate": false,
-  "excludeProtected": false,
+  "excludePrivate": true,
+  "excludeProtected": true,
   "includeVersion": true,
   "sort": ["source-order"],
   "categoryOrder": [
@@ -31,13 +31,33 @@
     "Utilities",
     "Logging"
   ],
-  "blockTags": ["@agent", "@domain", "@reliabilityThreshold"],
+  "blockTags": [
+    "@param",
+    "@returns",
+    "@typeParam",
+    "@example",
+    "@remarks",
+    "@throws",
+    "@defaultValue",
+    "@ts-expect-error",
+    "@agent",
+    "@domain",
+    "@reliabilityThreshold"
+  ],
   "modifierTags": ["@critical", "@internal", "@experimental"],
   "plugin": [],
-  "readme": "README.md",
+  "readme": "none",
   "navigationLinks": {
     "Architecture ADRs": "../ARCHITECTURE/",
     "OpenAPI Explorer": "../APIs/index.html"
+  },
+  "validation": {
+    "notExported": false,
+    "invalidLink": true,
+    "invalidPath": true,
+    "rewrittenLink": true,
+    "notDocumented": false,
+    "unusedMergeModuleWith": true
   },
   "visibilityFilters": {
     "protected": true,
