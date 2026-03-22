@@ -62,7 +62,8 @@ Transform the Jarvis codebase from minimal documentation to a **self-maintaining
 **Scope:** Root project configuration  
 **Changes:**
 - Create `typedoc.json` with:
-  - Entry points: all TypeScript source files (`src/**/*.ts`)
+  - Entry points: explicit per-domain sources (e.g., `src/agents/index.ts`, `src/self-healing/index.ts`, etc.)
+  - `entryPointStrategy: "resolve"` for better handling of re-exports and module resolution
   - Output directory: `docs/API-REFERENCE/` (not committed to git, generated only)
   - Exclude patterns: tests, node_modules, temporary files
   - Theme: default or custom modern theme
@@ -72,7 +73,14 @@ Transform the Jarvis codebase from minimal documentation to a **self-maintaining
 **Example Configuration:**
 ```json
 {
-  "entryPoints": ["src/**/*.ts"],
+  "entryPoints": [
+    "src/agents/index.ts",
+    "src/self-healing/index.ts",
+    "src/reliability/index.ts",
+    "src/security/index.ts",
+    "src/utils/index.ts"
+  ],
+  "entryPointStrategy": "resolve",
   "out": "docs/API-REFERENCE",
   "exclude": ["**/*.test.ts", "**/*.spec.ts", "node_modules/**"],
   "excludePrivate": false,
@@ -94,8 +102,9 @@ Transform the Jarvis codebase from minimal documentation to a **self-maintaining
 
 **Success Criteria:**
 - TypeDoc runs locally without errors: `npx typedoc`
-- HTML output is clean and navigable
+- HTML output is clean and navigable by per-domain sections
 - Configuration is committed to git
+- Per-domain entryPoints are properly resolved and documented
 
 #### 1.3 Add JSDoc to 10–15 Critical Agent Files
 
@@ -124,31 +133,52 @@ Transform the Jarvis codebase from minimal documentation to a **self-maintaining
 - TypeDoc generates HTML without warnings
 - Comments explain non-obvious design choices
 
-#### 1.4 Generate OpenAPI Specs for 2–3 Representative Agents
+#### 1.4 Set Up tsoa for OpenAPI Spec Generation
 
 **Agent:** Coder – Feature Agent  
-**Scope:** HTTP endpoints for 3 agents (e.g., Dialogue, Web, Knowledge)  
+**Scope:** HTTP controllers and tsoa configuration  
 **Changes:**
-- Create `docs/APIs/agents/DIALOGUE-AGENT-API.yaml` with:
-  - Paths: `/agents/dialogue/process`, `/agents/dialogue/status`, etc.
-  - Request/response schemas with examples
-  - Authentication, error codes, response envelopes
-  - Status codes and descriptions
-- Repeat for Web and Knowledge agents
-- Include standardized response envelope:
-  ```json
-  {
-    "data": {},
-    "meta": { "version": "1.0", "timestamp": "2026-03-21T23:10:59Z" },
-    "error": null
+- Install tsoa: `npm install --save-dev tsoa`
+- Create `tsoa.json` configuration with:
+  - `entryPoint`: `src/controllers/index.ts` or root HTTP controllers file
+  - `outDir`: `docs/APIs/generated/`
+  - `routes`: `docs/APIs/routes.ts` (for runtime route generation if needed)
+  - `spec`: OpenAPI 3.1 spec output file location
+  - `target`: "es2020" or appropriate TypeScript target
+  - Standardized response envelope schema in `tsoa.json` or shared types
+- Create `src/controllers/index.ts` with:
+  - Import all HTTP endpoint controllers
+  - Export for tsoa spec generation
+- Decorate 2–3 representative controllers with `@tsoa` decorators (e.g., Dialogue, Web, Knowledge agents):
+  ```typescript
+  import { Controller, Get, Post, Route, Response } from 'tsoa';
+  
+  @Route('agents/dialogue')
+  export class DialogueController extends Controller {
+    /**
+     * Process user dialogue
+     * @param userInput The user's input message
+     */
+    @Post('process')
+    async process(userInput: string): Promise<DialogueResponse> {
+      // implementation
+    }
   }
   ```
+- Add npm script: `"docs:openapi": "tsoa spec-and-routes"`
+
+**Deliverables:**
+- `tsoa.json` committed to git
+- `docs/APIs/generated/swagger.json` and `openapi.json` (generated, git-ignored)
+- Controllers decorated with tsoa annotations
+- README at `docs/APIs/README.md` explaining OpenAPI generation and Swagger UI access
 
 **Success Criteria:**
-- OpenAPI specs are valid YAML/JSON (can be parsed by tooling)
-- Each spec has ≥5 documented endpoints
-- Request/response examples are complete and realistic
-- Specs can be rendered in Swagger UI
+- tsoa generates valid OpenAPI 3.1 spec without errors
+- Generated spec covers all decorated HTTP endpoints
+- Spec includes request/response schemas and examples
+- Spec is renderable in Swagger UI
+- Generated specs are git-ignored (only source decorators committed)
 
 #### 1.5 Create First 3 ADRs
 
@@ -226,16 +256,18 @@ Implement registry pattern with:
 **Before Phase 2 starts, verify:**
 
 - [ ] `docs/ARCHITECTURE/`, `docs/APIs/`, `docs/GUIDES/` folders exist
-- [ ] `typedoc.json` is configured and runs locally without errors
-- [ ] TypeDoc generates HTML for 10–15 critical agent files
-- [ ] JSDoc coverage > 80% for selected files
-- [ ] 3 representative OpenAPI specs exist and are valid YAML/JSON
+- [ ] `typedoc.json` is configured with per-domain entryPoints and `entryPointStrategy: "resolve"`
+- [ ] `tsoa.json` is configured and committed
+- [ ] TypeDoc generates HTML for all per-domain sources without errors
+- [ ] JSDoc coverage > 80% for selected agent files
+- [ ] 2–3 representative controllers are decorated with tsoa `@Route`, `@Post`, etc. annotations
+- [ ] tsoa generates valid OpenAPI 3.1 spec: `npm run docs:openapi`
 - [ ] 3 critical ADRs are written and merged
 - [ ] Docs Guardian role is expanded in AGENTS.md
-- [ ] CI artifact configuration prepared for TypeDoc generation
+- [ ] CI artifact configuration prepared for TypeDoc and OpenAPI generation
 
 **Agent Sequence for Phase 1:**
-1. **Coder – Feature Agent** – Create folder structure, TypeDoc config, JSDoc comments, OpenAPI specs, ADRs
+1. **Coder – Feature Agent** – Create folder structure, configure TypeDoc per-domain, set up tsoa, add JSDoc, decorate sample controllers, create ADRs
 2. **Enforcement Supervisor** – Verify documentation structure complies with AGENTS.md and LAYERING-STANDARDS.md
 3. **Docs Guardian** – Audit README files for quick wins; recommend updates
 4. **Planning & PA Agent** – Confirm Phase 1 readiness before Phase 2 kickoff
@@ -350,23 +382,29 @@ Pointer to CONTRIBUTING.md; reference governance standards.
 - Examples include working code snippets
 - Links to TypeDoc and ADRs are present
 
-#### 2.5 Standardize OpenAPI Specs
+#### 2.5 Expand tsoa OpenAPI Generation to All Controllers
 
 **Agent:** Coder – Feature Agent  
-**Scope:** `docs/APIs/`  
+**Scope:** All HTTP controllers  
 **Changes:**
-- Extend Phase 1's 3 OpenAPI specs to cover all HTTP-based agents
-- Create OpenAPI index: `docs/APIs/INDEX.md` listing all agents, endpoints, and link to Swagger UI
-- Publish specs to:
-  - Option A: Static hosting (GitHub Pages, S3)
-  - Option B: Swagger UI at `/docs/api` endpoint
-  - Option C: Artifact in each release
+- Extend Phase 1's 2–3 decorated controllers to all HTTP-based agents
+- Add tsoa decorators to remaining controllers
+- Configure `tsoa.json` to generate complete OpenAPI 3.1 spec
+- Create `docs/APIs/README.md` with:
+  - Overview of OpenAPI spec generation via tsoa
+  - Link to generated Swagger UI
+  - Instructions for adding new endpoints (document with tsoa decorators, then regenerate)
+  - List of all documented agents and endpoints
+- Add CI workflow step to regenerate specs on every PR (see 2.1)
+- Verify decorators match actual behavior (request/response types match implementation)
 
 **Success Criteria:**
-- All agent endpoints documented in OpenAPI
+- All agent endpoints have tsoa decorators
+- OpenAPI spec generates automatically from controllers
+- Spec covers all HTTP endpoints (100% generation coverage)
 - Specs are valid per OpenAPI 3.1 schema
-- Swagger UI renders without errors
-- Index is discoverable and up-to-date
+- Swagger UI renders spec without errors
+- Developers understand decorator workflow for adding new endpoints
 
 #### 2.6 Add Documentation Checklist to CI
 
@@ -433,30 +471,40 @@ Pointer to CONTRIBUTING.md; reference governance standards.
 
 **Goal:** Fully automate documentation generation and drift detection; establish governance enforcement.
 
-#### 3.1 Integrate Drift Detection Tool
+#### 3.1 Establish Drift Prevention with eslint-plugin-jsdoc and dependency-cruiser
 
-**Agent:** Research Agent – External Knowledge  
-**Scope:** Tool evaluation and integration  
+**Agent:** Coder – Feature Agent  
+**Scope:** Linting and dependency analysis configuration  
 **Changes:**
-- Evaluate tools:
-  - DeepDocs: Detects documentation gaps on PR
-  - FluentDocs: Auto-generates architecture documentation
-  - Autohand: Proposes documentation updates
-- Select tool based on:
-  - Cost (free vs. paid)
-  - Integration complexity
-  - Quality of generated docs
-  - Team workflow compatibility
-- Integrate selected tool into CI:
-  - Add workflow step to run drift detection
-  - Parse output and post as PR comment
-  - Link to governance documentation
+- Configure `eslint-plugin-jsdoc` to enforce:
+  - All exported APIs must have JSDoc comments
+  - JSDoc tags must follow conventions (`@param`, `@returns`, `@throws`, `@example`)
+  - Missing documentation on public functions fails lint
+  - Custom tags validated (e.g., `@agent`, `@domain`, `@critical`)
+- Install and configure `dependency-cruiser`:
+  - Add `.dependency-cruiser.json` with:
+    - Module boundary rules (e.g., agents cannot import from security internals)
+    - Cycle detection rules
+    - Forbidden dependency patterns
+  - Add npm script: `"validate:deps": "depcruise src"`
+- Add to CI workflows:
+  - `npm run lint:jsdoc` (check JSDoc completeness)
+  - `npm run validate:deps` (check dependency health)
+  - Both run on every PR and fail merge if violations found
+- Document in `.github/docs/workflows/WORKFLOW-JSDoc-ENFORCEMENT.md` and `.github/docs/workflows/WORKFLOW-DEPENDENCY-INTEGRITY.md`
+
+**Rationale:**
+- **eslint-plugin-jsdoc** prevents documentation drift at the source (enforces JSDoc completeness)
+- **dependency-cruiser** prevents architectural drift (enforces layering and domain boundaries)
+- Both are open-source, zero-cost, deeply integrated into TypeScript tooling
+- External tools (DeepDocs, etc.) remain optional for advanced analysis but are not critical
 
 **Success Criteria:**
-- Drift detection tool is integrated
-- Tool runs on every PR without errors
-- Violations are clearly reported
-- Team feedback on recommendations is positive
+- eslint-plugin-jsdoc is installed and configured
+- dependency-cruiser is installed and configured
+- Both run successfully on existing codebase
+- CI fails if JSDoc coverage drops or dependency rules violated
+- Team understands rules and workflow
 
 #### 3.2 Establish "Documentation as Test" Gate
 
@@ -567,20 +615,23 @@ Pointer to CONTRIBUTING.md; reference governance standards.
 
 **Ongoing verification (quarterly):**
 
-- [ ] Drift detection tool is running and preventing documentation rot
+- [ ] eslint-plugin-jsdoc is enforcing JSDoc completeness on all exports
+- [ ] dependency-cruiser is enforcing module boundaries and preventing cycles
+- [ ] Both tools run on every PR and fail merge if violations found
 - [ ] Documentation validation is blocking merges
 - [ ] ADR review process is held quarterly
 - [ ] Docs Guardian is actively enforcing documentation standards
 - [ ] Documentation coverage metrics are collected and reported
 - [ ] Documentation health report is generated each quarter
-- [ ] Team morale regarding documentation is positive (informal feedback)
+- [ ] Team morale regarding documentation tooling is positive (informal feedback)
+- [ ] Optional: External drift detection tools (DeepDocs, FluentDocs) evaluated for advanced use cases
 
 **Agent Sequence for Phase 3:**
-1. **Research Agent – External Knowledge** – Evaluate and recommend drift detection tool
-2. **Coder – Feature Agent** – Integrate tool, set up metrics, optional documentation site
-3. **Enforcement Supervisor** – Escalate documentation validation to blocking gate
-4. **Planning & PA Agent** – Establish quarterly ADR review process and governance
-5. **Docs Guardian** – Begin active enforcement with metrics reporting
+1. **Coder – Feature Agent** – Configure eslint-plugin-jsdoc and dependency-cruiser; integrate into CI
+2. **Enforcement Supervisor** – Escalate documentation validation to hard gate; establish exception handling
+3. **Planning & PA Agent** – Establish quarterly ADR review process and governance
+4. **Docs Guardian** – Begin active enforcement with metrics reporting
+5. **Research Agent – External Knowledge** (optional) – Evaluate external tools for advanced analysis beyond eslint-plugin-jsdoc and dependency-cruiser
 
 ---
 
@@ -606,29 +657,41 @@ Pointer to CONTRIBUTING.md; reference governance standards.
 - Evolves naturally toward Approach C over time
 - **Human decision required if preferring different approach**
 
-### 2. OpenAPI Scope
-**Status:** ✅ **Recommended: All HTTP-based agents in Phase 2**
-- Ensures consistent API documentation
-- Enables client code generation if needed
-- **Human decision: Defer to Phase 3 if budget is tight?**
+### 2. TypeDoc Configuration Strategy
+**Status:** ✅ **Recommended: Per-domain entryPoints with `entryPointStrategy: "resolve"`**
+- Explicit per-domain sources (agents, self-healing, reliability, security, utils) are cleanly documented
+- `entryPointStrategy: "resolve"` handles re-exports and module resolution correctly
+- Resulting docs are organized by domain, improving discoverability
+- **Human decision: Accept per-domain approach or revert to glob patterns?**
 
-### 3. ADR Backfill Scope
+### 3. OpenAPI Specification Approach
+**Status:** ✅ **Recommended: tsoa-generated specs from controllers**
+- Eliminates hand-authored YAML (source of truth is code decorators)
+- Decorators stay synchronized with implementation
+- Automatic spec generation on every build (zero drift)
+- Simpler Phase 1 (2–3 decorated controllers) with easy Phase 2 expansion
+- **Human decision: Accept tsoa approach or prefer hand-authored specs?**
+
+### 4. Drift Prevention & Enforcement Tools
+**Status:** ✅ **Recommended: eslint-plugin-jsdoc + dependency-cruiser (primary); external tools optional**
+- **eslint-plugin-jsdoc**: Enforces JSDoc completeness (prevents documentation rot at source)
+- **dependency-cruiser**: Enforces module boundaries and prevents cycles (architectural drift prevention)
+- Both are open-source, zero-cost, deeply integrated
+- Simpler Phase 3 (focus on linting enforcement vs. external tool integration)
+- External tools (DeepDocs, FluentDocs) remain optional for advanced analysis
+- **Human decision: Accept eslint-plugin-jsdoc + dependency-cruiser as primary, or require external tools?**
+
+### 5. ADR Backfill Scope
 **Status:** ✅ **Recommended: 3 critical ADRs (orchestration, security, self-healing)**
 - Focuses on decisions most affecting new contributors
 - Reduces initial burden
 - **Human decision: Expand if specific decisions are frequently questioned**
 
-### 4. Enforcement Level Timeline
+### 6. Enforcement Level Timeline
 **Status:** ✅ **Recommended: Phase 1 = advisory; Phase 2 = advisory; Phase 3 = blocking**
 - Allows team to adapt gradually
 - Demonstrates value before enforcement
 - **Human decision: Accelerate enforcement if team is ready?**
-
-### 5. Drift Detection Tool
-**Status:** ⏳ **Pending Phase 3 recommendation from Research Agent**
-- Multiple tools available (DeepDocs, FluentDocs, Autohand)
-- Cost/benefit analysis needed
-- **Human decision: Budget for paid tools or free alternatives only?**
 
 ---
 
@@ -670,9 +733,9 @@ Pointer to CONTRIBUTING.md; reference governance standards.
 
 | Phase | Duration | Key Deliverables | Owners |
 |-------|----------|-----------------|--------|
-| **Phase 1** | 1–2 weeks | TypeDoc config, JSDoc comments, 3 OpenAPI specs, 3 ADRs | Coder, Planning |
-| **Phase 2** | 2–4 weeks | CI integration, domain READMEs, validation workflow | Coder, Supervisor |
-| **Phase 3** | 6–8 weeks (initial); ongoing | Drift detection, hard gate, quarterly reviews | Research, Coder, Supervisor |
+| **Phase 1** | 1–2 weeks | TypeDoc (per-domain), tsoa setup, 2–3 decorated controllers, JSDoc comments, 3 ADRs | Coder, Planning |
+| **Phase 2** | 2–4 weeks | CI integration (TypeDoc, tsoa), all controllers decorated, domain READMEs, eslint-plugin-jsdoc + dependency-cruiser linting | Coder, Supervisor |
+| **Phase 3** | 6–8 weeks (initial); ongoing | eslint-plugin-jsdoc + dependency-cruiser enforcement, hard gate, quarterly ADR reviews, metrics | Coder, Supervisor, Planning |
 
 ---
 
@@ -688,6 +751,7 @@ Pointer to CONTRIBUTING.md; reference governance standards.
 ## Document Metadata
 
 - **Created:** 2026-03-21
-- **Status:** Ready for Human Review
+- **Updated:** 2026-03-22
+- **Status:** Ready for Human Review (revised with per-domain TypeDoc, tsoa, and linting-focused drift prevention)
 - **Audience:** Engineering team, human owner, Enforcement Supervisor, Docs Guardian
 - **Next Review:** After Phase 1 completion (approximately 2026-04-04)
